@@ -120,6 +120,7 @@ func _pump_shop(delta: float) -> void:
 
 
 # 菜单观测（难度页/终局）：与 shop 相同的推送策略（内容变化 + 1s 心跳；不在菜单时不发送）。
+# 形状与 _pump_shop 重复，属有意保留：抽共享泵需引入状态对象，收益不足，暂不抽象。
 func _pump_menu(delta: float) -> void:
 	_menu_accum += delta
 	if _menu_accum < MENU_SAMPLE_INTERVAL:

@@ -41,7 +41,7 @@
 | 游戏 | Brotato 1.1.15.4（Steam app `1942280`，Godot 3.7 定制引擎） |
 | 安装 | `E:\SteamLibrary\steamapps\common\Brotato` |
 | 瞄准 | **自动瞄准默认开启**（`settings.manual_aim=false`）：武器自动瞄准最近敌人，机器人只需控制移动 |
-| 难度页 | `ui/menus/run/difficulty_selection`，**滑杆式**（`DifficultySliderContainer` + 加减按钮，`difficulty_selected_value` / `difficulty_unlocked`） |
+| 难度页 | `ui/menus/run/difficulty_selection`，**InventoryElement 列表**（非滑杆；`Inventory1` 元素 + `_latest_focused_element`，票据 04 实机修订） |
 | 难度解锁 | 按英雄独立记录（存档 `difficulties_unlocked[character].max_selectable_difficulty`） |
 | 升级 | 波间从若干升级项中选 1（资源 `items/upgrades/*`） |
 | 存档 | `user://76561199368828270/`（`save_v3_1.json` / `run_v3_1.json`，游戏自带 `.bak`） |
@@ -195,11 +195,11 @@
 ### 6.2 新增（P1 票据 04–06）
 
 - **menu 观测**（`menu_observation.gd`）：
-  - `phase=difficulty_select`：英雄 ID、初始武器（ID/tier）、难度 `{selected, max_selectable, unlocked}`、模式开关、`can_start`；
+  - `phase=difficulty_select`：英雄 ID、初始武器（ID/tier）、难度 `{options, selected, displayed}`、模式开关（`RunData.is_endless_run` / `is_ban_mode_active` / `is_coop_run`）、`can_start`（票据 04/05 实机定型，见 protocol.md §7.1.1）；
   - `phase=level_up`：升级卡列表（槽位/类型/ID/等级，结构以票据 04 实测为准）；
-  - `phase=run_end`：结果（victory/defeat）、波次与统计入口；
+  - `phase=run_end`：`result`（victory/defeat，`RunData.run_won`）、`wave`、`title` 与逐格 `stats`（`StatsContainer` 文本）；
   - 推送策略与 `shop` 一致：内容变化推送 + 1s 心跳；不在菜单时**不推送**（agent 以静默判定离开）。
-- **menu 动作**（`menu_actions.gd`）：`menu_set_difficulty {value}`（按差值步进加减按钮或等价的滑杆设置，读回校验）、`menu_start_run {}`、`menu_pick_upgrade {index}`；幂等/TTL/ack 语义与 `shop_*` 一致；未实现动作一律拒绝（`unsupported_kind`）。
+- **menu 动作**（`menu_actions.gd`）：`menu_set_difficulty {value}`（按下目标难度元素，读回校验）、`menu_start_run {}`、`menu_pick_upgrade {index}`；幂等/TTL/ack 语义与 `shop_*` 一致；未实现动作一律拒绝（`unsupported_kind`）。
 - **协议 v2 集成**：`PROTOCOL_VERSION=2`，hello/welcome 版本校验，不匹配拒绝会话。
 
 ### 6.3 引擎兼容与脆弱性

@@ -30,7 +30,7 @@
 
 ```json
 {
-  "protocol_version": 1,
+  "protocol_version": 2,
   "mod_version": "0.2.0",
   "game_version": "1.1.15.4",
   "session_id": "4042ab31d9aaf1e4",
@@ -42,7 +42,7 @@
 
 ```json
 {
-  "protocol_version": 1,
+  "protocol_version": 2,
   "session_id": "4042ab31d9aaf1e4",
   "config": { "snapshot_hz": 60, "debug_overlay": false, "action_ttl_ms": 250 }
 }
@@ -205,7 +205,7 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 | `weapons` | `.../DescriptionContainer/WeaponPanel.item_data`（`item_panel_ui.gd`）：`{my_id:"weapon_pistol_1", weapon_id:"weapon_pistol", tier, ...}` |
 | `difficulty.options` | `.../ScrollContainer/Inventories/Inventory1` 下各 `InventoryElement`（`inventory_element.gd`）的 `item`（`difficulty_data.gd`）：`my_id`=`difficulty_0..6`、`name`、`tier`、`value`、`is_locked`、`unlocked_by_default`（实测仅 difficulty_0=true）；元素自身 `current_number`（实测 D0=1、其余=0，语义未定，仅记录不依赖） |
 | `difficulty.selected` | 当前预选/高亮元素：根脚本变量 `_latest_focused_element[0]`（实机进入页面默认聚焦 `difficulty_0` 元素；无人选中时为 `null`）。注意：对**已聚焦元素**再 `pressed` 即确认开局（实机单击 D0 直接开局），只有切换焦点才需要两次 |
-| `difficulty.displayed` | 根脚本变量 `displayed_elements`（每玩家一个难度 `difficulty_data` 数组） |
+| `difficulty.displayed` | 根脚本变量 `displayed_elements[0]`（玩家 0 的难度 `difficulty_data` 列表）的 `my_id` 数组 |
 | `modes` | **权威状态在 `RunData`（票据 05 实机修正）**：`endless`=`RunData.is_endless_run`、`ban`=`RunData.is_ban_mode_active`、`coop`=`RunData.is_coop_run`（bool）；另附难度页根变量 `add_random_element` / `enable_coop_panels`（语义未证实，仅记录）。开关 UI 位于选人页 `RunOptionsPanel`（`EndlessButton` / `BanButton` / `CoopButton` / `ZoneSelectionButton`），离开选人页即释放，不可在难度页读取；zone 选择暂不输出 |
 | `can_start` | 目标难度元素 `item.is_locked == false`（实机 D0=false）。实机验证：按下 `is_locked=true` 的元素（@635/D6）为**完全空操作**——`_latest_focused_element` 与 `_has_player_selected` 均不变、未开局 |
 | （候选）`difficulty.max_unlocked` | `RunData.difficulty_unlocked`（int，usage=8192）：实测 D0 局中与终局恒为 `-1`，语义未证实，**暂不作为读取来源**，仅登记候选 |
@@ -251,7 +251,7 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 | --- | --- |
 | `result` | 结构化：`RunData.run_won`（bool）映射为 `"victory"` / `"defeat"`；读不到给 `null`。展示文本见 `title` |
 | `title` | 展示文本 `%Title.text`（实测 `战败 - 碰撞区域` / `胜利 - 碰撞区域`，本地化含地图名） |
-| `wave` | 结构化：`RunData.current_wave`（实测终局=6 / 10 / 20，与 `%RunInfo.text="第N波 - 危险X"` 一致） |
+| `wave` | 结构化：`RunData.current_wave`（实测终局=6 / 10 / 20，与 `%RunInfo.text="第N波 - 危险X"` 一致）；RunData 不可读时 `null` |
 | `stats` | `MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/StatsContainer`（`stats_container.gd`）子树各格子的 `key` → `Value` Label 文本（字符串原样，实测 40 项，含 `CURRENT_LEVEL` / `STAT_*` / 次要属性） |
 
 关键信号（实机 `conns` 证据）：
@@ -272,7 +272,7 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 
 ### 7.3 版本流程
 
-- `PROTOCOL_VERSION` 改为 2；`hello/welcome` 双侧校验并拒绝不匹配会话（§2.3）。
+- `PROTOCOL_VERSION` 改为 2（mod 侧随票据 05 落地）；版本校验由 agent 在收到 `hello` 后执行（§2.3，agent 侧实现属票据 07），mod 收到 `rejected` 后停止重连（ADR-0009）。
 - 不保留 v1 兼容路径；旧 mod 与新 agent 不相连（mod 被拒后停止重连，需部署匹配版本）。
 
 ## 8. 附录：mod 依赖的游戏内部字段清单（脆弱点）

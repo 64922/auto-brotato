@@ -60,10 +60,6 @@ func latest():
 	return _latest
 
 
-func is_open() -> bool:
-	return _difficulty != null or _end_run != null
-
-
 # 连接断开/游戏侧重置时调用：丢弃节点缓存，强制重新扫描。
 func invalidate() -> void:
 	_difficulty = null
@@ -258,8 +254,8 @@ func _build_run_end_payload() -> Dictionary:
 	return {
 		"phase": "run_end",
 		"result": _run_result(),
-		"wave": _run_data_int("current_wave"),
-		"title": _end_run_label("MarginContainer/VBoxContainer/HBoxContainer/Title"),
+		"wave": _run_wave(),
+		"title": _end_run_title(),
 		"stats": _stats_payload(),
 	}
 
@@ -274,14 +270,17 @@ func _run_result():
 	return null
 
 
-func _run_data_int(field: String) -> int:
+func _run_wave():
 	if RunData == null:
-		return 0
-	return Compat.int_arg(RunData.get(field))
+		return null
+	return Compat.int_arg(RunData.get("current_wave"))
 
 
-func _end_run_label(path: String) -> String:
-	var label = _end_run.get_node_or_null(path)
+# 双路径（ADR-0006）：`%Title`（票据 04 实机）优先，回退固定路径（票据 05 实机验证）。
+func _end_run_title() -> String:
+	var label = _end_run.get_node_or_null("%Title")
+	if label == null:
+		label = _end_run.get_node_or_null("MarginContainer/VBoxContainer/HBoxContainer/Title")
 	if label == null:
 		return ""
 	return str(label.get("text"))
