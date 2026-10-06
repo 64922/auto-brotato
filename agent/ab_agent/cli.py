@@ -11,13 +11,18 @@ import asyncio
 import logging
 import sys
 import threading
+from pathlib import Path
 from typing import Optional, Sequence
 
 from . import __version__
 from .ipc_server import DEFAULT_PING_INTERVAL_S, IpcServer
+from .recorder import Recorder
 from .state import AgentState
 
 LOGGER_NAME = "ab.cli"
+
+#: 默认录制目录：仓库根 ``recordings/``（不入库，见 .gitignore）
+DEFAULT_RECORD_DIR = Path(__file__).resolve().parents[2] / "recordings"
 
 HELP_TEXT = """命令：
   status   打印当前状态（连接/模式/快照频率/波次）
@@ -51,6 +56,17 @@ def build_parser() -> argparse.ArgumentParser:
         default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
         help="日志级别（默认 INFO）",
+    )
+    parser.add_argument(
+        "--record-dir",
+        default=str(DEFAULT_RECORD_DIR),
+        help="回放录制目录（默认 <仓库>/recordings）",
+    )
+    parser.add_argument(
+        "--no-record", action="store_true", help="关闭回放录制（默认开启）"
+    )
+    parser.add_argument(
+        "--record-compress", action="store_true", help="录制以 gzip 归档（.ndjson.gz）"
     )
     parser.add_argument("--version", action="version", version="ab_agent %s" % __version__)
     return parser
@@ -145,11 +161,15 @@ async def _status_loop(server: IpcServer, state: AgentState, interval: float) ->
 async def _run(args: argparse.Namespace) -> int:
     log = logging.getLogger(LOGGER_NAME)
     state = AgentState()
+    recorder: Optional[Recorder] = None
+    if not args.no_record:
+        recorder = Recorder(Path(args.record_dir), compress=args.record_compress)
     server = IpcServer(
         state,
         host=args.host,
         port=args.port,
         ping_interval=args.ping_interval,
+        recorder=recorder,
     )
     await server.start()
     log.info(
@@ -158,6 +178,12 @@ async def _run(args: argparse.Namespace) -> int:
         args.host,
         server.bound_port,
     )
+    if recorder is not None:
+        log.info(
+            "回放录制已开启：%s（%s；--no-record 可关闭）",
+            args.record_dir,
+            "gzip 归档" if args.record_compress else "NDJSON",
+        )
     log.info("命令：status / stop / resume / quit（help 查看帮助）")
     status_task: Optional[asyncio.Task] = None
     if args.status_interval > 0:

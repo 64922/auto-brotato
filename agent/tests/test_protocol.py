@@ -39,6 +39,17 @@ class ParseLineTest(unittest.TestCase):
         )
         self.assertEqual(envelope.payload, {})
 
+    def test_as_dict_roundtrips_and_keeps_payload_reference(self):
+        envelope = protocol.parse_line(
+            json.dumps({"v": 1, "seq": 3, "ts": 9.5, "type": "snapshot", "ref": None, "payload": {"a": 1}})
+        )
+        data = envelope.as_dict()
+        self.assertEqual(
+            data,
+            {"v": 1, "seq": 3, "ts": 9.5, "type": "snapshot", "ref": None, "payload": {"a": 1}},
+        )
+        self.assertIs(data["payload"], envelope.payload)
+
     def test_rejects_blank_line(self):
         with self.assertRaises(ProtocolError):
             protocol.parse_line("   ")

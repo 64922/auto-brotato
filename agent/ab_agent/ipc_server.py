@@ -11,8 +11,9 @@ import logging
 import time
 from typing import Any, Optional
 
-from . import protocol
+from . import __version__, protocol
 from .protocol import Envelope, ProtocolError
+from .recorder import Recorder
 from .state import AgentState
 
 LOGGER_NAME = "ab.ipc"
@@ -30,7 +31,13 @@ DEFAULT_PING_INTERVAL_S = 1.0
 class ClientConnection:
     """单个 mod 连接（mod 为 TCP 客户端）。"""
 
-    def __init__(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter, peer: str) -> None:
+    def __init__(
+        self,
+        reader: asyncio.StreamReader,
+        writer: asyncio.StreamWriter,
+        peer: str,
+        recorder: Recorder | None = None,
+    ) -> None:
         self.reader = reader
         self.writer = writer
         self.peer = peer
@@ -40,6 +47,7 @@ class ClientConnection:
         self.rejected = False
         self.connected_at = time.monotonic()
         self.last_recv_at = self.connected_at
+        self._recorder = recorder
         self._seq = 0
 
     def next_seq(self) -> int:
@@ -48,15 +56,31 @@ class ClientConnection:
         return seq
 
     async def send(self, msg_type: str, payload: dict | None = None, ref: Any = None) -> bool:
-        """发送一条信封；连接失效返回 False（不抛异常）。"""
+        """发送一条信封；连接失效返回 False（不抛异常）。
+
+        录制 out 只覆盖动作（welcome/ping/error 不入录制，见 recorder.py 格式说明）。
+        """
         if self.writer.is_closing() or self.rejected:
             return False
-        data = protocol.encode(msg_type, payload, seq=self.next_seq(), ref=ref)
+        seq = self.next_seq()
+        ts = time.time()
+        data = protocol.encode(msg_type, payload, seq=seq, ref=ref, ts=ts)
         try:
             self.writer.write(data)
             await self.writer.drain()
         except (ConnectionError, OSError):
             return False
+        if self._recorder is not None and msg_type == "action":
+            self._recorder.record_out(
+                {
+                    "v": protocol.PROTOCOL_VERSION,
+                    "seq": seq,
+                    "ts": ts,
+                    "type": msg_type,
+                    "ref": ref,
+                    "payload": {} if payload is None else payload,
+                }
+            )
         return True
 
 
@@ -71,11 +95,13 @@ class IpcServer:
         port: int = 37650,
         ping_interval: float = DEFAULT_PING_INTERVAL_S,
         logger: logging.Logger | None = None,
+        recorder: Recorder | None = None,
     ) -> None:
         self.state = state
         self.host = host
         self.port = port
         self.log = logger or logging.getLogger(LOGGER_NAME)
+        self.recorder = recorder
         self._ping_interval = ping_interval
         self._server: Optional[asyncio.AbstractServer] = None
         self._client: Optional[ClientConnection] = None
@@ -115,6 +141,8 @@ class IpcServer:
             self._server = None
         self._fail_pending("shutdown")
         self.state.mark_disconnected()
+        if self.recorder is not None:
+            self.recorder.end_session()
 
     @property
     def bound_port(self) -> int:
@@ -192,7 +220,7 @@ class IpcServer:
     ) -> None:
         peer_info = writer.get_extra_info("peername")
         peer = "%s:%s" % (peer_info[0], peer_info[1]) if peer_info else "?"
-        conn = ClientConnection(reader, writer, peer)
+        conn = ClientConnection(reader, writer, peer, recorder=self.recorder)
         old = self._client
         if old is not None:
             self.log.warning(
@@ -211,6 +239,8 @@ class IpcServer:
                 self._client = None
                 self.state.mark_disconnected()
                 self._fail_pending("link_lost")
+            if self.recorder is not None:
+                self.recorder.end_session(owner=conn)
             if conn.ready:
                 self.log.info(
                     "会话结束：session=%s（连接时长 %.1fs）",
@@ -238,6 +268,9 @@ class IpcServer:
             if not line:
                 self.log.info("mod 断开连接：%s", conn.peer)
                 return
+            if self._client is not conn:
+                self.log.info("连接已被新连接替换，停止处理旧连接消息：%s", conn.peer)
+                return
             conn.last_recv_at = time.monotonic()
             text = line.decode("utf-8", errors="replace").strip()
             if not text:
@@ -263,6 +296,8 @@ class IpcServer:
             self.state.note_protocol_error()
             self.log.warning("握手完成前收到 %s，已忽略：%s", msg_type, conn.peer)
             return True
+        if self.recorder is not None:
+            self.recorder.record_in(envelope.as_dict())
         payload = envelope.payload
         if msg_type == "snapshot":
             self.state.update_snapshot(payload)
@@ -310,6 +345,11 @@ class IpcServer:
             return False
         conn.ready = True
         self.state.mark_connected(session_id, payload)
+        if self.recorder is not None:
+            self.recorder.start_session(
+                hello=payload, agent_version=__version__, owner=conn
+            )
+            self.recorder.record_in(envelope.as_dict())
         self.log.info(
             "握手完成：session=%s mod=%s game=%s protocol=%s",
             session_id,

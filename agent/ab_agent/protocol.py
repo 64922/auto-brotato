@@ -40,6 +40,17 @@ class Envelope:
     ref: Any
     payload: dict
 
+    def as_dict(self) -> dict:
+        """转回信封 dict（浅拷贝，payload 复用引用）；供录制等透明转发场景使用。"""
+        return {
+            "v": self.v,
+            "seq": self.seq,
+            "ts": self.ts,
+            "type": self.type,
+            "ref": self.ref,
+            "payload": self.payload,
+        }
+
 
 def parse_line(line: str) -> Envelope:
     """解析一行 NDJSON 信封；失败抛 ProtocolError（调用方丢弃该行）。"""
