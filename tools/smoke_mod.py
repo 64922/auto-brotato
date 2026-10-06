@@ -15,73 +15,19 @@
 退出码：0 全部通过；1 存在失败项；2 连接/握手失败。
 """
 import argparse
-import json
-import select
 import socket
 import sys
 import time
 
-PROTOCOL_VERSION = 2
+try:  # 包内导入（pytest）；直接以脚本运行（python tools/smoke_mod.py）时回退同目录导入
+    from tools.ndjson_link import PROTOCOL_VERSION, Link, wait_for_hello
+except ImportError:
+    from ndjson_link import PROTOCOL_VERSION, Link, wait_for_hello
+
 GAME_VERSION = "1.1.15.4"
 MOVE_SEND_INTERVAL = 0.08
 RAMP_SECONDS = 0.5
 TTL_MARGIN_SECONDS = 0.35
-
-
-class Link:
-    """mod 主动连出后的最小双向 NDJSON 链路。"""
-
-    def __init__(self, sock):
-        self.sock = sock
-        self.buf = b""
-        self.seq = 0
-        self.pending = []
-
-    def send(self, msg_type, payload, ref=None):
-        envelope = {
-            "v": PROTOCOL_VERSION,
-            "seq": self.seq,
-            "ts": time.time(),
-            "type": msg_type,
-            "ref": ref,
-            "payload": payload,
-        }
-        self.seq += 1
-        line = json.dumps(envelope, ensure_ascii=False, separators=(",", ":")) + "\n"
-        self.sock.sendall(line.encode("utf-8"))
-
-    def pump(self, timeout=0.05):
-        readable, _, _ = select.select([self.sock], [], [], timeout)
-        if not readable:
-            return
-        data = self.sock.recv(65536)
-        if not data:
-            raise ConnectionError("mod 关闭了连接")
-        self.buf += data
-        while b"\n" in self.buf:
-            line, self.buf = self.buf.split(b"\n", 1)
-            if not line.strip():
-                continue
-            try:
-                message = json.loads(line.decode("utf-8"))
-            except (UnicodeDecodeError, json.JSONDecodeError):
-                continue
-            if isinstance(message, dict):
-                self.pending.append(message)
-
-    def drain(self):
-        out, self.pending = self.pending, []
-        return out
-
-
-def wait_for_hello(link, timeout_seconds):
-    deadline = time.monotonic() + timeout_seconds
-    while time.monotonic() < deadline:
-        link.pump(0.1)
-        for message in link.drain():
-            if message.get("type") == "hello":
-                return message.get("payload", {})
-    return None
 
 
 def positions_during(samples, start, end):

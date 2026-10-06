@@ -1,7 +1,8 @@
 """英雄 ID → 中文名映射（终端展示用，票据 07）。
 
-来源：Brotato 1.1.15.4 官方中文译名（人工整理，未入仓完整知识库前的临时表）。
-票据 11 生成 `docs/knowledge/characters.json` 后，本表由其数据替换/补充；
+来源：Brotato 1.1.15.4 官方中文译名（人工整理）。
+票据 11 已生成 `docs/knowledge/characters.json`（含全部 50 名英雄的官方译名）；
+终端展示切换到知识库读取待后续票据处理，本表在接线前继续作为缺省来源。
 未收录的 ID 直接展示原始 ID（`hero_display`），不阻塞流程。
 """
 from __future__ import annotations

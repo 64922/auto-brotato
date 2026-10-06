@@ -9,7 +9,8 @@ extends Reference
 # 条目构建在 knowledge_entries.gd；本文件负责触发入口、落盘与版本哈希。
 #
 # 稳定性约定：条目按 id 排序、字典键排序输出、不写时间戳/运行时状态字段；
-# 同一游戏版本重复导出逐字节一致。data_version = 规范 JSON（不含 data_version
+# 同一游戏版本 + 同一 UI 语言重复导出逐字节一致（name 为 TranslationServer
+# 译名，随语言变化；锁定环境 zh）。data_version = 规范 JSON（不含 data_version
 # 与 mod_version）的 SHA-256，供决策层标识知识库版本（strategy.md §7）。
 # 触发方式见 mod_main.gd 的 debug_export_knowledge 动作（tools/export_knowledge.py 收集）。
 

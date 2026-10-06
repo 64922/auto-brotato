@@ -126,6 +126,7 @@ func _weapon_entry(resource) -> Dictionary:
 	entry["price"] = _as_int(resource.get("value"))
 	entry["weapon_id"] = _as_string(resource.get("weapon_id"))
 	entry["type"] = _as_int(resource.get("type"))
+	# WeaponData.Type：0=MELEE、1=RANGED（导出为可读 class；枚举无其他取值）
 	entry["class"] = "ranged" if _as_int(resource.get("type")) == 1 else "melee"
 	entry["stats"] = _weapon_stats(resource.get("stats"))
 	entry["sets"] = _resource_ids(resource.get("sets"))
@@ -258,6 +259,7 @@ func _stat_deltas(raw_effects) -> Dictionary:
 		if effect == null:
 			continue
 		var key := _as_string(effect.get("key"))
+		# Effect.StorageMethod：0=SUM；其余（SET/PERCENT 等）非增量语义，不导出
 		if key == "" or _as_int(effect.get("storage_method")) != 0:
 			continue
 		deltas[key] = float(deltas.get(key, 0.0)) + _as_number(effect.get("value"))
@@ -267,6 +269,7 @@ func _stat_deltas(raw_effects) -> Dictionary:
 func _weapon_chain(weapon) -> Array:
 	var chain := []
 	var current = weapon
+	# 上限 16 为防御性循环引用保护；实际武器链最长 4 阶（1→4）
 	while current != null and chain.size() < 16:
 		var current_id := _as_string(current.get("my_id"))
 		if current_id == "" or current_id in chain:

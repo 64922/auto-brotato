@@ -1,4 +1,5 @@
-"""knowledge.py 测试：仓库知识库加载、版本告警、Tier 解析（票据 11）。"""
+"""knowledge.py 测试：仓库知识库加载、版本/哈希告警、Tier 解析（票据 11）。"""
+import hashlib
 import json
 import tempfile
 import unittest
@@ -12,17 +13,29 @@ from ab_agent.knowledge import (
 )
 from ab_agent.protocol import GAME_VERSION
 
+_WRAPPER_KEYS = ("schema_version", "game_version", "data_version", "mod_version")
+
+
+def _content_hash(payload):
+    """测试侧按 strategy.md §7 规范独立实现（与被测模块重算逻辑互不引用）。"""
+    body = {key: payload[key] for key in ("schema_version", "game_version", "entries")}
+    for key, value in payload.items():
+        if key not in _WRAPPER_KEYS and key != "entries":
+            body[key] = value
+    text = json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
 
 def _dataset(entries, game_version=GAME_VERSION, schema_version=1, extra=None):
     payload = {
         "schema_version": schema_version,
         "game_version": game_version,
-        "data_version": "0" * 64,
         "mod_version": "0.2.0",
         "entries": entries,
     }
     if extra:
         payload.update(extra)
+    payload["data_version"] = _content_hash(payload)
     return payload
 
 
@@ -119,6 +132,19 @@ class LoaderTest(unittest.TestCase):
             knowledge = load_knowledge(base)
             self.assertTrue(any("tier_list" in warning for warning in knowledge.warnings))
 
+    def test_tampered_entries_warn_hash_mismatch(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            _write_knowledge(base, entries={"items": [{"id": "a"}]})
+            path = base / "items.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            payload["entries"].append({"id": "b"})
+            path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+            knowledge = load_knowledge(base)
+            mismatches = [w for w in knowledge.warnings if "data_version 校验失败" in w]
+            self.assertEqual(len(mismatches), 1)
+            self.assertIn("items.json", mismatches[0])
+
 
 class TierListTest(unittest.TestCase):
     def test_exact_and_family_lookup(self):
@@ -161,25 +187,23 @@ class TierListTest(unittest.TestCase):
             knowledge = load_knowledge(base)
             self.assertTrue(any("tier='Z'" in warning for warning in knowledge.warnings))
             self.assertTrue(any("nope" in warning for warning in knowledge.warnings))
-            # 非法评级条目仍保留（评分侧自行兜底），不抛异常
-            self.assertIn("item_x", knowledge.tier_ratings)
+            # 非法评级直接丢弃（避免脏数据流入决策层）；未知 id 保留但不生效
+            self.assertNotIn("item_x", knowledge.tier_ratings)
+            self.assertIn("nope", knowledge.tier_ratings)
 
-    def test_character_names(self):
+    def test_tier_list_game_version_mismatch_warns(self):
         with tempfile.TemporaryDirectory() as tmp:
             base = Path(tmp)
             _write_knowledge(
                 base,
-                entries={
-                    "characters": [
-                        {"id": "character_ranger", "name": "游侠"},
-                        {"id": "character_x"},
-                    ]
+                entries={"items": [{"id": "item_x"}]},
+                tier_list={
+                    "game_version": "0.0.0",
+                    "ratings": {"item_x": {"tier": "A"}},
                 },
             )
             knowledge = load_knowledge(base)
-            names = knowledge.character_names()
-            self.assertEqual(names["character_ranger"], "游侠")
-            self.assertEqual(names["character_x"], "character_x")
+            self.assertTrue(any("不一致" in warning for warning in knowledge.warnings))
 
 
 if __name__ == "__main__":

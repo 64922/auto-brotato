@@ -16,75 +16,21 @@
 """
 import argparse
 import hashlib
-import json
-import select
 import shutil
 import socket
 import sys
 import time
 from pathlib import Path
 
-PROTOCOL_VERSION = 2
+try:  # 包内导入（pytest）；直接以脚本运行（python tools/export_knowledge.py）时回退同目录导入
+    from tools.ndjson_link import PROTOCOL_VERSION, Link, wait_for_hello
+except ImportError:
+    from ndjson_link import PROTOCOL_VERSION, Link, wait_for_hello
+
 GAME_VERSION = "1.1.15.4"
 KNOWLEDGE_FILES = ("items.json", "weapons.json", "upgrades.json", "characters.json")
 ACTION_KIND = "debug_export_knowledge"
 DEFAULT_OUT_DIR = Path(__file__).resolve().parents[1] / "docs" / "knowledge"
-
-
-class Link:
-    """与 mod 的最小双向 NDJSON 链路（同 tools/smoke_mod.py）。"""
-
-    def __init__(self, sock):
-        self.sock = sock
-        self.buf = b""
-        self.seq = 0
-        self.pending = []
-
-    def send(self, msg_type, payload, ref=None):
-        envelope = {
-            "v": PROTOCOL_VERSION,
-            "seq": self.seq,
-            "ts": time.time(),
-            "type": msg_type,
-            "ref": ref,
-            "payload": payload,
-        }
-        self.seq += 1
-        line = json.dumps(envelope, ensure_ascii=False, separators=(",", ":")) + "\n"
-        self.sock.sendall(line.encode("utf-8"))
-
-    def pump(self, timeout=0.05):
-        readable, _, _ = select.select([self.sock], [], [], timeout)
-        if not readable:
-            return
-        data = self.sock.recv(65536)
-        if not data:
-            raise ConnectionError("mod 关闭了连接")
-        self.buf += data
-        while b"\n" in self.buf:
-            line, self.buf = self.buf.split(b"\n", 1)
-            if not line.strip():
-                continue
-            try:
-                message = json.loads(line.decode("utf-8"))
-            except (UnicodeDecodeError, json.JSONDecodeError):
-                continue
-            if isinstance(message, dict):
-                self.pending.append(message)
-
-    def drain(self):
-        out, self.pending = self.pending, []
-        return out
-
-
-def wait_for_hello(link, timeout_seconds):
-    deadline = time.monotonic() + timeout_seconds
-    while time.monotonic() < deadline:
-        link.pump(0.1)
-        for message in link.drain():
-            if message.get("type") == "hello":
-                return message.get("payload", {})
-    return None
 
 
 def wait_for_ack(link, ref, timeout_seconds):
@@ -149,6 +95,7 @@ def collect_hashes(source_dir, ack):
 def run(args):
     source_dir = None
     declared_runs = []
+    conn = None
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
@@ -160,7 +107,6 @@ def run(args):
             % (args.host, args.port, args.wait)
         )
         deadline = time.monotonic() + args.wait
-        conn = None
         while time.monotonic() < deadline:
             try:
                 conn, addr = server.accept()
@@ -237,6 +183,8 @@ def run(args):
         print("[完成] 知识库已写入 %s" % out_dir)
         return 0
     finally:
+        if conn is not None:
+            conn.close()
         server.close()
 
 

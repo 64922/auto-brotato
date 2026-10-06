@@ -4,17 +4,20 @@
 收集到 ``docs/knowledge/``），本模块负责读取、按 id 索引、版本整备检查：
 
 - 每个数据集文件含 ``schema_version`` / ``game_version`` / ``data_version`` / ``entries``；
-  ``data_version`` 是 mod 侧对规范 JSON 计算的 SHA-256，本模块作为知识库版本标识
-  透传（记录进日志/回放），不对其重算；
+  ``data_version`` 是 mod 侧对规范 JSON（排序 + 紧凑输出，不含 data_version/mod_version）
+  计算的 SHA-256，本模块按同一规范重算校验（不一致进入 ``warnings``，提示文件被改动
+  或非本工具导出）；
 - ``game_version`` 与锁定版本（ADR-0005）不匹配时进入 ``warnings``（不抛异常，
   由调用方决定告警展示），供决策引擎启动时提示重新导出；
-- ``tier_list.json`` 为人工标注，可缺失（缺失时告警并退化为无 Tier）。
+- ``tier_list.json`` 为人工标注，可缺失（缺失时告警并退化为无 Tier）；
+  其 ``game_version`` 与数据集不一致时同样告警。
 
 经济层（票据 12）通过本模块读取；参数外置原则（ADR-0008）不适用于知识库
 （数据随游戏版本重新导出，而非手工调参）。
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -88,13 +91,6 @@ class KnowledgeBase:
     def data_versions(self) -> dict[str, str]:
         return {name: dataset.data_version for name, dataset in self.datasets.items()}
 
-    def character_names(self) -> dict[str, str]:
-        """英雄 ID → 中文名（导出时已翻译；缺名回退 ID）。"""
-        return {
-            character_id: str(entry.get("name") or character_id)
-            for character_id, entry in self.characters.items()
-        }
-
     def tier_rating(self, entry: Mapping[str, Any]) -> Optional[dict]:
         """条目的人工 Tier 标注：先按精确 id，再按武器族 ``weapon_id``。"""
         for key in (entry.get("id"), entry.get("weapon_id")):
@@ -123,6 +119,11 @@ def load_knowledge(
         game_version = _required_str(raw, "game_version", path)
         data_version = _required_str(raw, "data_version", path)
         entries = _index_entries(path, raw.get("entries"))
+        if _content_hash(raw) != data_version:
+            warnings.append(
+                "%s 的 data_version 校验失败（内容与哈希不一致：文件被改动或非本工具导出）"
+                % FILE_NAMES[name]
+            )
         extra = {key: value for key, value in raw.items() if key not in _WRAPPER_KEYS and key != "entries"}
         if "sets" in extra and isinstance(extra["sets"], list):
             extra["sets"] = {
@@ -178,6 +179,20 @@ def _read_json(path: Path) -> dict:
     return raw
 
 
+def _content_hash(raw: Mapping[str, Any]) -> str:
+    """按 mod 侧规范重算内容哈希（strategy.md §7）：主体 dict 排序后紧凑序列化。
+
+    主体 = schema_version / game_version / entries + 数据集级附加内容（如 weapons 的 sets）；
+    ``ensure_ascii=False`` 与 Godot ``JSON.print`` 的原文输出对齐（中文不转义）。
+    """
+    body: dict[str, Any] = {key: raw[key] for key in ("schema_version", "game_version", "entries")}
+    for key, value in raw.items():
+        if key not in _WRAPPER_KEYS and key != "entries":
+            body[key] = value
+    text = json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
 def _required_str(raw: Mapping[str, Any], key: str, path: Path) -> str:
     value = raw.get(key)
     if not isinstance(value, str) or not value:
@@ -219,6 +234,13 @@ def _load_tier_list(
     ratings = raw.get("ratings")
     if not isinstance(ratings, dict):
         raise KnowledgeError("%s 缺少 ratings 对象" % path)
+    tier_game_version = raw.get("game_version")
+    dataset_game_version = next(iter(datasets.values())).game_version
+    if isinstance(tier_game_version, str) and tier_game_version != dataset_game_version:
+        warnings.append(
+            "%s 的游戏版本 %s 与数据集 %s 不一致（标注可能已过期）"
+            % (TIER_LIST_FILE, tier_game_version, dataset_game_version)
+        )
     known_ids = set(datasets["items"].entries) | set(datasets["weapons"].entries)
     known_ids |= {
         entry.get("weapon_id")
@@ -233,8 +255,10 @@ def _load_tier_list(
         grade = rating.get("tier")
         if grade not in TIER_GRADES:
             warnings.append(
-                "%s 的 %s tier=%r 非法（允许 %s）" % (TIER_LIST_FILE, entry_id, grade, "/".join(TIER_GRADES))
+                "%s 的 %s tier=%r 非法（允许 %s），标注已忽略"
+                % (TIER_LIST_FILE, entry_id, grade, "/".join(TIER_GRADES))
             )
+            continue
         if entry_id not in known_ids:
             warnings.append("%s 的 %s 不在导出条目中（已失效？）" % (TIER_LIST_FILE, entry_id))
         valid[entry_id] = rating

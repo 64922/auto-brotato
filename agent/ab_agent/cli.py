@@ -231,18 +231,13 @@ async def _session_loop(session: RunSession, interval: float) -> None:
         await asyncio.sleep(interval)
 
 
-def _log_knowledge(
-    log: logging.Logger, directory: Optional[str]
-) -> Optional[dict[str, str]]:
-    """启动时加载知识库并校验版本哈希/游戏版本（strategy.md §7；不匹配告警）。
-
-    返回英雄 ID → 中文名映射（供难度页展示），加载失败时返回 None。
-    """
+def _log_knowledge(log: logging.Logger, directory: Optional[str]) -> None:
+    """启动时加载知识库并校验游戏版本/内容哈希（strategy.md §7；不匹配告警，不阻断启动）。"""
     try:
         knowledge = load_knowledge(directory)
     except KnowledgeError as exc:
         log.warning("知识库加载失败：%s（经济层相关功能将在票据 12 前不可用）", exc)
-        return None
+        return
     for warning in knowledge.warnings:
         log.warning("知识库：%s", warning)
     log.info(
@@ -258,12 +253,11 @@ def _log_knowledge(
     )
     for name, data_version in knowledge.data_versions.items():
         log.debug("知识库 data_version[%s]=%s", name, data_version)
-    return knowledge.character_names()
 
 
 async def _run(args: argparse.Namespace) -> int:
     log = logging.getLogger(LOGGER_NAME)
-    hero_names = _log_knowledge(log, args.knowledge_dir)
+    _log_knowledge(log, args.knowledge_dir)
     state = AgentState()
     recorder: Optional[Recorder] = None
     if not args.no_record:
@@ -295,7 +289,6 @@ async def _run(args: argparse.Namespace) -> int:
         output=_print_flush,
         autopilot=move_controller,
         replay_path=(lambda: str(recorder.recording_path) if recorder and recorder.recording_path else None),
-        hero_names=hero_names,
     )
     await server.start()
     log.info(

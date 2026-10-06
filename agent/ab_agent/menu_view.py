@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Mapping, Optional
+from typing import Any, Optional
 
 from .hero_names import hero_display
 
@@ -37,15 +37,6 @@ def _as_int(value: Any) -> Optional[int]:
     if isinstance(value, bool) or not isinstance(value, int):
         return None
     return value
-
-
-def hero_text(hero_id: str, names: Optional[Mapping[str, str]] = None) -> str:
-    """终端英雄展示串：知识库（characters.json，票据 11）优先，缺省回退临时表。"""
-    if names:
-        name = names.get(hero_id)
-        if name and name != hero_id:
-            return "%s（%s）" % (hero_id, name)
-    return hero_display(hero_id)
 
 
 def difficulty_my_id(value: int) -> str:
@@ -178,11 +169,11 @@ class DifficultyMenu:
 
     # ---- 终端文案 ----
 
-    def format_prompt(self, hero_names: Optional[Mapping[str, str]] = None) -> str:
+    def format_prompt(self) -> str:
         weapons = "、".join(_weapon_text(weapon) for weapon in self.weapons) or "未知"
         lines = [
             "检测到难度选择页：",
-            "  英雄：%s" % hero_text(self.hero_id, hero_names),
+            "  英雄：%s" % hero_display(self.hero_id),
             "  初始武器：%s" % weapons,
             "  可选难度：%s" % self.unlocked_range_text(),
             "  模式开关：%s" % self.modes_text(),

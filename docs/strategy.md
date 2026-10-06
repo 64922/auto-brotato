@@ -141,9 +141,10 @@ docs/knowledge/
 ```
 
 - 每个导出文件含 `schema_version`、`game_version`（锁定 1.1.15.4）、`data_version`（对条目规范 JSON 的 SHA-256，作为知识库版本标识）与 `entries`（按 id 排序，同版本重复导出稳定）；`weapons.json` 另含顶层 `sets`（套装加成按件数分层）。
+- **稳定性边界**：条目稳定针对同一游戏版本 + 同一 UI 语言（`name` 为 `TranslationServer` 译名，随语言变化；锁定环境 zh，架构 §2.1）。
 - **字段口径**：`stat_deltas` 与游戏 `Effect.apply()` 一致（SUM 存储按 `value` 累加，负值即负面）；`effects` 保留 `key/custom_key/text_key/value/storage_method/effect_sign/custom_args` 原始字段，供特殊效果规则表使用。英雄 `unlock_challenge` 由 `ChallengeService` 按名称关联（默认解锁英雄也可能带挑战数据）。
 - **Tier 标注**：人工维护（社区共识 + 实机回放复盘修订），与自动数据分离；`ratings` 以物品 id 或武器族 `weapon_id` 为键（精确 id 优先）。
-- **决策引擎加载**：`agent/ab_agent/knowledge.py` 的 `load_knowledge()` 读取并以 id 索引，启动时（`cli.py --knowledge-dir`，默认 `docs/knowledge`）校验四文件版本字段整备与 `game_version` 匹配，不匹配则告警。
+- **决策引擎加载**：`agent/ab_agent/knowledge.py` 的 `load_knowledge()` 读取并以 id 索引，启动时（`cli.py --knowledge-dir`，默认 `docs/knowledge`）校验：`game_version` 与锁定版本匹配、`data_version` 按同一规范重算比对（检测文件被改动/非本工具导出）、`tier_list.json` 的 `game_version` 与数据集一致；不一致仅告警不阻断启动。
 - **更新流程**：部署新 mod → 启动游戏 → `python tools/export_knowledge.py` → `python tools/verify_knowledge.py` → 提交 JSON 变更。
 
 ## 8. 参数与调优（ADR-0008）

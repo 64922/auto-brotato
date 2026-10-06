@@ -291,7 +291,7 @@ auto-brotato/
 │   │   ├── autopilot.py     # 占位走位基线（正式策略：decision.reflex，票据 09）
 │   │   ├── move_control.py  # 走位控制器接口（对局编排与回放评估共用）
 │   │   ├── knowledge.py     # 知识库加载/版本校验（票据 11；docs/knowledge/*.json）
-│   │   ├── hero_names.py    # 英雄 ID→中文名临时表（缺省回退；知识库 characters.json 优先）
+│   │   ├── hero_names.py    # 英雄 ID→中文名临时表（终端展示用；知识库 characters.json 已生成，切换待后续票据）
 │   │   ├── decision/        # reflex/danger/geometry（票据 09）/ tactical（票据 10）/ economy；
 │   │   │                   #   config/reflex.json、config/tactical.json（参数外置）
 │   │   ├── cli.py
@@ -304,6 +304,7 @@ auto-brotato/
 │   ├── smoke_e2e.py         # 端到端闭环冒烟：难度页→第 2 波→回放校验（票据 08）
 │   ├── smoke_analysis.py    # 冒烟回放解析与清单校验（票据 08）
 │   ├── smoke_agent.py       # 冒烟用 agent 子进程封装（票据 08）
+│   ├── ndjson_link.py       # tools 共用的最小 NDJSON IPC 链路（smoke_mod / export_knowledge）
 │   ├── export_knowledge.py  # 知识库导出收集（触发 mod 调试动作 → docs/knowledge，票据 11）
 │   ├── verify_knowledge.py  # 知识库 PCK 抽样对照校验（票据 11）
 │   └── replay/              # 离线回放与回归；movement.py 走位指标对比报告（票据 09）；
