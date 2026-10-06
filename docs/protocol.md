@@ -183,7 +183,7 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 
 > mod 日志中的断开原因（`welcome_timeout`、`connection_lost`、`write_error` 等）不进入协议，仅用于排查。
 
-## 7. v2 增量规约（规划，票据 05/06 实现后固化）
+## 7. v2 增量规约（票据 04 实机定型；票据 05/06 实现后固化）
 
 ### 7.1 `menu` 消息（mod → agent）
 
@@ -192,41 +192,79 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 
 #### 7.1.1 `phase=difficulty_select`（难度选择页）
 
-| 字段 | 说明 |
-| --- | --- |
-| `character.id` | 英雄 ID（如 `character_ranger`） |
-| `weapons` | 初始武器 `[{id, tier}]` |
-| `difficulty.selected` | 当前滑杆值 |
-| `difficulty.max_selectable` | 当前英雄可选上限（运行时读取，不硬编码） |
-| `difficulty.unlocked` | 可选值集合（如 `[0,1]`） |
-| `modes` | `{endless, ban, zone_is_random, zone_selected, coop}` 等开关现值 |
-| `can_start` | 是否可开始对局 |
+> 票据 04 实机结论：本版本（1.1.15.4）难度选择**不是** `zone_ui` 滑杆，而是与选人/选武器一致的
+> `base_selection` 式 **InventoryElement 列表**；确认（对已选中元素再次 `pressed`）即触发
+> `difficulty_selection.gd` 的 `run_started`，直接开局。
 
-> 字段名与来源以票据 04 的实机 spike 结论为准；本表在 spike 后修订。
+路径前缀：`/root/DifficultySelection`（场景 `res://ui/menus/run/difficulty_selection/difficulty_selection.tscn`）。
+
+| 字段 | 说明（实机来源） |
+| --- | --- |
+| `character.id` | `MarginContainer/VBoxContainer/DescriptionContainer/CharacterPanel.item_data.my_id`（`character_panel_ui.gd`，如 `character_ranger`） |
+| `weapons` | `.../DescriptionContainer/WeaponPanel.item_data`（`item_panel_ui.gd`）：`{my_id:"weapon_pistol_1", weapon_id:"weapon_pistol", tier, ...}` |
+| `difficulty.options` | `.../ScrollContainer/Inventories/Inventory1` 下各 `InventoryElement`（`inventory_element.gd`）的 `item`（`difficulty_data.gd`）：`my_id`=`difficulty_0..6`、`name`、`tier`、`value`、`is_locked`、`unlocked_by_default`（实测仅 difficulty_0=true）；元素自身 `current_number`（实测 D0=1、其余=0，语义未定，仅记录不依赖） |
+| `difficulty.selected` | 当前预选/高亮元素：根脚本变量 `_latest_focused_element[0]`（实机进入页面默认聚焦 `difficulty_0` 元素；无人选中时为 `null`）。注意：对**已聚焦元素**再 `pressed` 即确认开局（实机单击 D0 直接开局），只有切换焦点才需要两次 |
+| `difficulty.displayed` | 根脚本变量 `displayed_elements`（每玩家一个难度 `difficulty_data` 数组） |
+| `modes` | 根脚本变量 `add_random_element` / `enable_coop_panels`；开局前模式开关位于选人页 `RunOptionsPanel`（`EndlessButton` / `BanButton` / `CoopButton` / `ZoneSelectionButton`，本票观察到节点与信号，未逐一验证状态语义） |
+| `can_start` | 目标难度元素 `item.is_locked == false`（实机 D0=false）。实机验证：按下 `is_locked=true` 的元素（@635/D6）为**完全空操作**——`_latest_focused_element` 与 `_has_player_selected` 均不变、未开局 |
+| （候选）`difficulty.max_unlocked` | `RunData.difficulty_unlocked`（int，usage=8192）：实测 D0 局中与终局恒为 `-1`，语义未证实，**暂不作为读取来源**，仅登记候选 |
+
+关键信号（实机 `conns` 证据）：
+
+- `Inventory1`（`inventory.gd`）：`element_pressed -> DifficultySelection._on_element_pressed`、`element_focused` / `element_hovered` 同根。
+- 根脚本信号：`run_started`（开局）、`chal_hourglass_quit_wave`（静态字符串，未见连接）。
 
 #### 7.1.2 `phase=level_up`（波间升级选卡）
 
-| 字段 | 说明 |
+> 票据 04 实机结论：UI 常驻 `/root/Main/UI/UpgradesUI`（`upgrades_ui.tscn`，`upgrades_ui.gd`），
+> 升级时显示；单人为 `UpgradesUIPlayerContainer1`（`upgrades_ui_player_container.gd`），
+> 卡片 4 张（`UpgradeUI`、`UpgradeUI2..4`）。
+
+路径前缀：`/root/Main/UI/UpgradesUI/MarginContainer/VBoxContainer/HBoxContainer2/UpgradesUIPlayerContainer{player}`（player=1..4）。
+
+| 字段 | 说明（实机来源） |
 | --- | --- |
-| `wave` | 当前波次 |
-| `options` | 升级卡 `[{slot, kind, id, tier}]`（结构以票据 04 为准） |
+| `wave` | 页面自身不带波次；用既有 `RunData.current_wave`（§8） |
+| `options[].slot` | `UpgradesContainer/HBoxContainer/UpgradeUI{,2,3,4}` 的序号 1..4 |
+| `options[].id` | 卡片脚本 `upgrade_ui.gd` 变量 `upgrade_data.my_id`（`upgrade_data.gd`，如 `upgrade_percent_damage_3`） |
+| `options[].tier` | 同上 `upgrade_data.tier`（int） |
+| `options[].can_pick` | 卡片 `MarginContainer/VBoxContainer/ChooseButton`（`my_menu_button.gd`，`text=MENU_CHOOSE`）的 `disabled` / 可见性 |
+| `player` | 容器变量 `player_index`（单人=0） |
+
+关键信号（实机 `conns` 证据）：
+
+- 卡片 `choose_button_pressed -> UpgradesUIPlayerContainer._on_choose_button_pressed`；卡片内 `ChooseButton.pressed -> UpgradeUI._on_ChooseButton_pressed`。
+- 容器 → 根：`choose_button_pressed`、`item_take_button_pressed`、`item_discard_button_pressed`、`item_ban_button_pressed`。
+- 根 → `/root/Main`：`upgrade_selected`、`consumable_selected`、`item_take_button_pressed`、`item_discard_button_pressed`、`item_ban_button_pressed`。
+- 同页可能同时存在道具箱（`ItemsContainer/.../{TakeButton,DiscardButton,BanButton}`，`_item_data`/`_consumable_data`），本票只做取证不做行为设计。
 
 #### 7.1.3 `phase=run_end`（终局）
 
-| 字段 | 说明 |
+> 票据 04 实机结论：`/root/EndRun`（`end_run.tscn`，`end_run.gd`；文案在 `base_end_run.gd`）。
+> 实机取得两份**战败**样本（`%Title.text="战败 - 碰撞区域"`，波次 7 / 6）且 `RunData.run_won=false`；
+> `RUN_WON` 分支存在于静态字符串表但未实测。
+
+路径前缀：`/root/EndRun`。
+
+| 字段 | 说明（实机来源） |
 | --- | --- |
-| `result` | `victory` \| `defeat` |
-| `wave` | 到达波次 |
-| `stats` | 结算统计（金币/击杀等，字段以票据 04 为准） |
+| `result` | 优先结构化：`RunData.run_won`（bool，实测战败=false；usage=8192）。展示文本 `%Title.text`（实测 `战败 - 碰撞区域`，本地化含地图名） |
+| `wave` | 结构化：`RunData.current_wave`（实测终局=6，与 `%RunInfo.text="第6波 - 危险0"` 一致） |
+| `stats` | `MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/StatsContainer`（`stats_container.gd`，子节点 `StatsContainer/MarginContainer/VBoxContainer2/StatsLabel` 等）；本票未细化逐格数值读取，实现票据如需展示再补 |
+
+关键信号（实机 `conns` 证据）：
+
+- `MarginContainer/VBoxContainer/HBoxContainer3/RestartButton`（`text=MENU_RESTART`）、`NewRunButton`（`MENU_NEW_RUN`）、`ExitButton`（`MENU_RETURN_MAIN`）：`pressed -> EndRun._on_*Button_pressed`。
+- 终局页允许 Agent 明确不做任何操作（ADR-0003 单局止于终局）。
 
 ### 7.2 `menu_*` 动作（agent → mod）
 
-| kind | 参数 | 语义与约束 |
+| kind | 参数 | 语义与约束（票据 04 实机修订） |
 | --- | --- | --- |
-| `menu_set_difficulty` | `value: int` | 将难度滑杆设为 `value`（按差值步进加减按钮或等价路径）；不在难度页 / 超出可选范围 → `not_in_difficulty_select` / `bad_difficulty`；设置后读回校验 |
-| `menu_start_run` | 无 | 难度页开始对局（`can_start` 为真，否则 `cannot_start`）；经游戏开始按钮信号 |
-| `menu_pick_upgrade` | `index: int` | 升级选卡（`level_up` phase）；索引越界 → `bad_index` |
-| `menu_pause`（可选） | 无 | 注入游戏暂停（P1 可选增强，见架构 §13 未决） |
+| `menu_set_difficulty` | `value: int` | **无滑杆**。实现=按下 `Inventory1` 中 `item.my_id == "difficulty_<value>"` 的 InventoryElement（一次 `pressed` 选中）。约束：目标须存在且 `item.is_locked == false`，否则 `bad_difficulty`（实机验证：锁定元素 `pressed` 被忽略，无副作用）；**若目标已是当前选中元素则必须空操作**（再按一次=确认=开局，属 `menu_start_run` 语义，避免副作用）；设置后读回 `_latest_focused_element[0]` 校验 |
+| `menu_start_run` | 无 | 对当前选中元素（`_latest_focused_element[0]`）再发一次 `pressed`（确认）；无选中元素 → `cannot_start`；实际开局以 `run_started` 为准。注意：进入难度页默认已聚焦 `difficulty_0`（实机单击即开局） |
+| `menu_pick_upgrade` | `index: int` | 按下 `UpgradesUIPlayerContainer{player}.UpgradesContainer/HBoxContainer/` 第 `index` 张卡片的 `ChooseButton`（index=1..4）。**命名注意**：index=1 → `UpgradeUI`（无后缀），index=2..4 → `UpgradeUI2..4`；索引越界/卡片不可见 → `bad_index` |
+| `menu_pause`（可选） | 无 | 注入游戏暂停（P1 可选增强，见架构 §13 未决；本票未测） |
 
 新增错误码（v2）：`not_in_difficulty_select`、`bad_difficulty`、`cannot_start`、`not_in_level_up`、`bad_index`。
 
@@ -248,7 +286,7 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 - 弹幕：`Main._player_projectiles` / `_enemy_projectiles`、`velocity`、`_time_until_max_range`、`_hitbox`
 - 掉落：`Main._active_golds`、`Main._consumables`、`already_picked_up`
 - 场地：`ZoneService.current_zone_rect`
-- 进度：`RunData.current_wave`、`RunData.get_player_weapons_ref(0)`、`RunData.get_player_items(0)`、`RunData.get_player_gold(0)`、`RunData.get_player_count()`
+- 进度：`RunData.current_wave`、`RunData.current_zone`、`RunData.run_won`（终局结构化胜负）、`RunData.difficulty_unlocked`（候选，语义未证实）、`RunData.get_player_weapons_ref(0)`、`RunData.get_player_items(0)`、`RunData.get_player_gold(0)`、`RunData.get_player_count()`
 - 属性：`Utils.get_stat(Keys.generate_hash(name), 0)`
 
 **商店（shop_observation.gd / shop_actions.gd）**
@@ -259,7 +297,9 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 - 商店状态：`_reroll_price`、`_reroll_count`、`_free_rerolls`
 - 游戏信号：`shop_item_bought`、`shop_item_insufficient_currency`、`ItemPopup.item_discard_button_pressed`
 
-**菜单（P1 新增，待票据 04 实测）**
+**菜单（P1 新增，票据 04 实机记录）**
 
-- 难度页：`DifficultySelection` 场景、`DifficultySliderContainer`、`DecreaseDifficultyButton` / `IncreaseDifficultyButton`、`difficulty_selected_value`、`difficulty_unlocked`、开始按钮
-- 升级页 / 终局页：待实测
+- 难度页：`/root/DifficultySelection`（`difficulty_selection.gd`）——根变量 `displayed_elements` / `_has_player_selected` / `_latest_focused_element` / `_inventory1..4` / `_panel1..4` / `difficulty_selected` / `_selections_completed_delay`(0.8)；`.../ScrollContainer/Inventories/Inventory1`（`inventory.gd`，信号 `element_pressed`/`element_focused`/`element_hovered`）下 `InventoryElement`（`inventory_element.gd`）：`item`（`difficulty_data.gd`：`my_id`/`name`/`tier`/`value`/`is_locked`/`unlocked_by_default`）、`current_number`、`is_random`；`CharacterPanel.item_data`（`character_data.gd`）、`WeaponPanel.item_data`（`weapon_data.gd`）；根信号 `run_started`。
+- 升级页：`/root/Main/UI/UpgradesUI`（`upgrades_ui.gd`）——`_player_container1..4` / `_upgrades_to_process` / `_showing_option` / `_player_is_choosing`；容器 `UpgradesUIPlayerContainer{1..4}`（`upgrades_ui_player_container.gd`）——`player_index` / `_upgrade_ui_1..4` / `_reroll_button` / `_take_button` / `_discard_button` / `_ban_button` / `_item_data` / `_consumable_data`；卡片 `UpgradeUI{,2,3,4}`（`upgrade_ui.gd`）——`upgrade_data`（`upgrade_data.gd`）、`button`；按钮 `MarginContainer/VBoxContainer/ChooseButton`（`my_menu_button.gd`）。
+- 终局页：`/root/EndRun`（`end_run.gd`）——`_title` / `_run_info` / `_restart_button` / `_new_run_button` / `_exit_button`；文案常量在 `base_end_run.gd`（`RUN_WON` / `RUN_LOST`）；统计 `StatsContainer`（`stats_container.gd`）。
+- 引擎注意：本构建（Brotato 1.1.15.4 自定义 Godot 3.7）脚本变量的 `usage` 标记为 `0x2000`（非标准 Godot 的 `4096`）；以 `get_property_list()` 反射脚本变量时需同时识别两种标记（ADR-0006）。

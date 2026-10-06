@@ -21,6 +21,8 @@ const ShopObservation := preload(
 	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/shop_observation.gd"
 )
 const ShopActions := preload("res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/shop_actions.gd")
+# 临时探针（票据 04）路径：动态 load，配置缺失时保持 null（见 spike_menu_probe.gd 头注释）。
+const SPIKE_PROBE_PATH := "res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/spike_menu_probe.gd"
 
 var _ipc
 var _observation
@@ -28,6 +30,7 @@ var _movement
 var _overlay
 var _shop
 var _shop_actions
+var _spike_probe = null
 var _snapshot_interval := 1.0 / 60.0
 var _snapshot_accum := 0.0
 var _shop_accum := 0.0
@@ -46,6 +49,11 @@ func _init() -> void:
 	_overlay.movement = _movement
 	_shop = ShopObservation.new()
 	_shop_actions = ShopActions.new(_shop)
+	# 票据 04 临时探针：文件不存在时 load 失败仅打印错误，不影响正式功能。
+	if ResourceLoader.exists(SPIKE_PROBE_PATH):
+		var probe_script = load(SPIKE_PROBE_PATH)
+		if probe_script != null:
+			_spike_probe = probe_script.new()
 
 
 func _ready() -> void:
@@ -61,6 +69,8 @@ func _process(delta: float) -> void:
 	_drain_messages()
 	_check_link()
 	_overlay.try_attach()
+	if _spike_probe != null:
+		_spike_probe.poll()
 	if not _ipc.is_ready():
 		return
 	_snapshot_accum += delta
