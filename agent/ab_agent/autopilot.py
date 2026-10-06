@@ -1,8 +1,11 @@
-"""占位自动驾驶（票据 07）：只保证端到端流程闭环，正式策略见票据 09/10。
+"""占位自动驾驶（票据 07）：随机游走基线，现用于对照实验与排查。
 
 - 战斗：随机小范围游走（0.6–1.2s 换向，贴近场地边缘时朝场内修正），
   以 ≤0.12s 间隔续发 move（mod 侧 TTL 250ms 兜底安全停住）；
-- 不做避弹、目标选择与评分，不读知识库。
+- 不做避弹、目标选择与评分，不读知识库；
+- 正式走位为 ``decision.reflex.ReflexController``（票据 09）；本类经
+  ``ab_agent.cli --move-controller placeholder`` 与回放报告
+  ``tools.replay.movement`` 作为对照基线保留。
 
 本模块不持有 IO：`next_move` 由 RunSession 在 tick 中调用并按返回值下发动作。
 """

@@ -1,4 +1,4 @@
-"""会话状态机：难度交互 → 自动开局 → 对局（占位动作）→ 终局战报（票据 07）。
+"""会话状态机：难度交互 → 自动开局 → 对局（反射层走位 + 固定商店/升级动作）→ 终局战报。
 
 状态（架构 §4）：``IDLE → MENU_READY → AWAIT_INPUT → STARTING → RUNNING → ENDED → IDLE``。
 其中 ``MENU_READY`` 为 OBSERVE_ONLY 下已看到难度页、等待 ``resume`` 接管的等待位；
@@ -7,8 +7,8 @@
 职责：
 - 读 ``AgentState`` 观测，识别难度页/终局页；
 - 开局序列：``menu_set_difficulty`` → 读回选中值 → ``menu_start_run`` → 等第 1 波；
-- 对局内动作（move / shop_leave / menu_pick_upgrade）委托 ``RunController``（占位；
-  正式决策见票据 09–12），终局战报由控制器记账汇总；
+- 对局内动作（move / shop_leave / menu_pick_upgrade）委托 ``RunController``（走位为
+  反射层，商店/升级仍为固定动作，正式策略见票据 10–12），终局战报由控制器记账汇总；
 - 终端输入由 CLI 转交 ``handle_input``（难度 D0–Dn、模式确认 y/n、q 取消）。
 """
 from __future__ import annotations
@@ -287,7 +287,7 @@ class RunSession:
     def _begin_start(self, value: int) -> None:
         self._confirm_value = None
         self.phase = Phase.STARTING
-        self._print("[开始] 设置 D%d → 读回校验 → 开始对局（占位决策接管）…" % value)
+        self._print("[开始] 设置 D%d → 读回校验 → 开始对局（反射层走位接管）…" % value)
         self._cancel_start_task()
         self._start_task = asyncio.create_task(self._start_sequence(value))
 
@@ -373,7 +373,7 @@ class RunSession:
         self._run_finished = False
         self._death_since = None
         self._controller.begin()
-        self._print("[对局] 已进入第 1 波（D%d）；占位走位接管（正式策略见票据 09/10）" % value)
+        self._print("[对局] 已进入第 1 波（D%d）；反射层走位接管（票据 09，参数见 decision/config/reflex.json）" % value)
 
     def _back_to_input_or_idle(self) -> None:
         now = self._clock()

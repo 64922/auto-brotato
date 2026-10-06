@@ -1,0 +1,57 @@
+{
+  "decision": {
+    "interval_s": 0.033,
+    "candidate_count": 16,
+    "turn_penalty": 1.6,
+    "smoothing_alpha": 0.8,
+    "min_magnitude": 0.55,
+    "max_magnitude": 1.0
+  },
+  "danger": {
+    "enemy_weight": 1.4,
+    "enemy_buffer": 26.0,
+    "enemy_default_radius": 20.0,
+    "projectile_weight": 1.6,
+    "projectile_buffer": 18.0,
+    "projectile_default_radius": 16.0,
+    "hazard_weight": 1.2,
+    "hazard_buffer": 22.0,
+    "hazard_default_radius": 36.0,
+    "sample_times_s": [0.15, 0.3, 0.5, 0.8],
+    "sample_decay": [1.0, 0.9, 0.75, 0.6],
+    "truncated_scale": 1.4,
+    "consider_radius": 550.0,
+    "max_threats_per_kind": 80
+  },
+  "boundary": {
+    "margin": 90.0,
+    "weight": 1.5
+  },
+  "tactical": {
+    "expected_weight": 1.0,
+    "center_weight": 0.3,
+    "pickup_weight": 0.6,
+    "consumable_weight": 1.6,
+    "pickup_max_distance": 500.0,
+    "attraction_range": 350.0
+  },
+  "kiting": {
+    "default_band": [260.0, 420.0],
+    "band_weight": 1.0,
+    "far_weight": 0.5
+  },
+  "emergency": {
+    "hp_threshold": 0.3,
+    "danger_scale": 1.5,
+    "attraction_scale": 0.2
+  },
+  "invuln": {
+    "enabled": true,
+    "crossing_scale": 0.35,
+    "trapped_distance": 90.0
+  },
+  "player": {
+    "radius": 10.0,
+    "fallback_speed": 450.0
+  }
+}

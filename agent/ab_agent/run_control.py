@@ -1,9 +1,9 @@
-"""对局内占位控制（票据 07 的 RUNNING 阶段）。
+"""对局内动作编排（票据 07/09 的 RUNNING 阶段）。
 
 职责：
-- 占位走位（``PlaceholderAutopilot``，正式策略见票据 09/10）；
-- 商店固定动作：打印摘要后直接离开（每店一次，失败冷却重试）；
-- 升级固定动作：选第一张可选卡（每套选项一次，失败冷却重试）；
+- 战斗走位（默认 ``ReflexController``，票据 09；可注入占位控制器做对照）；
+- 商店固定动作：打印摘要后直接离开（每店一次，失败冷却重试；经济策略见票据 12）；
+- 升级固定动作：选第一张可选卡（每套选项一次，失败冷却重试；评分见票据 12）；
 - 战报数据记账：波次/金币/材料/最终构建。
 
 不管理阶段（Phase）与连接：由 ``RunSession`` 在 RUNNING 且已接管时驱动本控制器。
@@ -12,9 +12,9 @@ from __future__ import annotations
 
 import asyncio
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable, Optional, Protocol
 
-from .autopilot import PlaceholderAutopilot
+from .decision.reflex import ReflexController
 from .menu_view import (
     BattleReport,
     RunEndMenu,
@@ -35,6 +35,16 @@ class Activity(str, Enum):
     LEVEL_UP = "level_up"
 
 
+class MoveController(Protocol):
+    """走位控制器接口：``ReflexController`` 与占位控制器均满足。"""
+
+    def reset(self) -> None: ...
+
+    def next_move(
+        self, snapshot: dict, now: float
+    ) -> Optional[list[float]]: ...
+
+
 class RunController:
     """RUNNING 阶段动作编排与记账。"""
 
@@ -44,14 +54,14 @@ class RunController:
         *,
         output: Callable[[str], None] = print,
         clock: Callable[[], float],
-        autopilot: Optional[PlaceholderAutopilot] = None,
+        autopilot: Optional[MoveController] = None,
         replay_path: Optional[Callable[[], Optional[str]]] = None,
         ack_timeout_s: float,
     ) -> None:
         self.server = server
         self._out = output
         self._clock = clock
-        self._autopilot = autopilot or PlaceholderAutopilot()
+        self._autopilot = autopilot or ReflexController()
         self._replay_path = replay_path or (lambda: None)
         self._ack_timeout_s = ack_timeout_s
         self.activity: Optional[Activity] = None

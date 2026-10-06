@@ -18,6 +18,8 @@ from pathlib import Path
 from typing import Optional, Sequence
 
 from . import __version__
+from .decision.config import load_reflex_config
+from .decision.reflex import ReflexController
 from .ipc_server import DEFAULT_PING_INTERVAL_S, IpcServer
 from .recorder import Recorder
 from .session import RunSession
@@ -31,8 +33,8 @@ DEFAULT_RECORD_DIR = Path(__file__).resolve().parents[2] / "recordings"
 #: 全局命令（非难度选择阶段可用；其余输入交给 RunSession 处理）
 GLOBAL_COMMANDS = {"status", "stop", "resume", "quit", "exit", "q", "help"}
 
-#: 会话 tick 间隔（秒）：快照 60Hz，20Hz 轮询足够且开销低
-SESSION_TICK_INTERVAL_S = 0.05
+#: 会话 tick 间隔（秒）：反射层需在 30–60Hz 输出（票据 09），按 60Hz 轮询
+SESSION_TICK_INTERVAL_S = 1.0 / 60.0
 
 HELP_TEXT = """命令：
   status   打印当前状态（连接/模式/阶段/快照频率/波次）
@@ -78,6 +80,17 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--record-compress", action="store_true", help="录制以 gzip 归档（.ndjson.gz）"
+    )
+    parser.add_argument(
+        "--reflex-config",
+        default=None,
+        help="反射层参数文件（默认 ab_agent/decision/config/reflex.json）",
+    )
+    parser.add_argument(
+        "--move-controller",
+        choices=("reflex", "placeholder"),
+        default="reflex",
+        help="战斗走位控制器（默认 reflex；placeholder 为随机游走占位，用于对照实验）",
     )
     parser.add_argument("--version", action="version", version="ab_agent %s" % __version__)
     return parser
@@ -218,10 +231,18 @@ async def _run(args: argparse.Namespace) -> int:
         ping_interval=args.ping_interval,
         recorder=recorder,
     )
+    if args.move_controller == "placeholder":
+        from .autopilot import PlaceholderAutopilot
+
+        move_controller = PlaceholderAutopilot()
+        log.info("战斗走位使用占位控制器（对照实验；反射层见 --move-controller reflex）")
+    else:
+        move_controller = ReflexController(load_reflex_config(args.reflex_config))
     session = RunSession(
         state,
         server,
         output=_print_flush,
+        autopilot=move_controller,
         replay_path=(lambda: str(recorder.recording_path) if recorder and recorder.recording_path else None),
     )
     await server.start()
