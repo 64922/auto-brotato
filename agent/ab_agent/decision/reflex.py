@@ -1,6 +1,8 @@
-"""反射层：危险场、候选方向评分与平滑，输出 move 向量（strategy.md §3，票据 09）。
+"""反射层控制器：候选方向评分、平滑与输出（strategy.md §3，票据 09）。
 
-- 危险源：敌人（速度外推 + 半径）、敌方弹幕（vel 外推 + ttl）、地雷、场地边界；
+危险源提取与势函数在 :mod:`ab_agent.decision.danger`，协议解析/几何在
+:mod:`ab_agent.decision.geometry`；本模块只负责决策：
+
 - 时间窗多采样（默认 0.15/0.3/0.5/0.8s）按衰减叠加为方向代价；
 - 候选方向（默认 16 个 + 上一方向）评分：
   ``score = −危险 − 边界 − 距离带 − 期望位置距离 − 转向惩罚``；
@@ -11,30 +13,24 @@
   默认目标（最近材料，低血优先回血消耗品，否则场地中心）。
 
 本模块无 IO、无随机：时间由调用方传入，回放/实机可以完全复现（ADR-0008）。
-敌人/弹幕外推使用快照 ``vel``；敌方弹幕实测 ``ttl=0`` 表示不截断（大于 0 才截断）。
 """
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Any, Mapping, Optional, Sequence
+from typing import Mapping, Optional, Sequence
 
 from .config import ReflexConfig, load_reflex_config
-
-Point = tuple[float, float]
-Band = tuple[float, float]
-
-_KIND_ENEMY = "enemy"
-_KIND_PROJECTILE = "projectile"
-_KIND_HAZARD = "hazard"
-_KINDS = (_KIND_ENEMY, _KIND_PROJECTILE, _KIND_HAZARD)
-
-#: 每种危险源的权重/缓冲字段名（danger 配置分区）
-_KIND_PARAMS = {
-    _KIND_ENEMY: ("enemy_weight", "enemy_buffer"),
-    _KIND_PROJECTILE: ("projectile_weight", "projectile_buffer"),
-    _KIND_HAZARD: ("hazard_weight", "hazard_buffer"),
-}
+from .danger import (
+    KIND_ENEMY,
+    KIND_PROJECTILE,
+    KINDS,
+    Threat,
+    point_danger,
+    select_threats,
+    threats_from_snapshot,
+)
+from .geometry import Band, Point, arena_rect, band_pair, distance, items, point2
 
 _PICKUP_MATERIAL = "material"
 _PICKUP_CONSUMABLE = "consumable"
@@ -54,96 +50,6 @@ class TacticalIntent:
     distance_band: Optional[Band] = None
     danger_scale: float = 1.0
     attraction_scale: float = 1.0
-
-
-@dataclass(frozen=True)
-class Threat:
-    """危险场中的单个危险源（位置/速度/半径/存活时间）。"""
-
-    kind: str
-    pos: Point
-    vel: Point
-    radius: float
-    ttl: Optional[float] = None
-
-
-def threats_from_snapshot(snapshot: dict, config: ReflexConfig) -> tuple[Threat, ...]:
-    """从快照提取危险源（敌人/敌方弹幕/地雷）；字段非法者跳过。"""
-    threats: list[Threat] = []
-    for enemy in _items(snapshot.get("enemies")):
-        pos = _point(enemy.get("pos"))
-        if pos is None:
-            continue
-        threats.append(
-            Threat(
-                _KIND_ENEMY,
-                pos,
-                _point(enemy.get("vel")) or (0.0, 0.0),
-                _radius(enemy, config.danger.enemy_default_radius),
-                None,
-            )
-        )
-    for projectile in _items(snapshot.get("projectiles")):
-        if projectile.get("friendly"):
-            continue  # 玩家弹幕不构成危险
-        pos = _point(projectile.get("pos"))
-        if pos is None:
-            continue
-        ttl_raw = projectile.get("ttl")
-        ttl = None
-        if (
-            isinstance(ttl_raw, (int, float))
-            and not isinstance(ttl_raw, bool)
-            and ttl_raw > 0.0
-        ):
-            ttl = float(ttl_raw)
-        threats.append(
-            Threat(
-                _KIND_PROJECTILE,
-                pos,
-                _point(projectile.get("vel")) or (0.0, 0.0),
-                _radius(projectile, config.danger.projectile_default_radius),
-                ttl,
-            )
-        )
-    for hazard in _items(snapshot.get("hazards")):
-        pos = _point(hazard.get("pos"))
-        if pos is None:
-            continue
-        threats.append(
-            Threat(
-                _KIND_HAZARD,
-                pos,
-                (0.0, 0.0),
-                _radius(hazard, config.danger.hazard_default_radius),
-                None,
-            )
-        )
-    return tuple(threats)
-
-
-def _select_threats(
-    threats: tuple[Threat, ...], point: Point, config: ReflexConfig
-) -> tuple[Threat, ...]:
-    """性能预筛：只保留 ``consider_radius`` 内、每类最近的 ``max_threats_per_kind`` 个。
-
-    危险势函数随距离平方衰减，远处威胁贡献可忽略；筛选保证高波次（300 敌/400 弹幕）
-    下 30Hz 决策仍有性能余量（见票据 09 验证记录）。
-    """
-    radius = config.danger.consider_radius
-    limit = config.danger.max_threats_per_kind
-    selected: list[Threat] = []
-    for kind in _KINDS:
-        group = [
-            threat
-            for threat in threats
-            if threat.kind == kind and _distance(point, threat.pos) <= radius
-        ]
-        if len(group) > limit:
-            group.sort(key=lambda threat: _distance(point, threat.pos))
-            group = group[:limit]
-        selected.extend(group)
-    return tuple(selected)
 
 
 class ReflexController:
@@ -173,7 +79,7 @@ class ReflexController:
         player = snapshot.get("player")
         if not isinstance(player, dict) or player.get("alive") is False:
             return None
-        pos = _point(player.get("pos"))
+        pos = point2(player.get("pos"))
         if pos is None:
             return None
         if (
@@ -190,15 +96,15 @@ class ReflexController:
 
     def danger_at(self, snapshot: dict, point: Sequence[float]) -> float:
         """危险场在 ``point`` 的瞬时代价（供战术层评估目标位与测试）。"""
-        target = _point(point)
+        target = point2(point)
         if target is None or not isinstance(snapshot, dict):
             return 0.0
-        threats = _select_threats(
+        threats = select_threats(
             threats_from_snapshot(snapshot, self._config), target, self._config
         )
         base = self._config.danger.truncated_scale if snapshot.get("truncated") else 1.0
-        scales = {kind: base for kind in _KINDS}
-        return _point_danger(threats, target, 0.0, self._config, scales)
+        scales = {kind: base for kind in KINDS}
+        return point_danger(threats, target, 0.0, self._config, scales)
 
     # ---- 上下文构建 ----
 
@@ -210,8 +116,8 @@ class ReflexController:
         intent: Optional[TacticalIntent],
     ) -> "_Context":
         config = self._config
-        threats = _select_threats(threats_from_snapshot(snapshot, config), pos, config)
-        enemies = tuple(threat for threat in threats if threat.kind == _KIND_ENEMY)
+        threats = select_threats(threats_from_snapshot(snapshot, config), pos, config)
+        enemies = tuple(threat for threat in threats if threat.kind == KIND_ENEMY)
 
         emergency = _is_emergency(player, config)
         danger_scale = intent.danger_scale if intent is not None else 1.0
@@ -219,18 +125,18 @@ class ReflexController:
         if emergency:
             danger_scale *= config.emergency.danger_scale
         base = config.danger.truncated_scale if snapshot.get("truncated") else 1.0
-        scales = {kind: base * danger_scale for kind in _KINDS}
+        scales = {kind: base * danger_scale for kind in KINDS}
         if (
             config.invuln.enabled
             and player.get("invuln") is True
             and _nearest_distance(pos, enemies) < config.invuln.trapped_distance
         ):
-            scales[_KIND_PROJECTILE] *= config.invuln.crossing_scale
+            scales[KIND_PROJECTILE] *= config.invuln.crossing_scale
 
         target, target_weight = self._select_target(snapshot, pos, intent, emergency)
         band = config.kiting.default_band
         if intent is not None and intent.distance_band is not None:
-            parsed = _band(intent.distance_band)
+            parsed = band_pair(intent.distance_band)
             if parsed is not None:
                 band = parsed
         return _Context(
@@ -245,7 +151,7 @@ class ReflexController:
             target=target,
             target_weight=target_weight,
             band=band,
-            arena=_arena(snapshot.get("arena")),
+            arena=arena_rect(snapshot.get("arena")),
             prev_dir=self._last_dir,
         )
 
@@ -260,7 +166,7 @@ class ReflexController:
         attraction_scale = 1.0
         if intent is not None:
             if intent.expected_position is not None:
-                expected = _point(intent.expected_position)
+                expected = point2(intent.expected_position)
                 if expected is not None:
                     return expected, config.tactical.expected_weight * max(
                         intent.attraction_scale, 0.0
@@ -270,16 +176,16 @@ class ReflexController:
         wanted = _PICKUP_CONSUMABLE if emergency else _PICKUP_MATERIAL
         best_point: Optional[Point] = None
         best_distance = math.inf
-        for pickup in _items(snapshot.get("pickups")):
+        for pickup in items(snapshot.get("pickups")):
             if pickup.get("kind") != wanted:
                 continue
-            point = _point(pickup.get("pos"))
+            point = point2(pickup.get("pos"))
             if point is None:
                 continue
-            distance = _distance(pos, point)
-            if distance > config.tactical.pickup_max_distance or distance >= best_distance:
+            gap = distance(pos, point)
+            if gap > config.tactical.pickup_max_distance or gap >= best_distance:
                 continue
-            best_point, best_distance = point, distance
+            best_point, best_distance = point, gap
         if best_point is not None:
             weight = (
                 config.tactical.consumable_weight
@@ -288,7 +194,7 @@ class ReflexController:
             )
             return best_point, weight * attraction_scale
 
-        arena = _arena(snapshot.get("arena"))
+        arena = arena_rect(snapshot.get("arena"))
         if arena is not None:
             center = ((arena[0] + arena[2]) / 2.0, (arena[1] + arena[3]) / 2.0)
             scale = attraction_scale * (config.emergency.attraction_scale if emergency else 1.0)
@@ -319,7 +225,7 @@ class ReflexController:
                 context.pos[0] + direction[0] * context.speed * t,
                 context.pos[1] + direction[1] * context.speed * t,
             )
-            total += decay * _point_danger(
+            total += decay * point_danger(
                 context.threats, point, t, config, context.danger_scales
             )
             if context.arena is not None:
@@ -328,7 +234,7 @@ class ReflexController:
                 total += (
                     decay
                     * context.target_weight
-                    * _distance(point, context.target)
+                    * distance(point, context.target)
                     / config.tactical.attraction_range
                 )
             if context.enemies:
@@ -373,66 +279,18 @@ class _Context:
     prev_dir: Optional[Point]
 
 
-# ---- 纯几何/解析辅助 ----
-
-
-def _items(value: Any) -> Sequence[dict]:
-    if not isinstance(value, Sequence) or isinstance(value, (str, bytes)):
-        return ()
-    return tuple(item for item in value if isinstance(item, dict))
-
-
-def _point(value: Any) -> Optional[Point]:
-    if not isinstance(value, (list, tuple)) or len(value) < 2:
-        return None
-    x, y = value[0], value[1]
-    if (
-        isinstance(x, bool)
-        or isinstance(y, bool)
-        or not isinstance(x, (int, float))
-        or not isinstance(y, (int, float))
-    ):
-        return None
-    return (float(x), float(y))
-
-
-def _band(value: Any) -> Optional[Band]:
-    parsed = _point(value)
-    if parsed is None or parsed[0] <= 0.0 or parsed[0] >= parsed[1]:
-        return None
-    return parsed
-
-
-def _radius(item: dict, default: float) -> float:
-    value = item.get("radius")
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
-        return default
-    return max(float(value), 0.0)
-
-
-def _arena(value: Any) -> Optional[tuple[float, float, float, float]]:
-    if not isinstance(value, Mapping):
-        return None
-    low = _point(value.get("min"))
-    high = _point(value.get("max"))
-    if low is None or high is None or low[0] >= high[0] or low[1] >= high[1]:
-        return None
-    return (low[0], low[1], high[0], high[1])
-
-
-def _distance(a: Point, b: Point) -> float:
-    return math.hypot(a[0] - b[0], a[1] - b[1])
+# ---- 纯几何辅助 ----
 
 
 def _player_speed(player: dict, config: ReflexConfig) -> float:
-    velocity = _point(player.get("vel")) or (0.0, 0.0)
+    velocity = point2(player.get("vel")) or (0.0, 0.0)
     return max(math.hypot(velocity[0], velocity[1]), config.player.fallback_speed)
 
 
 def _nearest_distance(point: Point, threats: tuple[Threat, ...]) -> float:
     if not threats:
         return math.inf
-    return min(_distance(point, threat.pos) - threat.radius for threat in threats)
+    return min(distance(point, threat.pos) - threat.radius for threat in threats)
 
 
 def _is_emergency(player: dict, config: ReflexConfig) -> bool:
@@ -447,35 +305,6 @@ def _is_emergency(player: dict, config: ReflexConfig) -> bool:
     ):
         return False
     return hp / max_hp < config.emergency.hp_threshold
-
-
-def _point_danger(
-    threats: tuple[Threat, ...],
-    point: Point,
-    t: float,
-    config: ReflexConfig,
-    scales: Mapping[str, float],
-) -> float:
-    danger = config.danger
-    total = 0.0
-    for threat in threats:
-        if threat.ttl is not None and t > threat.ttl:
-            continue
-        scale = scales.get(threat.kind, 0.0)
-        if scale <= 0.0:
-            continue
-        weight_field, buffer_field = _KIND_PARAMS[threat.kind]
-        radius = threat.radius + config.player.radius + getattr(danger, buffer_field)
-        if radius <= 0.0:
-            continue
-        dx = point[0] - (threat.pos[0] + threat.vel[0] * t)
-        dy = point[1] - (threat.pos[1] + threat.vel[1] * t)
-        distance = math.hypot(dx, dy)
-        floor = radius * 0.2
-        if distance < floor:
-            distance = floor
-        total += scale * getattr(danger, weight_field) * (radius / distance) ** 2
-    return total
 
 
 def _boundary_cost(
@@ -501,12 +330,12 @@ def _band_cost(point: Point, t: float, context: "_Context", config: ReflexConfig
     band_min, band_max = context.band
     nearest = math.inf
     for enemy in context.enemies:
-        distance = math.hypot(
+        gap = math.hypot(
             point[0] - (enemy.pos[0] + enemy.vel[0] * t),
             point[1] - (enemy.pos[1] + enemy.vel[1] * t),
         )
-        if distance < nearest:
-            nearest = distance
+        if gap < nearest:
+            nearest = gap
     if nearest < band_min:
         return config.kiting.band_weight * (band_min - nearest) / band_min
     if nearest > band_max:

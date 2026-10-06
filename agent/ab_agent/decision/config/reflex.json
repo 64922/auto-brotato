@@ -21,7 +21,8 @@
     "sample_decay": [1.0, 0.9, 0.75, 0.6],
     "truncated_scale": 1.4,
     "consider_radius": 550.0,
-    "max_threats_per_kind": 80
+    "max_threats_per_kind": 80,
+    "min_distance_ratio": 0.2
   },
   "boundary": {
     "margin": 90.0,

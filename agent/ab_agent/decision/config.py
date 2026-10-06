@@ -48,6 +48,7 @@ _SECTION_KEYS = {
         "truncated_scale",
         "consider_radius",
         "max_threats_per_kind",
+        "min_distance_ratio",
     ),
     "boundary": ("margin", "weight"),
     "tactical": (
@@ -99,6 +100,7 @@ class DangerConfig:
     truncated_scale: float
     consider_radius: float
     max_threats_per_kind: int
+    min_distance_ratio: float
 
 
 @dataclass(frozen=True)
@@ -238,6 +240,9 @@ def reflex_config_from_mapping(raw: Mapping[str, Any]) -> ReflexConfig:
         consider_radius=_number(danger_raw, "consider_radius", "danger", minimum=0.0),
         max_threats_per_kind=_integer(
             danger_raw, "max_threats_per_kind", "danger", minimum=1, maximum=1000
+        ),
+        min_distance_ratio=_number(
+            danger_raw, "min_distance_ratio", "danger", minimum=0.001, maximum=1.0
         ),
     )
 

@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.replay import movement
+from tools.replay import movement, movement_metrics
 from tools.replay.tests import support
 
 
@@ -25,7 +25,7 @@ def make_step(ts, *, pos=(1024.0, 768.0), vel=(0.0, 0.0), vector=None, hp=100.0,
     parsed = None
     if vector is not None:
         parsed = (float(vector[0]), float(vector[1]))
-    return movement.Step(ts=ts, snapshot=snapshot, vector=parsed)
+    return movement_metrics.Step(ts=ts, snapshot=snapshot, vector=parsed)
 
 
 def enemy(x, y, *, radius=20.0, vel=(0.0, 0.0)):
@@ -60,7 +60,7 @@ class CollectTest(unittest.TestCase):
             )
             recording = movement.open_recording(path)
             engine = FakeEngine([[1.0, 0.0], None])
-            steps = movement.collect(recording, engine)
+            steps = movement_metrics.collect(recording, engine)
             self.assertEqual(engine.resets, 1)
             self.assertEqual([step.vector for step in steps], [(1.0, 0.0), None])
 
@@ -73,7 +73,7 @@ class CollectTest(unittest.TestCase):
             ]
             support.write_recording(path, supports)
             recording = movement.open_recording(path)
-            steps = movement.collect(recording, FakeEngine([None] * 5), max_seconds=2.0)
+            steps = movement_metrics.collect(recording, FakeEngine([None] * 5), max_seconds=2.0)
             self.assertEqual(len(steps), 3)
 
 
@@ -83,7 +83,7 @@ class EvaluateTest(unittest.TestCase):
             make_step(0.0, pos=(10.0, 10.0), vector=(1.0, 0.0), enemies=[enemy(500.0, 10.0)]),
             make_step(0.1, pos=(10.0, 10.0), vector=(1.0, 0.0), enemies=[enemy(300.0, 10.0)]),
         ]
-        metrics = movement.evaluate(steps)
+        metrics = movement_metrics.evaluate(steps)
         self.assertEqual(metrics.steps, 2)
         self.assertEqual(metrics.decisions, 2)
         self.assertEqual(metrics.sector_counts[0], 2)
@@ -98,7 +98,7 @@ class EvaluateTest(unittest.TestCase):
         steps = [
             make_step(0.0, pos=(10.0, 10.0), vector=(1.0, 0.0), enemies=[enemy(145.0, 10.0, radius=40.0)]),
         ]
-        metrics = movement.evaluate(steps)
+        metrics = movement_metrics.evaluate(steps)
         self.assertEqual(metrics.exposed_fraction, 1.0)
         self.assertLess(metrics.clearance_min, 0.0)
         self.assertAlmostEqual(metrics.exposure_mean, 1.0)
@@ -109,7 +109,7 @@ class EvaluateTest(unittest.TestCase):
             make_step(0.1, vector=(0.0, 1.0)),
             make_step(0.2, vector=(0.0, 1.0)),
         ]
-        metrics = movement.evaluate(steps)
+        metrics = movement_metrics.evaluate(steps)
         self.assertEqual(metrics.decisions, 3)
         self.assertEqual(metrics.flips_per_s, 5.0)
         self.assertAlmostEqual(metrics.mean_turn_deg, 45.0)
@@ -119,7 +119,7 @@ class EvaluateTest(unittest.TestCase):
             make_step(0.0, pos=(10.0, 10.0), vector=(1.0, 0.0), enemies=[enemy(500.0, 10.0)]),
             make_step(0.1, pos=(10.0, 10.0), vector=None, enemies=[enemy(500.0, 10.0)]),
         ]
-        metrics = movement.evaluate(steps)
+        metrics = movement_metrics.evaluate(steps)
         self.assertEqual(metrics.decisions, 1)
         self.assertEqual(metrics.steps, 2)
 
@@ -135,7 +135,7 @@ class ClearanceTest(unittest.TestCase):
             ],
         }
         # ttl=0.1 时弹幕在 x=240；对预测点 (45,0) 的 clearance = 195-16-10
-        self.assertAlmostEqual(movement._clearance(snapshot, (45.0, 0.0)), 169.0)
+        self.assertAlmostEqual(movement_metrics._clearance(snapshot, (45.0, 0.0)), 169.0)
 
 
 class DamageTest(unittest.TestCase):
@@ -147,7 +147,7 @@ class DamageTest(unittest.TestCase):
             make_step(0.3, hp=85.0),
             make_step(0.4, hp=10.0, wave=2),
         ]
-        events, total = movement.recording_damage(steps)
+        events, total = movement_metrics.recording_damage(steps)
         self.assertEqual(events, 2)
         self.assertAlmostEqual(total, 15.0)
 
@@ -179,11 +179,11 @@ class EngineAndReportTest(unittest.TestCase):
             path = self._recording(tmp)
             recording = movement.open_recording(path)
             first_runs = [
-                (name, movement.collect(recording, engine))
+                (name, movement_metrics.collect(recording, engine))
                 for name, engine in movement.build_engines(None, 0, "placeholder")
             ]
             second_runs = [
-                (name, movement.collect(recording, engine))
+                (name, movement_metrics.collect(recording, engine))
                 for name, engine in movement.build_engines(None, 0, "placeholder")
             ]
             first = movement.build_report(path, first_runs, note="x")

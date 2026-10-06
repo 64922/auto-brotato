@@ -12,9 +12,10 @@ from __future__ import annotations
 
 import asyncio
 from enum import Enum
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional
 
 from .decision.reflex import ReflexController
+from .move_control import MoveController
 from .menu_view import (
     BattleReport,
     RunEndMenu,
@@ -33,16 +34,6 @@ class Activity(str, Enum):
     COMBAT = "combat"
     SHOP = "shop"
     LEVEL_UP = "level_up"
-
-
-class MoveController(Protocol):
-    """走位控制器接口：``ReflexController`` 与占位控制器均满足。"""
-
-    def reset(self) -> None: ...
-
-    def next_move(
-        self, snapshot: dict, now: float
-    ) -> Optional[list[float]]: ...
 
 
 class RunController:

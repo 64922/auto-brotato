@@ -280,11 +280,12 @@ auto-brotato/
 │   │   ├── protocol.py      # 信封编解码/版本校验/ack 判定（纯函数，票据 02）
 │   │   ├── state.py         # 观测视图（快照/商店/菜单）与链路健康
 │   │   ├── session.py       # 会话状态机：难度交互/开局/终局（票据 07）
-│   │   ├── run_control.py   # 对局内占位动作编排：走位/商店/升级（票据 07）
+│   │   ├── run_control.py   # 对局内动作编排：走位/商店/升级（票据 07；走位默认 reflex，票据 09）
 │   │   ├── menu_view.py     # 难度页/终局页解析与终端文案（票据 07）
-│   │   ├── autopilot.py     # 占位走位（正式策略票据 09/10）
+│   │   ├── autopilot.py     # 占位走位基线（正式策略：decision.reflex，票据 09）
+│   │   ├── move_control.py  # 走位控制器接口（对局编排与回放评估共用）
 │   │   ├── hero_names.py    # 英雄 ID→中文名（临时表，票据 11 替换）
-│   │   ├── decision/        # reflex（票据 09）/ tactical / economy；config/reflex.json
+│   │   ├── decision/        # reflex/danger/geometry（票据 09）/ tactical / economy；config/reflex.json
 │   │   ├── cli.py
 │   │   └── recorder.py
 │   ├── tests/

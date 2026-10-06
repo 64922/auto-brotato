@@ -8,14 +8,13 @@ from ab_agent.decision.config import (
     load_reflex_config,
     reflex_config_from_mapping,
 )
-from ab_agent.decision.reflex import (
-    ReflexController,
-    TacticalIntent,
+from ab_agent.decision.danger import (
     Threat,
-    _point_danger,
-    _select_threats,
+    point_danger,
+    select_threats,
     threats_from_snapshot,
 )
+from ab_agent.decision.reflex import ReflexController, TacticalIntent
 
 ARENA = {"min": [0.0, 0.0], "max": [2048.0, 1536.0]}
 CENTER = (1024.0, 768.0)
@@ -203,8 +202,8 @@ class DangerFieldTest(unittest.TestCase):
         config = load_reflex_config()
         threats = (Threat("projectile", (100.0, 0.0), (600.0, 0.0), 16.0, None),)
         scales = {"projectile": 1.0}
-        now_cost = _point_danger(threats, (400.0, 0.0), 0.0, config, scales)
-        later_cost = _point_danger(threats, (400.0, 0.0), 0.5, config, scales)
+        now_cost = point_danger(threats, (400.0, 0.0), 0.0, config, scales)
+        later_cost = point_danger(threats, (400.0, 0.0), 0.5, config, scales)
         self.assertGreater(now_cost, 0.0)
         self.assertGreater(later_cost, now_cost * 10.0)
 
@@ -212,8 +211,8 @@ class DangerFieldTest(unittest.TestCase):
         config = load_reflex_config()
         threats = (Threat("projectile", (100.0, 0.0), (600.0, 0.0), 16.0, 0.3),)
         scales = {"projectile": 1.0}
-        self.assertGreater(_point_danger(threats, (400.0, 0.0), 0.2, config, scales), 0.0)
-        self.assertEqual(_point_danger(threats, (400.0, 0.0), 0.5, config, scales), 0.0)
+        self.assertGreater(point_danger(threats, (400.0, 0.0), 0.2, config, scales), 0.0)
+        self.assertEqual(point_danger(threats, (400.0, 0.0), 0.5, config, scales), 0.0)
 
     def test_ttl_zero_means_unbounded(self):
         config = load_reflex_config()
@@ -268,7 +267,7 @@ class ThreatSelectionTest(unittest.TestCase):
             Threat("enemy", (float(distance), 0.0), (0.0, 0.0), 20.0, None)
             for distance in range(10, 1000, 10)
         ) + (Threat("projectile", (600.0, 0.0), (0.0, 0.0), 16.0, None),)
-        selected = _select_threats(threats, (0.0, 0.0), config)
+        selected = select_threats(threats, (0.0, 0.0), config)
         self.assertEqual(len(selected), 3)
         self.assertTrue(all(threat.kind == "enemy" for threat in selected))
         self.assertEqual([threat.pos[0] for threat in selected], [10.0, 20.0, 30.0])
