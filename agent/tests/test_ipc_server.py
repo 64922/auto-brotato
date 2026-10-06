@@ -297,5 +297,32 @@ class StreamLimitTest(IpcServerTestBase):
         mod.close()
 
 
+class HangingWriter:
+    """对端停止读取：drain 永不返回，用于验证发送有上限、不无限挂起。"""
+
+    def is_closing(self):
+        return False
+
+    def write(self, data):
+        return None
+
+    async def drain(self):
+        await asyncio.sleep(30)
+
+
+class DrainTimeoutTest(unittest.IsolatedAsyncioTestCase):
+    async def test_send_gives_up_when_drain_hangs(self):
+        from unittest import mock
+
+        from ab_agent.ipc_server import ClientConnection
+
+        conn = ClientConnection(None, HangingWriter(), "fake", recorder=None)
+        with mock.patch("ab_agent.ipc_server.SEND_DRAIN_TIMEOUT_S", 0.05):
+            start = time.monotonic()
+            sent = await conn.send("action", {"kind": "move"}, ref=1)
+        self.assertFalse(sent, "drain 挂起应判定发送失败")
+        self.assertLess(time.monotonic() - start, 1.0)
+
+
 if __name__ == "__main__":
     unittest.main()

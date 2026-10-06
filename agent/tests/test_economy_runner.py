@@ -278,6 +278,23 @@ class ShopRunnerTest(unittest.IsolatedAsyncioTestCase):
 
 
 class LevelUpRunnerTest(unittest.IsolatedAsyncioTestCase):
+    async def test_exception_does_not_freeze_shared_pending(self):
+        runner = make_runner()
+        server = FakeServer()
+        original = server.send_action
+
+        async def broken(*args, **kwargs):
+            raise RuntimeError("boom")
+
+        server.send_action = broken
+        await runner.handle_level_up(server, level_up_menu(), context(), 100.0)
+        await settle()
+        self.assertFalse(runner.busy, "任务异常后不得卡在在途状态")
+        server.send_action = original
+        await runner.handle_shop(server, shop_payload(), context(), 100.1)
+        await settle()
+        self.assertIn("shop_buy", [kind for kind, _, _ in server.actions])
+
     async def test_pick_success_and_no_repick_same_signature(self):
         runner = make_runner()
         server = FakeServer()

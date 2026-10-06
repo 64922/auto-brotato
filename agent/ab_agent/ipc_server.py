@@ -24,6 +24,9 @@ STREAM_LIMIT = 8 * 1024 * 1024
 #: agent 侧动作未回执判定（protocol.md §5.2 第 4 条，双保险 2s）
 ACTION_ACK_TIMEOUT_S = 2.0
 
+#: 写入阻塞上限：对端停止读取时 drain 不得无限挂起发送任务
+SEND_DRAIN_TIMEOUT_S = 2.0
+
 #: 默认心跳间隔（mod 侧 2s 无 agent 消息则判定链路失效并停住）
 DEFAULT_PING_INTERVAL_S = 1.0
 
@@ -67,8 +70,8 @@ class ClientConnection:
         data = protocol.encode(msg_type, payload, seq=seq, ref=ref, ts=ts)
         try:
             self.writer.write(data)
-            await self.writer.drain()
-        except (ConnectionError, OSError):
+            await asyncio.wait_for(self.writer.drain(), timeout=SEND_DRAIN_TIMEOUT_S)
+        except (ConnectionError, OSError, asyncio.TimeoutError):
             return False
         if self._recorder is not None and msg_type == "action":
             self._recorder.record_out(

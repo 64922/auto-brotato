@@ -146,20 +146,23 @@ class EconomyRunner:
     async def _execute_shop(
         self, server, plan: ShopPlan, visit_key: Optional[int], signature: tuple
     ) -> None:
-        self._record(server, plan.action, plan.params, plan.reason)
-        ref = await server.send_action(plan.action, dict(plan.params), track_ack=True)
-        if ref is None:
+        try:
+            self._record(server, plan.action, plan.params, plan.reason)
+            ref = await server.send_action(plan.action, dict(plan.params), track_ack=True)
+            if ref is None:
+                return
+            ack = await server.wait_ack(ref, timeout=self._ack_timeout_s)
+            if visit_key != self._shop_key:
+                return  # 商店访问已切换（新波次），旧动作结果不污染新状态
+            if ack is not None and ack.get("ok") is True:
+                self._on_shop_success(plan, signature)
+                return
+            error = _error_of(ack)
+            self._on_shop_failure(plan, error)
+        except Exception as exc:  # noqa: BLE001 - 兜底：任务异常不得卡死经济层
+            self._out("[经济] %s 执行异常：%r" % (plan.action, exc))
+        finally:
             self._pending = False
-            return
-        ack = await server.wait_ack(ref, timeout=self._ack_timeout_s)
-        self._pending = False
-        if visit_key != self._shop_key:
-            return  # 商店访问已切换（新波次），旧动作结果不污染新状态
-        if ack is not None and ack.get("ok") is True:
-            self._on_shop_success(plan, signature)
-            return
-        error = _error_of(ack)
-        self._on_shop_failure(plan, error)
 
     def _on_shop_success(self, plan: ShopPlan, signature: tuple) -> None:
         if plan.action == ACTION_LEAVE:
@@ -236,42 +239,46 @@ class EconomyRunner:
     async def _execute_level_up(
         self, server, plan: UpgradePlan, signature: tuple
     ) -> None:
-        self._record(server, ACTION_PICK, {"index": plan.slot}, plan.reason)
-        ref = await server.send_action(
-            ACTION_PICK, {"index": plan.slot}, track_ack=True
-        )
-        if ref is None:
-            self._pending = False
-            return
-        ack = await server.wait_ack(ref, timeout=self._ack_timeout_s)
-        self._pending = False
-        if signature != self._level_signature:
-            return  # 选项已更新（新的升级组），旧结果不污染新状态
-        if ack is not None and ack.get("ok") is True:
-            self._level_picked = signature
-            return
-        error = _error_of(ack)
-        key = plan.target_key
-        if error in PAGE_GONE_ERRORS:
-            self._level_picked = signature
-            return
-        if error in TRANSIENT_ERRORS:
-            self._out(
-                "[经济] 选卡暂时失败（%s），%.1fs 后重试" % (error, RETRY_COOLDOWN_S)
+        try:
+            self._record(server, ACTION_PICK, {"index": plan.slot}, plan.reason)
+            ref = await server.send_action(
+                ACTION_PICK, {"index": plan.slot}, track_ack=True
             )
-        elif error in TIMEOUT_ERRORS:
-            if key in self._level_retried:
+            if ref is None:
+                return
+            ack = await server.wait_ack(ref, timeout=self._ack_timeout_s)
+            if signature != self._level_signature:
+                return  # 选项已更新（新的升级组），旧结果不污染新状态
+            if ack is not None and ack.get("ok") is True:
                 self._level_picked = signature
-                self._out("[经济] 选卡再次超时（%s），本组放弃" % error)
-            else:
-                self._level_retried.add(key)
+                return
+            error = _error_of(ack)
+            key = plan.target_key
+            if error in PAGE_GONE_ERRORS:
+                self._level_picked = signature
+                return
+            if error in TRANSIENT_ERRORS:
                 self._out(
-                    "[经济] 选卡超时（%s），%.1fs 后重试一次" % (error, RETRY_COOLDOWN_S)
+                    "[经济] 选卡暂时失败（%s），%.1fs 后重试" % (error, RETRY_COOLDOWN_S)
                 )
-        else:
-            self._level_blocked.add(key)
-            self._out("[经济] 选卡失败：%s（改选其他卡）" % error)
-        self._level_retry_at = self._clock() + RETRY_COOLDOWN_S
+            elif error in TIMEOUT_ERRORS:
+                if key in self._level_retried:
+                    self._level_picked = signature
+                    self._out("[经济] 选卡再次超时（%s），本组放弃" % error)
+                else:
+                    self._level_retried.add(key)
+                    self._out(
+                        "[经济] 选卡超时（%s），%.1fs 后重试一次"
+                        % (error, RETRY_COOLDOWN_S)
+                    )
+            else:
+                self._level_blocked.add(key)
+                self._out("[经济] 选卡失败：%s（改选其他卡）" % error)
+            self._level_retry_at = self._clock() + RETRY_COOLDOWN_S
+        except Exception as exc:  # noqa: BLE001 - 兜底：任务异常不得卡死经济层
+            self._out("[经济] 选卡执行异常：%r" % exc)
+        finally:
+            self._pending = False
 
     # ---- 记录 ----
 
