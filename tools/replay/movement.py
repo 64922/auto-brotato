@@ -22,6 +22,7 @@ from .movement_metrics import (
     collect,
     evaluate,
     recording_damage,
+    snapshot_span,
 )
 from .recording import RecordingError, open_recording
 
@@ -46,7 +47,7 @@ def build_report(
 ) -> str:
     """格式化对比报告（中文）。"""
     first = runs[0][1]
-    waves, duration = _snapshot_span(first)
+    waves, duration = snapshot_span(first)
     lines = [
         "回放走位指标报告（票据 09）",
         "录制：%s" % path,
@@ -71,20 +72,6 @@ def build_report(
         "[录制受伤] %d 次 / 共 %.1f hp（回放既定事实，与策略无关）" % (events, total)
     )
     return "\n".join(lines)
-
-
-def _snapshot_span(steps: Sequence[Step]) -> tuple[list[int], float]:
-    """快照覆盖的波次索引（升序）与时长（秒）。"""
-    waves = sorted(
-        {
-            step.snapshot.get("wave", {}).get("index")
-            for step in steps
-            if isinstance(step.snapshot.get("wave"), dict)
-            and isinstance(step.snapshot["wave"].get("index"), int)
-        }
-    )
-    duration = (steps[-1].ts - steps[0].ts) if len(steps) >= 2 else 0.0
-    return waves, duration
 
 
 def _format_table(metrics: Sequence[tuple[str, Metrics]]) -> str:
@@ -219,7 +206,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     note = "反射层参数：%s" % (args.config or "包内默认 config/reflex.json")
     if args.json:
         first_steps = collected[0][1] if collected else []
-        waves, duration = _snapshot_span(first_steps)
+        waves, duration = snapshot_span(first_steps)
         payload = {
             "recording": str(recording.path),
             "config": args.config,

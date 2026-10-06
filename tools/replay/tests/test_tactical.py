@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.replay import tactical, tactical_metrics
+from tools.replay import recording_facts, tactical, tactical_metrics
 from tools.replay.tests import support
 
 ARENA = {"min": [0.0, 0.0], "max": [2048.0, 1536.0]}
@@ -102,7 +102,7 @@ class FactsTest(unittest.TestCase):
             make_step(1.0, snapshot={"wave": {"index": 1}, "economy": {"materials_this_wave": 7}}),
             make_step(2.0, snapshot={"wave": {"index": 2}, "economy": {"materials_this_wave": 5}}),
         ]
-        self.assertEqual(tactical_metrics.materials_curve(steps), ((1, 7), (2, 5)))
+        self.assertEqual(recording_facts.materials_curve(steps), ((1, 7), (2, 5)))
 
     def test_damage_attribution_finds_nearby_enemy(self):
         steps = [
@@ -127,7 +127,7 @@ class FactsTest(unittest.TestCase):
                 },
             ),
         ]
-        events = tactical_metrics.damage_attribution(steps)
+        events = recording_facts.damage_attribution(steps)
         self.assertEqual(len(events), 1)
         self.assertAlmostEqual(events[0].amount, 20.0)
         self.assertEqual(events[0].wave, 3)
@@ -151,7 +151,7 @@ class OutcomeTest(unittest.TestCase):
     def test_outcome_summarizes_waves_materials_and_death(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = self._recording(tmp, death=True)
-            outcome = tactical_metrics.recording_outcome(tactical.open_recording(path))
+            outcome = recording_facts.recording_outcome(tactical.open_recording(path))
             self.assertEqual(outcome.max_wave, 2)
             self.assertEqual(outcome.materials_by_wave, ((1, 4), (2, 9)))
             self.assertEqual(outcome.total_materials, 13)
@@ -161,7 +161,7 @@ class OutcomeTest(unittest.TestCase):
     def test_no_death_when_never_observed(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = self._recording(tmp)
-            outcome = tactical_metrics.recording_outcome(tactical.open_recording(path))
+            outcome = recording_facts.recording_outcome(tactical.open_recording(path))
             self.assertIsNone(outcome.death_ts)
 
 

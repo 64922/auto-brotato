@@ -75,6 +75,10 @@ class ValidationTest(unittest.TestCase):
         raw["update"]["interval_s"] = 2.0
         with self.assertRaisesRegex(TacticalConfigError, "interval_s"):
             tactical_config_from_mapping(raw)
+        raw = _default_raw()
+        raw["update"]["interval_s"] = 0.05  # 低于 3–5Hz 契约
+        with self.assertRaisesRegex(TacticalConfigError, "interval_s"):
+            tactical_config_from_mapping(raw)
 
     def test_missing_file(self):
         with self.assertRaisesRegex(TacticalConfigError, "无法读取"):

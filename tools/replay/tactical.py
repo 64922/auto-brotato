@@ -18,19 +18,21 @@ import sys
 from pathlib import Path
 from typing import Optional, Sequence
 
-from .movement_metrics import Step, evaluate as evaluate_movement
+from .movement_metrics import Step, evaluate as evaluate_movement, snapshot_span
 from .recording import Recording, RecordingError, open_recording
-from .tactical_metrics import (
+from .recording_facts import (
     DamageEvent,
     Outcome,
+    damage_attribution,
+    materials_curve,
+    recording_outcome,
+)
+from .tactical_metrics import (
     TacticalMetrics,
     TacticalStep,
     collect,
     conservative_intervals,
-    damage_attribution,
     evaluate,
-    materials_curve,
-    recording_outcome,
 )
 
 #: agent 包路径（tools/replay 从仓库根运行时 `ab_agent` 不在 sys.path）
@@ -43,6 +45,7 @@ from ab_agent.decision.config import load_reflex_config  # noqa: E402
 from ab_agent.decision.reflex import ReflexController  # noqa: E402
 from ab_agent.decision.tactical import TacticalController  # noqa: E402
 from ab_agent.decision.tactical_config import load_tactical_config  # noqa: E402
+from ab_agent.move_control import MoveController  # noqa: E402
 
 
 def build_engines(
@@ -50,7 +53,7 @@ def build_engines(
     reflex_config_path: Optional[str],
     baseline: str,
     seed: int,
-) -> list[tuple[str, TacticalController]]:
+) -> list[tuple[str, MoveController]]:
     """构建对比引擎：战术层（默认）在前，其后为对照基线。"""
     runs: list[tuple[str, TacticalController]] = [
         (
@@ -77,11 +80,11 @@ def build_report(
     runs: Sequence[tuple[str, Sequence[TacticalStep]]],
     *,
     note: str,
-    compare: Optional[tuple[Path, Outcome, Outcome]] = None,
+    compare: Optional[tuple[Outcome, Outcome]] = None,
 ) -> str:
     """格式化战术层报告（中文）。"""
     first = runs[0][1]
-    waves, duration = _snapshot_span(first)
+    waves, duration = snapshot_span(first)
     lines = [
         "回放战术层报告（票据 10）",
         "录制：%s" % path,
@@ -114,8 +117,10 @@ def _format_facts(steps: Sequence[TacticalStep]) -> list[str]:
     lines: list[str] = []
     curve = materials_curve(steps)
     if curve:
-        text = " · ".join("第 %d 波=%d" % (wave, count) for wave, count in curve)
-        lines.append("材料/波次曲线：%s（共 %d）" % (text, sum(count for _, count in curve)))
+        lines.append(
+            "材料/波次曲线：%s（共 %d）"
+            % (_format_curve(curve), sum(count for _, count in curve))
+        )
     else:
         lines.append("材料/波次曲线：无数据")
     events = damage_attribution(steps)
@@ -222,8 +227,8 @@ def _format_conservative(steps: Sequence[TacticalStep]) -> list[str]:
     return lines
 
 
-def _format_compare(compare: tuple[Path, Outcome, Outcome]) -> list[str]:
-    _, base, other = compare
+def _format_compare(compare: tuple[Outcome, Outcome]) -> list[str]:
+    base, other = compare
     lines = [
         "指标                     本录制          对比录制        差值",
         "-" * 62,
@@ -240,20 +245,18 @@ def _format_compare(compare: tuple[Path, Outcome, Outcome]) -> list[str]:
         "%-24s %14s %14s" % ("录制", base.path.name, other.path.name),
     ]
     lines.append(
-        "本录制材料曲线：%s" % _curve_text(base.materials_by_wave)
+        "本录制材料曲线：%s" % _format_curve(base.materials_by_wave)
     )
     lines.append(
-        "对比录制材料曲线：%s" % _curve_text(other.materials_by_wave)
+        "对比录制材料曲线：%s" % _format_curve(other.materials_by_wave)
     )
     return lines
 
 
 def _format_curve(curve: Sequence[tuple[int, int]]) -> str:
+    if not curve:
+        return "无数据"
     return " · ".join("第 %d 波=%d" % (wave, count) for wave, count in curve)
-
-
-def _curve_text(curve: Sequence[tuple[int, int]]) -> str:
-    return _format_curve(curve) if curve else "无数据"
 
 
 def _death_text(outcome: Outcome) -> str:
@@ -274,19 +277,6 @@ def _delta_opt(a: Optional[int], b: Optional[int]) -> str:
 
 def _px(value: Optional[float]) -> str:
     return "%.0fpx" % value if value is not None else "无"
-
-
-def _snapshot_span(steps: Sequence[TacticalStep]) -> tuple[list[int], float]:
-    waves = sorted(
-        {
-            step.snapshot.get("wave", {}).get("index")
-            for step in steps
-            if isinstance(step.snapshot.get("wave"), dict)
-            and isinstance(step.snapshot["wave"].get("index"), int)
-        }
-    )
-    duration = (steps[-1].ts - steps[0].ts) if len(steps) >= 2 else 0.0
-    return waves, duration
 
 
 def _metrics_dict(metrics: TacticalMetrics) -> dict:
@@ -389,10 +379,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         args.tactical_config or "包内默认 config/tactical.json",
         args.reflex_config or "包内默认 config/reflex.json",
     )
-    compare: Optional[tuple[Path, Outcome, Outcome]] = None
+    compare: Optional[tuple[Outcome, Outcome]] = None
     if compare_recording is not None:
         compare = (
-            compare_recording.path,
             recording_outcome(recording),
             recording_outcome(compare_recording),
         )
@@ -408,10 +397,10 @@ def _json_payload(
     recording: Recording,
     collected: Sequence[tuple[str, Sequence[TacticalStep]]],
     args: argparse.Namespace,
-    compare: Optional[tuple[Path, Outcome, Outcome]],
+    compare: Optional[tuple[Outcome, Outcome]],
 ) -> dict:
     first_steps = collected[0][1] if collected else []
-    waves, duration = _snapshot_span(first_steps)
+    waves, duration = snapshot_span(first_steps)
     outcome = recording_outcome(recording)
     payload = {
         "recording": str(recording.path),
@@ -438,9 +427,8 @@ def _json_payload(
     }
     if compare is not None:
         payload["compare"] = {
-            "other_recording": str(compare[0]),
-            "base": _outcome_dict(compare[1]),
-            "other": _outcome_dict(compare[2]),
+            "base": _outcome_dict(compare[0]),
+            "other": _outcome_dict(compare[1]),
         }
     return payload
 

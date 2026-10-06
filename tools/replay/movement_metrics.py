@@ -121,10 +121,10 @@ def evaluate(steps: Sequence[Step]) -> Metrics:
         previous_sector = sector
         magnitude = math.hypot(held[0], held[1])
         magnitudes.append(magnitude)
-        point = _predicted_point(step.snapshot, held)
+        point = predicted_point(step.snapshot, held)
         if point is None:
             continue
-        clearance = _clearance(step.snapshot, point)
+        clearance = clearance_at(step.snapshot, point)
         if clearance is not None:
             clearances.append(clearance)
             exposures.append(max(0.0, 1.0 - max(clearance, 0.0) / EXPOSURE_RANGE))
@@ -184,9 +184,8 @@ def _angle(a: tuple[float, float], b: tuple[float, float]) -> float:
     return math.degrees(math.acos(max(-1.0, min(1.0, dot))))
 
 
-def _predicted_point(
-    snapshot: dict, vector: tuple[float, float]
-) -> Optional[tuple[float, float]]:
+def player_point(snapshot: dict) -> Optional[tuple[float, float]]:
+    """快照中的玩家位置（非法/缺失返回 None）。"""
     player = snapshot.get("player")
     if not isinstance(player, dict):
         return None
@@ -194,14 +193,25 @@ def _predicted_point(
     if not isinstance(pos, (list, tuple)) or len(pos) < 2:
         return None
     try:
-        px, py = float(pos[0]), float(pos[1])
+        return (float(pos[0]), float(pos[1]))
     except (TypeError, ValueError):
         return None
+
+
+def predicted_point(
+    snapshot: dict, vector: tuple[float, float]
+) -> Optional[tuple[float, float]]:
+    """0.3s 满速直行预测位置（战术层报告同口径复用）。"""
+    point = player_point(snapshot)
+    if point is None:
+        return None
+    px, py = point
     length = math.hypot(vector[0], vector[1])
     if length < 1e-9:
         return (px, py)
     # 方向评估按"满速直行"外推：观测速度更大（击退等）时以其为准
-    velocity = player.get("vel")
+    player = snapshot.get("player")
+    velocity = player.get("vel") if isinstance(player, dict) else None
     speed = FALLBACK_SPEED
     if isinstance(velocity, (list, tuple)) and len(velocity) >= 2:
         try:
@@ -215,24 +225,27 @@ def _predicted_point(
     )
 
 
-def _clearance(snapshot: dict, point: tuple[float, float]) -> Optional[float]:
-    """预测位置到最近危险源边缘的距离（含 0.3s 外推；无危险源返回 None）。"""
+def clearance_at(snapshot: dict, point: tuple[float, float]) -> Optional[float]:
+    """预测位置到最近危险源边缘的距离（含 0.3s 外推；无危险源返回 None）。
+
+    战术层报告复用本口径（``tactical_metrics``），保证跨策略/跨票据可比。
+    """
     best: Optional[float] = None
-    for item in _sequence(snapshot.get("enemies")) + _sequence(snapshot.get("hazards")):
-        threat = _threat_position(item, HORIZON_S)
+    for item in sequence(snapshot.get("enemies")) + sequence(snapshot.get("hazards")):
+        threat = threat_position(item, HORIZON_S)
         if threat is None:
             continue
         x, y, radius = threat
         distance = math.hypot(point[0] - x, point[1] - y) - radius - PLAYER_RADIUS
         best = distance if best is None else min(best, distance)
-    for item in _sequence(snapshot.get("projectiles")):
+    for item in sequence(snapshot.get("projectiles")):
         if item.get("friendly"):
             continue
         horizon = HORIZON_S
         ttl = item.get("ttl")
         if isinstance(ttl, (int, float)) and not isinstance(ttl, bool) and ttl > 0.0:
             horizon = min(HORIZON_S, float(ttl))
-        threat = _threat_position(item, horizon)
+        threat = threat_position(item, horizon)
         if threat is None:
             continue
         x, y, radius = threat
@@ -241,7 +254,8 @@ def _clearance(snapshot: dict, point: tuple[float, float]) -> Optional[float]:
     return best
 
 
-def _threat_position(item: dict, t: float) -> Optional[tuple[float, float, float]]:
+def threat_position(item: dict, t: float) -> Optional[tuple[float, float, float]]:
+    """危险源在 ``t`` 秒后的位置与半径（``vel`` 线性外推）。"""
     pos = item.get("pos")
     if not isinstance(pos, (list, tuple)) or len(pos) < 2:
         return None
@@ -285,10 +299,25 @@ def _near_edge(snapshot: dict, point: tuple[float, float]) -> bool:
         return False
 
 
-def _sequence(value) -> tuple[dict, ...]:
+def sequence(value) -> tuple[dict, ...]:
+    """取消息中的对象数组（非数组/非对象元素丢弃）。"""
     if not isinstance(value, (list, tuple)):
         return ()
     return tuple(item for item in value if isinstance(item, dict))
+
+
+def snapshot_span(steps: Sequence[Step]) -> tuple[list[int], float]:
+    """快照覆盖的波次索引（升序）与时长（秒）；movement/tactical 报告共用。"""
+    waves = sorted(
+        {
+            step.snapshot.get("wave", {}).get("index")
+            for step in steps
+            if isinstance(step.snapshot.get("wave"), dict)
+            and isinstance(step.snapshot["wave"].get("index"), int)
+        }
+    )
+    duration = (steps[-1].ts - steps[0].ts) if len(steps) >= 2 else 0.0
+    return waves, duration
 
 
 def _mean(values: Sequence[float]) -> float:

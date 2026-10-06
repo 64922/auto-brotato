@@ -178,8 +178,9 @@ def _build_tactical_config(raw: Mapping[str, Any]) -> TacticalConfig:
     boss_raw = _section(raw, "boss")
     rhythm_raw = _section(raw, "rhythm")
 
+    # 3–5Hz 契约（strategy.md §2/§4）：0.2s–0.34s，配置不得越界
     update = UpdateConfig(
-        interval_s=_number(update_raw, "interval_s", "update", minimum=0.05, maximum=1.0),
+        interval_s=_number(update_raw, "interval_s", "update", minimum=0.2, maximum=0.34),
     )
 
     cluster = ClusterConfig(

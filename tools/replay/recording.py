@@ -134,6 +134,17 @@ def iter_records(recording: Recording) -> Iterator[Record]:
             yield Record(kind=kind, ts=float(ts), data=obj)
 
 
+def wave_index(payload: dict) -> Optional[int]:
+    """快照 payload 的波次号（``wave.index``，非法/缺失返回 None）。"""
+    wave = payload.get("wave")
+    if not isinstance(wave, dict):
+        return None
+    index = wave.get("index")
+    if isinstance(index, bool) or not isinstance(index, int):
+        return None
+    return index
+
+
 def summarize(recording: Recording) -> Summary:
     """统计消息计数、时长、波次范围与快照频率（单次流式扫描）。"""
     in_count = out_count = decision_count = 0
@@ -156,9 +167,8 @@ def summarize(recording: Recording) -> Summary:
             if msg_type == "snapshot":
                 snapshot_ts.append(record.ts)
                 payload = envelope.get("payload")
-                wave = payload.get("wave") if isinstance(payload, dict) else None
-                index = wave.get("index") if isinstance(wave, dict) else None
-                if isinstance(index, int) and not isinstance(index, bool):
+                index = wave_index(payload) if isinstance(payload, dict) else None
+                if index is not None:
                     waves.append(index)
         elif record.kind == "out":
             out_count += 1

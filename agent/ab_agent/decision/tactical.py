@@ -196,7 +196,11 @@ class TacticalController:
 def _select_consumable(
     snapshot: dict, pos: Point, reflex: ReflexController, config: TacticalConfig
 ) -> Optional[Point]:
-    """低血时挑选消耗品：距离衰减 − 危险惩罚，取最高分（无则 None）。"""
+    """低血时挑选消耗品：距离衰减 − 危险惩罚，取最高分（无则 None）。
+
+    评分复用材料簇的距离衰减与危险权重（同一采集口径）；低血优先级由
+    ``consumable.hp_ratio`` 触发，不另设独立权重，避免两套参数漂移。
+    """
     best: Optional[Point] = None
     best_score = -math.inf
     for pickup in items(snapshot.get("pickups")):

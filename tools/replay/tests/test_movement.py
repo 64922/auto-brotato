@@ -135,7 +135,7 @@ class ClearanceTest(unittest.TestCase):
             ],
         }
         # ttl=0.1 时弹幕在 x=240；对预测点 (45,0) 的 clearance = 195-16-10
-        self.assertAlmostEqual(movement_metrics._clearance(snapshot, (45.0, 0.0)), 169.0)
+        self.assertAlmostEqual(movement_metrics.clearance_at(snapshot, (45.0, 0.0)), 169.0)
 
 
 class DamageTest(unittest.TestCase):

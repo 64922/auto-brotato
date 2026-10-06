@@ -285,7 +285,8 @@ auto-brotato/
 │   │   ├── autopilot.py     # 占位走位基线（正式策略：decision.reflex，票据 09）
 │   │   ├── move_control.py  # 走位控制器接口（对局编排与回放评估共用）
 │   │   ├── hero_names.py    # 英雄 ID→中文名（临时表，票据 11 替换）
-│   │   ├── decision/        # reflex/danger/geometry（票据 09）/ tactical / economy；config/reflex.json
+│   │   ├── decision/        # reflex/danger/geometry（票据 09）/ tactical（票据 10）/ economy；
+│   │   │                   #   config/reflex.json、config/tactical.json（参数外置）
 │   │   ├── cli.py
 │   │   └── recorder.py
 │   ├── tests/
