@@ -2,6 +2,8 @@ extends Reference
 
 # 菜单观测（票据 05）：难度选择页与终局页出现时，提供与 docs/protocol.md §7.1 对齐的
 # 只读快照；推送策略由 mod_main 与 shop 一致处理（内容变化 + 1s 心跳，不在菜单时不推送）。
+# 本模块同时向 menu_actions（票据 06）暴露难度页只读访问器（元素/焦点/可开始判定）；
+# 动作执行仍由 menu_actions 经 UI 信号完成。升级页观测见 level_up_observation.gd。
 #
 # 实机结论来源（票据 04）：
 # - 难度页 /root/DifficultySelection（difficulty_selection.tscn）：CharacterPanel/WeaponPanel
@@ -120,16 +122,36 @@ func _build_difficulty_payload() -> Dictionary:
 		"weapons": _weapons_payload(),
 		"difficulty": {
 			"options": _difficulty_options(),
-			"selected": _selected_difficulty_id(),
+			"selected": selected_difficulty_id(),
 			"displayed": _displayed_difficulty_ids(),
 		},
 		"modes": _modes_payload(),
-		"can_start": _can_start(),
+		"can_start": can_start(),
 	}
 
 
+# —— 只读访问器（menu_actions 使用） ——
+
+func in_difficulty() -> bool:
+	return _root_valid(_difficulty)
+
+
+# 难度元素（item.my_id == "difficulty_<value>"）；不存在/不在页面时返回 null。
+func difficulty_element(value: int):
+	if not in_difficulty():
+		return null
+	var inventory = _difficulty.get_node_or_null(DIFFICULTY_INVENTORY_PATH)
+	if inventory == null:
+		return null
+	var target := "difficulty_%d" % value
+	for child in inventory.get_children():
+		if _live(child) and _element_item_id(child) == target:
+			return child
+	return null
+
+
 # 当前预选/高亮元素（根脚本变量 _latest_focused_element[0]）；无人聚焦时返回 null。
-func _focused_element():
+func focused_element():
 	if _difficulty == null:
 		return null
 	var focused = _difficulty.get("_latest_focused_element")
@@ -141,22 +163,30 @@ func _focused_element():
 	return element
 
 
-func _selected_difficulty_id():
-	var element = _focused_element()
+func selected_difficulty_id():
+	var element = focused_element()
 	if element == null:
 		return null
 	return _element_item_id(element)
 
 
-# 实机结论：只有目标难度元素 is_locked == false 才能开局（锁定元素 pressed 为空操作）。
-func _can_start() -> bool:
-	var element = _focused_element()
+# 实机（反编译 difficulty_selection.gd）：pressed 被接受的条件就是元素非 special
+# （锁定与随机元素 is_special=true，其 pressed 被直接忽略、无副作用）。
+func can_start() -> bool:
+	var element = focused_element()
 	if element == null:
 		return false
-	var item = element.get("item")
-	if item == null or not is_instance_valid(item):
+	return element.get("is_special") != true
+
+
+# 开局离场判定（durable）：游戏 `_on_element_pressed` 切到 `main.tscn`（/root/Main 存在）；
+# BackButton `_go_back` 切回选武器/选人页（无 Main）。不能依赖 RunData.menu_selection_back：
+# 目标菜单页 `_ready` 会把它复位为 false，跨帧判定失效（票据 06 实机修正）。
+func in_run_scene() -> bool:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null:
 		return false
-	return item.get("is_locked") == false
+	return tree.root.get_node_or_null("Main") != null
 
 
 func _character_id() -> String:

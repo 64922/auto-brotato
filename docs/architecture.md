@@ -194,12 +194,12 @@
 
 ### 6.2 新增（P1 票据 04–06）
 
-- **menu 观测**（`menu_observation.gd`）：
-  - `phase=difficulty_select`：英雄 ID、初始武器（ID/tier）、难度 `{options, selected, displayed}`、模式开关（`RunData.is_endless_run` / `is_ban_mode_active` / `is_coop_run`）、`can_start`（票据 04/05 实机定型，见 protocol.md §7.1.1）；
-  - `phase=level_up`：升级卡列表（槽位/类型/ID/等级，结构以票据 04 实测为准）；
-  - `phase=run_end`：`result`（victory/defeat，`RunData.run_won`）、`wave`、`title` 与逐格 `stats`（`StatsContainer` 文本）；
+- **menu 观测**（票据 05/06）：
+  - `phase=difficulty_select`（`menu_observation.gd`）：英雄 ID、初始武器（ID/tier）、难度 `{options, selected, displayed}`、模式开关（`RunData.is_endless_run` / `is_ban_mode_active` / `is_coop_run`）、`can_start`（票据 04/05 实机定型，见 protocol.md §7.1.1）；
+  - `phase=level_up`（`level_up_observation.gd`，独立模块以控制单文件行数）：升级卡列表（`slot/kind/id/tier/can_pick`；`id` 双路径读取：卡片 `upgrade_data` → `UpgradeDescription.item`）；
+  - `phase=run_end`（`menu_observation.gd`）：`result`（victory/defeat，`RunData.run_won`）、`wave`、`title` 与逐格 `stats`（`StatsContainer` 文本）；
   - 推送策略与 `shop` 一致：内容变化推送 + 1s 心跳；不在菜单时**不推送**（agent 以静默判定离开）。
-- **menu 动作**（`menu_actions.gd`）：`menu_set_difficulty {value}`（按下目标难度元素，读回校验）、`menu_start_run {}`、`menu_pick_upgrade {index}`；幂等/TTL/ack 语义与 `shop_*` 一致；未实现动作一律拒绝（`unsupported_kind`）。
+- **menu 动作**（`menu_actions.gd`，票据 06）：`menu_set_difficulty {value}`（对目标难度元素 `grab_focus` 移动焦点，按 `_latest_focused_element` 读回校验；目标已选中=空操作）、`menu_start_run {}`（按焦点元素 `pressed` 触发游戏 `change_scene` 开局，以难度页离场且非返回确认）、`menu_pick_upgrade {index}`（options 差分确认）；幂等/串行/超时/ack 语义与 `shop_*` 一致；`menu_pause` 未实现，未支持动作一律拒绝（`unsupported_kind`）。
 - **协议 v2 集成**：`PROTOCOL_VERSION=2`，hello/welcome 版本校验，不匹配拒绝会话。
 
 ### 6.3 引擎兼容与脆弱性
@@ -319,7 +319,7 @@ auto-brotato/
 
 未决事项：
 
-- 是否需要 `menu_pause`（断开前主动暂停游戏）——P1 可选，视实机体验决定（票据 06 备注）。
+- 是否需要 `menu_pause`（断开前主动暂停游戏）——票据 06 决定本阶段不实现（动作表标注"未支持"），保留为后续可选增强。
 - 观察上限、PWM 周期等运行参数的具体值——P2 实测后固化。
 
 ## 14. 术语表

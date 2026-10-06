@@ -1,10 +1,11 @@
 extends Node
 
 # AutoBrotato mod 入口（票据 02：move 注入；票据 03：完整战斗观测 + 调试叠加层；
-# 票据 06：商店观测与 shop_* 动作；票据 05：菜单观测（难度页/终局）与协议 v2）。
+# 票据 06：商店观测与 shop_* 动作；票据 05：菜单观测（难度页/终局）与协议 v2；
+# 票据 06：菜单动作（设置难度/开始对局/升级选卡）与升级页观测）。
 #
 # 决策在 Python 侧；本 mod 只做四件事：TCP 协议客户端、战斗/商店/菜单观测上送、
-# move 与 shop_* 动作经游戏输入系统/UI 流程注入（含 TTL 与幂等防护）、
+# move 与 shop_*/menu_* 动作经游戏输入系统/UI 流程注入（含 TTL 与幂等防护）、
 # 可开关的调试叠加层。
 
 const MOD_VERSION := "0.2.0"
@@ -26,8 +27,12 @@ const ShopActions := preload("res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/
 const MenuObservation := preload(
 	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/menu_observation.gd"
 )
-# 临时探针（票据 04）路径：动态 load，配置缺失时保持 null（见 spike_menu_probe.gd 头注释）。
-const SPIKE_PROBE_PATH := "res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/spike_menu_probe.gd"
+const LevelUpObservation := preload(
+	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/level_up_observation.gd"
+)
+const MenuActions := preload(
+	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/menu_actions.gd"
+)
 
 var _ipc
 var _observation
@@ -36,7 +41,8 @@ var _overlay
 var _shop
 var _shop_actions
 var _menu
-var _spike_probe = null
+var _level_up
+var _menu_actions
 var _snapshot_interval := 1.0 / 60.0
 var _snapshot_accum := 0.0
 var _shop_accum := 0.0
@@ -59,11 +65,8 @@ func _init() -> void:
 	_shop = ShopObservation.new()
 	_shop_actions = ShopActions.new(_shop)
 	_menu = MenuObservation.new()
-	# 票据 04 临时探针：文件不存在时 load 失败仅打印错误，不影响正式功能。
-	if ResourceLoader.exists(SPIKE_PROBE_PATH):
-		var probe_script = load(SPIKE_PROBE_PATH)
-		if probe_script != null:
-			_spike_probe = probe_script.new()
+	_level_up = LevelUpObservation.new()
+	_menu_actions = MenuActions.new(_menu, _level_up)
 
 
 func _ready() -> void:
@@ -79,8 +82,6 @@ func _process(delta: float) -> void:
 	_drain_messages()
 	_check_link()
 	_overlay.try_attach()
-	if _spike_probe != null:
-		_spike_probe.poll()
 	if not _ipc.is_ready():
 		return
 	_snapshot_accum += delta
@@ -88,6 +89,7 @@ func _process(delta: float) -> void:
 		_snapshot_accum = fmod(_snapshot_accum, _snapshot_interval)
 		_ipc.send("snapshot", _observation.latest())
 	_flush_shop_actions()
+	_flush_menu_actions()
 	_pump_shop(delta)
 	_pump_menu(delta)
 
@@ -97,6 +99,12 @@ func _flush_shop_actions() -> void:
 	for done in _shop_actions.poll(OS.get_ticks_msec()):
 		if done.has("event"):
 			_ipc.send("event", done["event"])
+		_ipc.send("ack", done["ack"], done["ref"])
+
+
+# 结算异步菜单动作（设置难度读回/开始对局信号/选卡差分）并回执。
+func _flush_menu_actions() -> void:
+	for done in _menu_actions.poll(OS.get_ticks_msec()):
 		_ipc.send("ack", done["ack"], done["ref"])
 
 
@@ -119,7 +127,8 @@ func _pump_shop(delta: float) -> void:
 			_last_shop_sent_ms = now
 
 
-# 菜单观测（难度页/终局）：与 shop 相同的推送策略（内容变化 + 1s 心跳；不在菜单时不发送）。
+# 菜单观测（难度页/升级页/终局）：与 shop 相同的推送策略（内容变化 + 1s 心跳；
+# 不在菜单时不发送）。优先级：难度页（含终局）> 升级页；三页在实机流程中互斥。
 # 形状与 _pump_shop 重复，属有意保留：抽共享泵需引入状态对象，收益不足，暂不抽象。
 func _pump_menu(delta: float) -> void:
 	_menu_accum += delta
@@ -127,7 +136,10 @@ func _pump_menu(delta: float) -> void:
 		return
 	_menu_accum = fmod(_menu_accum, MENU_SAMPLE_INTERVAL)
 	_menu.sample()
+	_level_up.sample()
 	var payload = _menu.latest()
+	if payload == null:
+		payload = _level_up.latest()
 	if payload == null:
 		_last_menu_signature = ""
 		return
@@ -158,7 +170,9 @@ func _check_link() -> void:
 		_shop_actions.reset()
 		_shop.invalidate()
 		_last_shop_signature = ""
+		_menu_actions.reset()
 		_menu.invalidate()
+		_level_up.invalidate()
 		_last_menu_signature = ""
 		ModLoaderLog.warning("IPC 断开，move 注入已归零（安全停住）", LOG_NAME)
 
@@ -224,7 +238,13 @@ func _handle_action(envelope: Dictionary) -> void:
 		if outcome["state"] == "acked" or outcome["state"] == "duplicate":
 			_ipc.send("ack", outcome["ack"], ref)
 		return
-	# 其余动作（menu_*）属后续票据；拒绝而不部分执行（architecture §4.6）
+	if _menu_actions.handles(kind):
+		var menu_outcome = _menu_actions.execute(kind, payload, ref, OS.get_ticks_msec())
+		# pending/queued 的结果经 _flush_menu_actions 统一回执（菜单动作顺序执行）
+		if menu_outcome["state"] == "acked" or menu_outcome["state"] == "duplicate":
+			_ipc.send("ack", menu_outcome["ack"], ref)
+		return
+	# 其余动作（含未实现的 menu_pause 等 menu_*）；拒绝而不部分执行（architecture §4.6）
 	_ipc.send("ack", {"ok": false, "error": "unsupported_kind:%s" % kind}, ref)
 
 
