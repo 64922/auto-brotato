@@ -1,0 +1,21 @@
+{
+	"name": "AutoBrotato",
+	"namespace": "BrotatoPlayer",
+	"version_number": "0.2.0",
+	"description": "auto-brotato 观测与动作 mod（票据 02：最小观测与移动注入；票据 03：完整战斗观测与调试叠加层；决策在 Python 侧）",
+	"website_url": "",
+	"dependencies": [],
+	"extra": {
+		"godot": {
+			"authors": [
+				"brotato-player"
+			],
+			"compatible_mod_loader_version": [
+				"6.1.0"
+			],
+			"compatible_game_version": [
+				"1.1.15.4"
+			]
+		}
+	}
+}
