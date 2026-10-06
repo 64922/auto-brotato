@@ -1,0 +1,189 @@
+{
+  "scoring": {
+    "default_weight": 0.0,
+    "weapon_dps_weight": 0.2,
+    "merge_bonus": 8.0,
+    "set_bonus_scale": 1.0,
+    "weapon_full_penalty": 5.0,
+    "tier_bonus": {
+      "S": 6.0,
+      "A": 4.0,
+      "B": 2.0,
+      "C": 0.0,
+      "D": -3.0
+    },
+    "effect_weights": {
+      "knockback": 0.05,
+      "piercing": 0.2,
+      "piercing_damage": 0.1,
+      "bounce": 0.2,
+      "bounce_on_crit": 0.1,
+      "pierce_on_crit": 0.1,
+      "burn_chance": 0.2,
+      "effect_burning": 0.3,
+      "burning_spread": 0.2,
+      "effect_explode": 0.2,
+      "effect_explode_melee": 0.2,
+      "effect_explode_custom": 0.2,
+      "explosion_damage": 0.1,
+      "explosion_size": 0.1,
+      "effect_lightning_on_hit": 0.3,
+      "effect_projectiles_on_hit": 0.2,
+      "effect_slow_in_zone": 0.15,
+      "EFFECT_PROJECTILES_ON_HIT": 0.2,
+      "EFFECT_SLOW_PROJECTILES_ON_HIT": 0.15,
+      "EFFECT_WEAPON_SLOW_ON_HIT": 0.15,
+      "EFFECT_WEAPON_STACK": 0.2,
+      "effect_no_hit_boost": 0.2,
+      "xp_gain": 0.5,
+      "pickup_range": 0.1,
+      "hp_regen_bonus": 0.2,
+      "hp_start_next_wave": 0.1,
+      "hp_start_wave": 0.1,
+      "consumable_heal": 0.2,
+      "heal_on_crit_kill": 0.2,
+      "heal_when_pickup_gold": 0.2,
+      "gold_drops": 0.3,
+      "gold_on_crit_kill": 0.3,
+      "chance_double_gold": 0.3,
+      "harvesting_growth": 0.3,
+      "gain_pct_gold_start_wave": 0.3,
+      "free_rerolls": 0.3,
+      "items_price": 0.2,
+      "damage_against_bosses": 0.2,
+      "speed_cap": 0.1,
+      "hp_cap": 0.2,
+      "fog_visibility": 0.1,
+      "number_of_enemies": -0.5,
+      "enemy_health": -0.5,
+      "enemy_speed": -0.5,
+      "lose_hp_per_second": -1.0,
+      "extra_enemies_next_wave": -0.5,
+      "extra_elite_next_wave_chance": -0.5
+    }
+  },
+  "shop": {
+    "buy_threshold": 5.0,
+    "early_wave_max": 6,
+    "late_wave_min": 14,
+    "gold_cost_early": 0.15,
+    "gold_cost_mid": 0.1,
+    "gold_cost_late": 0.05,
+    "safety_margin_early": 15.0,
+    "safety_margin_mid": 10.0,
+    "safety_margin_late": 0.0,
+    "reroll_threshold": 2.0,
+    "reroll_budget_base": 1.0,
+    "reroll_budget_per_wave": 0.25,
+    "lock_min_value": 8.0,
+    "lock_enabled": true,
+    "max_weapon_slots": 6,
+    "sell_min_weapons": 1,
+    "sell_below_score": 5.0
+  },
+  "upgrade": {
+    "need_weight": 0.5,
+    "unknown_score": -5.0
+  },
+  "heroes": {
+    "character_ranger": {
+      "weights": {
+        "melee_damage": 0.0,
+        "ranged_damage": 1.0,
+        "percent_damage": 0.6,
+        "attack_speed": 0.8,
+        "crit_chance": 0.7,
+        "max_hp": 0.3,
+        "hp_regeneration": 0.15,
+        "lifesteal": 0.2,
+        "armor": 0.35,
+        "dodge": 0.35,
+        "speed": 0.25,
+        "range": 0.15,
+        "harvesting": 0.1,
+        "luck": 0.1,
+        "engineering": 0.1,
+        "elemental_damage": 0.0
+      },
+      "targets": {
+        "ranged_damage": 50.0,
+        "attack_speed": 50.0,
+        "crit_chance": 40.0,
+        "max_hp": 120.0,
+        "armor": 10.0,
+        "dodge": 20.0,
+        "speed": 25.0,
+        "lifesteal": 5.0,
+        "hp_regeneration": 10.0
+      }
+    },
+    "default_ranged": {
+      "weights": {
+        "melee_damage": 0.0,
+        "ranged_damage": 1.0,
+        "percent_damage": 0.6,
+        "attack_speed": 0.7,
+        "crit_chance": 0.6,
+        "max_hp": 0.35,
+        "hp_regeneration": 0.15,
+        "lifesteal": 0.2,
+        "armor": 0.4,
+        "dodge": 0.35,
+        "speed": 0.25,
+        "range": 0.15,
+        "harvesting": 0.1,
+        "luck": 0.1,
+        "engineering": 0.1,
+        "elemental_damage": 0.0
+      },
+      "targets": {
+        "ranged_damage": 40.0,
+        "attack_speed": 40.0,
+        "crit_chance": 30.0,
+        "max_hp": 120.0,
+        "armor": 10.0,
+        "dodge": 20.0,
+        "speed": 25.0
+      }
+    },
+    "default_melee": {
+      "weights": {
+        "melee_damage": 1.0,
+        "ranged_damage": 0.0,
+        "percent_damage": 0.6,
+        "attack_speed": 0.7,
+        "crit_chance": 0.6,
+        "max_hp": 0.4,
+        "hp_regeneration": 0.15,
+        "lifesteal": 0.25,
+        "armor": 0.45,
+        "dodge": 0.3,
+        "speed": 0.2,
+        "range": 0.0,
+        "harvesting": 0.1,
+        "luck": 0.1,
+        "engineering": 0.1,
+        "elemental_damage": 0.0
+      },
+      "targets": {
+        "melee_damage": 40.0,
+        "attack_speed": 40.0,
+        "crit_chance": 30.0,
+        "max_hp": 140.0,
+        "armor": 12.0,
+        "dodge": 15.0,
+        "speed": 25.0
+      }
+    }
+  },
+  "hero_assign": {
+    "heroes": {
+      "character_ranger": "character_ranger"
+    },
+    "fallback": "default_ranged",
+    "by_class": {
+      "ranged": "default_ranged",
+      "melee": "default_melee"
+    }
+  }
+}
