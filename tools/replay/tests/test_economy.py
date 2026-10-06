@@ -124,6 +124,21 @@ class EconomyReplayTest(unittest.TestCase):
         self.assertEqual(merged["weapons"][0]["id"], "weapon_smg_2")
         self.assertEqual(merged["weapons"][0]["tier"], 1)
 
+    def test_item_purchase_merges_count(self):
+        planner = self.planner()
+        shadow = {"weapons": [], "items": [{"id": "item_acid", "count": 1}]}
+        appraisal = Appraisal(
+            slot=0,
+            kind="item",
+            id="item_acid",
+            tier=0,
+            price=65,
+            score=ScoreBreakdown(),
+            known=True,
+        )
+        merged = _apply_purchase(shadow, appraisal, planner)
+        self.assertEqual(merged["items"], [{"id": "item_acid", "count": 2}])
+
     def test_build_configs_default_and_dedup(self):
         choices = build_configs([])
         self.assertEqual(len(choices), 1)

@@ -15,8 +15,8 @@ import asyncio
 from enum import Enum
 from typing import Callable, Optional
 
-from .decision.economy_model import EconomyContext
-from .decision.economy_runner import EconomyRunner
+from .decision.economy_model import EconomyContext, as_int
+from .decision.economy_runner import EconomyRunner, options_signature
 from .decision.tactical import TacticalController
 from .move_control import MoveController
 from .menu_view import (
@@ -147,7 +147,7 @@ class RunController:
         shop = state.fresh_shop(now=now)
         if shop is not None and not _snapshot_combat(state, now):
             self.activity = Activity.SHOP
-            await self._handle_shop(state, shop, now)
+            await self._handle_shop(shop, now)
             return
         self._shop_visit_seen = False
         self._shop_left = False
@@ -159,7 +159,7 @@ class RunController:
         if vector is not None:
             await self.server.send_action("move", {"vector": vector})
 
-    async def _handle_shop(self, state: AgentState, shop: dict, now: float) -> None:
+    async def _handle_shop(self, shop: dict, now: float) -> None:
         if not self._shop_visit_seen:
             self._shop_visit_seen = True
             self._shop_pending = False
@@ -182,8 +182,8 @@ class RunController:
 
     def _shop_context(self, shop: dict) -> EconomyContext:
         return EconomyContext(
-            wave=_as_int(shop.get("wave_next")) or self.max_wave or 1,
-            gold=_as_int(shop.get("gold")) or 0,
+            wave=as_int(shop.get("wave_next")) or self.max_wave or 1,
+            gold=as_int(shop.get("gold")) or 0,
             stats=shop.get("stats") if isinstance(shop.get("stats"), dict) else {},
             inventory=(
                 shop.get("inventory") if isinstance(shop.get("inventory"), dict) else {}
@@ -207,7 +207,7 @@ class RunController:
         )
 
     async def _handle_level_up(self, state: AgentState, menu: dict, now: float) -> None:
-        signature = _level_up_signature(menu)
+        signature = options_signature(menu)
         if signature != self._level_up_signature:
             self._level_up_signature = signature
             self._level_up_pending = False
@@ -230,11 +230,11 @@ class RunController:
         """升级页无 stats/inventory 字段：取最近快照（允许略旧，用于评分与短板）。"""
         snapshot = state.latest_snapshot if isinstance(state.latest_snapshot, dict) else {}
         wave_payload = snapshot.get("wave")
-        index = _as_int(wave_payload.get("index")) if isinstance(wave_payload, dict) else None
+        index = as_int(wave_payload.get("index")) if isinstance(wave_payload, dict) else None
         economy = snapshot.get("economy")
         return EconomyContext(
             wave=index if index is not None else (self.max_wave or 1),
-            gold=_as_int(economy.get("gold")) if isinstance(economy, dict) else 0,
+            gold=as_int(economy.get("gold")) if isinstance(economy, dict) else 0,
             stats=snapshot.get("stats") if isinstance(snapshot.get("stats"), dict) else {},
             inventory=(
                 snapshot.get("inventory")
@@ -317,25 +317,4 @@ def _snapshot_combat(state: AgentState, now: float) -> bool:
     )
 
 
-def _level_up_signature(menu: dict) -> tuple:
-    return tuple(
-        (
-            option.get("slot"),
-            option.get("kind"),
-            option.get("id"),
-            option.get("tier"),
-            option.get("can_pick"),
-        )
-        for option in menu.get("options") or []
-        if isinstance(option, dict)
-    )
 
-
-def _as_int(value) -> Optional[int]:
-    if isinstance(value, bool):
-        return None
-    if isinstance(value, int):
-        return value
-    if isinstance(value, float):
-        return int(value)
-    return None

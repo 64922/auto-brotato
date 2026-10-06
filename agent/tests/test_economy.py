@@ -334,6 +334,19 @@ class LevelUpPlanTest(unittest.TestCase):
         plan = self.planner.plan_level_up(menu, context())
         self.assertEqual(plan.slot, 2)
 
+    def test_unknown_card_uses_config_penalty(self):
+        menu = self.menu(
+            [
+                (1, "upgrade", "upgrade_unknown_xyz", True),
+                (2, "upgrade", "upgrade_ranged_damage_1", True),
+            ]
+        )
+        plan = self.planner.plan_level_up(menu, context())
+        unknown = next(a for a in plan.appraisals if a.id == "upgrade_unknown_xyz")
+        self.assertEqual(
+            unknown.score.total, self.planner.config.upgrade.unknown_score
+        )
+
     def test_no_pickable_returns_none(self):
         menu = self.menu([(1, "upgrade", "upgrade_ranged_damage_1", False)])
         plan = self.planner.plan_level_up(menu, context())

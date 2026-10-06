@@ -231,7 +231,14 @@ def _apply_purchase(
         if not merged:
             weapons.append({"slot": len(weapons), "id": appraisal.id, "tier": appraisal.tier})
     else:
-        result.setdefault("items", []).append({"id": appraisal.id, "count": 1})
+        existing = next(
+            (item for item in items(result.get("items")) if item.get("id") == appraisal.id),
+            None,
+        )
+        if existing is not None:
+            existing["count"] = (as_int(existing.get("count")) or 0) + 1
+        else:
+            result.setdefault("items", []).append({"id": appraisal.id, "count": 1})
     return result
 
 

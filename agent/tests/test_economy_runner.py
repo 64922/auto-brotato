@@ -1,8 +1,13 @@
 """economy_runner.py 测试：串行下发、ack 重试规则、决策落盘与访问边界。"""
 import asyncio
+import json
 import unittest
 
 from ab_agent.decision.economy import EconomyPlanner
+from ab_agent.decision.economy_config import (
+    DEFAULT_CONFIG_PATH,
+    economy_config_from_mapping,
+)
 from ab_agent.decision.economy_model import EconomyContext
 from ab_agent.decision.economy_runner import EconomyRunner
 from ab_agent.knowledge import load_knowledge
@@ -195,6 +200,63 @@ class ShopRunnerTest(unittest.IsolatedAsyncioTestCase):
         await runner.handle_shop(server, shop, context(gold=50), clock.now)
         await settle()
         self.assertEqual([kind for kind, _, _ in server.actions].count("shop_leave"), 2)
+
+    async def test_sell_success_freezes_stale_view(self):
+        raw = json.loads(DEFAULT_CONFIG_PATH.read_text(encoding="utf-8"))
+        raw["shop"]["sell_below_score"] = 1000.0
+        planner = EconomyPlanner(KNOWLEDGE, economy_config_from_mapping(raw))
+        runner = EconomyRunner(
+            planner, output=lambda text: None, clock=Clock(), ack_timeout_s=2.0
+        )
+        server = FakeServer()
+        shop = shop_payload(gold=100)
+        six = [{"slot": index, "id": "weapon_pistol", "tier": 0} for index in range(6)]
+        ctx = context(gold=100, inventory={"weapons": six, "items": []})
+        await runner.handle_shop(server, shop, ctx, 100.0)
+        await settle()
+        self.assertEqual([kind for kind, _, _ in server.actions], ["shop_sell"])
+        # 旧视图冻结：不得基于旧库存级联卖第二把（心跳窗口后视图会带新库存）
+        await runner.handle_shop(server, shop, ctx, 100.5)
+        await settle()
+        self.assertEqual(len(server.actions), 1)
+
+    async def test_lock_success_blocks_repeat_after_view_refresh(self):
+        runner = make_runner()
+        server = FakeServer()
+        shop = shop_payload(price=30, gold=10)
+        ctx = context(gold=10)
+        await runner.handle_shop(server, shop, ctx, 100.0)
+        await settle()
+        self.assertEqual([kind for kind, _, _ in server.actions], ["shop_lock"])
+        locked_shop = shop_payload(price=30, gold=10)
+        locked_shop["slots"][0]["locked"] = True
+        await runner.handle_shop(server, locked_shop, ctx, 100.5)
+        await settle()
+        kinds = [kind for kind, _, _ in server.actions]
+        self.assertEqual(kinds.count("shop_lock"), 1, "已锁定的槽位不得重复锁定")
+        self.assertIn("shop_leave", kinds)
+
+    async def test_leave_timeout_never_gives_up(self):
+        clock = Clock()
+        lines = []
+        runner = EconomyRunner(
+            EconomyPlanner(KNOWLEDGE),
+            output=lines.append,
+            clock=clock,
+            ack_timeout_s=2.0,
+        )
+        server = FakeServer()
+        server.acks = {ref: {"ok": False, "error": "buy_timeout"} for ref in (1, 2, 3)}
+        shop = shop_payload(gold=100, price=65, slot_id="item_acid", reroll_cost=-1)
+        for _ in range(3):
+            await runner.handle_shop(server, shop, context(gold=100), clock.now)
+            await settle()
+            clock.now += 1.1
+        self.assertEqual(
+            [kind for kind, _, _ in server.actions].count("shop_leave"), 3
+        )
+        self.assertTrue(any("重试" in line for line in lines))
+        self.assertFalse(any("放弃" in line for line in lines if "离开" in line))
 
     async def test_new_visit_resets_suppression(self):
         clock = Clock()

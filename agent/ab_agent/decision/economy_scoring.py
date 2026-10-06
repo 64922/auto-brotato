@@ -49,7 +49,8 @@ class OfferScorer:
         stage = self.stage(context.wave)
         price_cost = -float(price) * self.gold_cost(stage)
         if entry is None:
-            return ScoreBreakdown(price=price_cost, flags=("未知条目",))
+            unknown = self.config.upgrade.unknown_score if kind == "upgrade" else 0.0
+            return ScoreBreakdown(stat_value=unknown, price=price_cost, flags=("未知条目",))
         stat_value = 0.0
         synergy = 0.0
         flags: list[str] = []
