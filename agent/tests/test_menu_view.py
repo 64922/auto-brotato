@@ -55,6 +55,16 @@ class DifficultyMenuTest(unittest.TestCase):
         menu = DifficultyMenu.from_payload(payloads.difficulty(unlocked=(0, 2)))
         self.assertEqual(menu.unlocked_range_text(), "D0、D2")
 
+    def test_knowledge_names_override(self):
+        menu = DifficultyMenu.from_payload(payloads.difficulty())
+        text = menu.format_prompt({"character_ranger": "游侠（知识库）"})
+        self.assertIn("character_ranger（游侠（知识库））", text)
+
+    def test_knowledge_names_missing_falls_back(self):
+        menu = DifficultyMenu.from_payload(payloads.difficulty())
+        text = menu.format_prompt({"character_ranger": "character_ranger"})
+        self.assertIn("character_ranger（游侠）", text)
+
 
 class RunEndMenuTest(unittest.TestCase):
     def test_parse(self):

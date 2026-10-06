@@ -1,0 +1,6237 @@
+{
+  "data_version": "aab7f6594e07440f383bd794fc038f00c37d58d65db3a4e8f6a30c5b31d3dd21",
+  "entries": [
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_on_level_up",
+          "effect_sign": 3,
+          "key": "stat_melee_damage",
+          "storage_method": 1,
+          "text_key": "EFFECT_STAT_ON_LEVEL_UP",
+          "value": 2
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_on_level_up",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 1,
+          "text_key": "EFFECT_STAT_ON_LEVEL_UP",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_on_level_up",
+          "effect_sign": 3,
+          "key": "stat_elemental_damage",
+          "storage_method": 1,
+          "text_key": "EFFECT_STAT_ON_LEVEL_UP",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_on_level_up",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 1,
+          "text_key": "EFFECT_STAT_ON_LEVEL_UP",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_on_level_up",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 1,
+          "text_key": "EFFECT_STAT_ON_LEVEL_UP",
+          "value": -2
+        }
+      ],
+      "id": "character_apprentice",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "学徒",
+      "name_key": "CHARACTER_APPRENTICE",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_knife_1",
+        "weapon_lightning_shiv_1",
+        "weapon_cacti_club_1",
+        "weapon_fighting_stick_1",
+        "weapon_ghost_flint_1",
+        "weapon_ghost_axe_1",
+        "weapon_hatchet_1",
+        "weapon_torch_1",
+        "weapon_plank_1",
+        "weapon_pruner_1",
+        "weapon_screwdriver_1",
+        "weapon_wrench_1",
+        "weapon_medical_gun_1",
+        "weapon_smg_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_shredder_1",
+        "weapon_slingshot_1",
+        "weapon_taser_1",
+        "weapon_icicle_1",
+        "weapon_shuriken_1",
+        "weapon_ghost_scepter_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_apprentice",
+        "number": 0,
+        "reward_id": "weapon_fighting_stick_1",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "xp_gain"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "weapons_price",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -95
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 30
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 33
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_dangerous_bunny",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "minimum_weapons_in_shop",
+          "storage_method": 2,
+          "text_key": "effect_minimum_weapon_in_shop",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "destroy_weapons",
+          "storage_method": 2,
+          "text_key": "effect_destroy_weapons",
+          "value": 1
+        }
+      ],
+      "id": "character_arms_dealer",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "军火商",
+      "name_key": "CHARACTER_ARMS_DEALER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_pistol_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 33,
+        "stat_harvesting": 30,
+        "weapons_price": -95
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_arms_dealer",
+        "number": 0,
+        "reward_id": "item_anvil",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "explosion_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 175
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "explosion_size",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 4
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_weapon_class_bonus",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_artificer",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "技工",
+      "name_key": "CHARACTER_ARTIFICER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_plank_1",
+        "weapon_screwdriver_1",
+        "weapon_wrench_1",
+        "weapon_shredder_1"
+      ],
+      "stat_deltas": {
+        "effect_reduce_stat_gains": -50,
+        "effect_weapon_class_bonus": 100,
+        "explosion_damage": 175,
+        "explosion_size": 4,
+        "stat_percent_damage": -100
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_artificer",
+        "number": 0,
+        "reward_id": "item_explosive_shells",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "explosive"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+        "item_barnacle"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 12
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "items_price",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "weapon_slot_upgrades",
+          "storage_method": 0,
+          "text_key": "EFFECT_WEAPON_SLOT_UPGRADES",
+          "value": 24
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "weapon_slot",
+          "storage_method": 0,
+          "text_key": "EFFECT_ONE_WEAPON_SLOT_INITIAL_LIMIT",
+          "value": -5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "minimum_weapons_in_shop",
+          "storage_method": 2,
+          "text_key": "effect_minimum_weapon_in_shop",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "next_level_xp_needed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 130
+        }
+      ],
+      "id": "character_baby",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "宝宝",
+      "name_key": "CHARACTER_BABY",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_scissors_1",
+        "weapon_screwdriver_1",
+        "weapon_pruner_1",
+        "weapon_sharp_tooth_1",
+        "weapon_fighting_stick_1",
+        "weapon_knife_1",
+        "weapon_stick_1",
+        "weapon_plank_1",
+        "weapon_rock_1",
+        "weapon_wrench_1",
+        "weapon_shuriken_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_slingshot_1",
+        "weapon_pistol_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "items_price": -20,
+        "next_level_xp_needed": 130,
+        "stat_harvesting": 12,
+        "weapon_slot": -5,
+        "weapon_slot_upgrades": 24
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_baby",
+        "number": 0,
+        "reward_id": "item_celery_tea",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "xp_gain"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+        "item_jelly",
+        "item_glasses"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_lootworm",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "weapon_slot",
+          "storage_method": 2,
+          "text_key": "effect_no_weapons",
+          "value": 0
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT",
+          "value": 2
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "beast_master_effect",
+          "storage_method": 2,
+          "text_key": "EFFECT_BEAST_MASTER_EFFECT",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "boosted_wanted_item_tag",
+          "storage_method": 2,
+          "text_key": "[EMPTY]",
+          "value": 1
+        }
+      ],
+      "id": "character_beast_master",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "驯兽师",
+      "name_key": "CHARACTER_BEAST_MASTER",
+      "starting_items": [
+        "item_bonk_dog",
+        "item_catling_gun",
+        "item_blazemander",
+        "item_bot_o_mine"
+      ],
+      "starting_weapons": [
+
+      ],
+      "stat_deltas": {
+        "stat_luck": 10,
+        "stat_speed": 2
+      },
+      "tags": [
+        "pet"
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_beast_master",
+        "number": 0,
+        "reward_id": "item_scapegoat",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "pet"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "ranged_damage"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "EFFECT_WEAPON_CLASS_BONUS",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_weapon",
+          "effect_sign": 3,
+          "key": "weapon_fist_1",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 15
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_brawler",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "斗士",
+      "name_key": "CHARACTER_BRAWLER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_hand_1",
+        "weapon_claw_1"
+      ],
+      "stat_deltas": {
+        "EFFECT_WEAPON_CLASS_BONUS": 50,
+        "stat_dodge": 15,
+        "stat_range": -50,
+        "stat_ranged_damage": -50
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_brawler",
+        "number": 0,
+        "reward_id": "weapon_power_fist_3",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": true,
+      "wanted_tags": [
+        "stat_melee_damage"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "lifesteal"
+      ],
+      "banned_items": [
+        "item_jelly",
+        "item_nail",
+        "item_crystal",
+        "item_coffee",
+        "item_seashell",
+        "item_glasses",
+        "item_community_support",
+        "item_tardigrade"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 15
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "explode_on_hit",
+          "storage_method": 0,
+          "text_key": "effect_explode_on_hit",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "weapon_slot",
+          "storage_method": 2,
+          "text_key": "effect_no_weapons",
+          "value": 0
+        }
+      ],
+      "id": "character_bull",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "公牛",
+      "name_key": "CHARACTER_BULL",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 50,
+        "explode_on_hit": 1,
+        "stat_armor": 10,
+        "stat_hp_regeneration": 15,
+        "stat_max_hp": 20
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_bull",
+        "number": 0,
+        "reward_id": "item_gnome",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_armor",
+        "stat_hp_regeneration",
+        "explosive"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "lifesteal",
+        "lifesteal_and_hp_regeneration",
+        "speed"
+      ],
+      "banned_items": [
+        "item_fin"
+      ],
+      "banned_upgrades": [
+        "upgrade_speed"
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "consumable_heal",
+          "storage_method": 0,
+          "text_key": "effect_consumable_heal",
+          "value": 3
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        }
+      ],
+      "id": "character_chunky",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "大壮",
+      "name_key": "CHARACTER_CHUNKY",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_cacti_club_1",
+        "weapon_rock_1",
+        "weapon_stick_1",
+        "weapon_torch_1",
+        "weapon_plank_1",
+        "weapon_chopper_1",
+        "weapon_pruner_1",
+        "weapon_spiky_shield_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_taser_1",
+        "weapon_ghost_scepter_1",
+        "weapon_shredder_1",
+        "weapon_revolver_1"
+      ],
+      "stat_deltas": {
+        "consumable_heal": 3,
+        "effect_increase_stat_gains": 25,
+        "effect_reduce_stat_gains": -200,
+        "stat_lifesteal": -100,
+        "stat_percent_damage": 1
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_chunky",
+        "number": 0,
+        "reward_id": "weapon_potato_thrower_2",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_max_hp",
+        "consumable",
+        "stat_luck"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_weapon_class_bonus",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_weapon",
+          "effect_sign": 3,
+          "key": "weapon_knife_1",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -30
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -10
+        }
+      ],
+      "id": "character_crazy",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "狂人",
+      "name_key": "CHARACTER_CRAZY",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_knife_1",
+        "weapon_dagger_1",
+        "weapon_scissors_1",
+        "weapon_lightning_shiv_1",
+        "weapon_claw_1",
+        "weapon_sharp_tooth_1",
+        "weapon_shuriken_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "effect_weapon_class_bonus": 100,
+        "stat_attack_speed": 25,
+        "stat_dodge": -30,
+        "stat_engineering": -10,
+        "stat_ranged_damage": -10
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_crazy",
+        "number": 0,
+        "reward_id": "item_hunting_trophy",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": true,
+      "wanted_tags": [
+        "stat_crit_chance",
+        "stat_melee_damage"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "lifesteal"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "trees",
+          "storage_method": 0,
+          "text_key": "effect_trees",
+          "value": 6
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "cryptid",
+          "storage_method": 0,
+          "text_key": "effect_cryptid",
+          "value": 12
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_TREE",
+          "value": 3
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "dodge_cap",
+          "storage_method": 2,
+          "text_key": "effect_dodge_cap",
+          "value": 70
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "temp_stats_on_dodge",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 1,
+          "text_key": "EFFECT_TEMP_STAT_ON_DODGE",
+          "value": 3
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "enemy_gold_drops",
+          "storage_method": 0,
+          "text_key": "effect_enemy_gold_drops",
+          "value": -50
+        }
+      ],
+      "id": "character_cryptid",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "神秘生物",
+      "name_key": "CHARACTER_CRYPTID",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_hand_1",
+        "weapon_claw_1",
+        "weapon_knife_1",
+        "weapon_cacti_club_1",
+        "weapon_pruner_1",
+        "weapon_chopper_1",
+        "weapon_ghost_axe_1",
+        "weapon_dagger_1",
+        "weapon_lightning_shiv_1",
+        "weapon_ghost_flint_1",
+        "weapon_rock_1",
+        "weapon_stick_1",
+        "weapon_hatchet_1",
+        "weapon_jousting_lance_1",
+        "weapon_screwdriver_1",
+        "weapon_plank_1",
+        "weapon_ghost_scepter_1",
+        "weapon_shredder_1",
+        "weapon_pistol_1",
+        "weapon_smg_1"
+      ],
+      "stat_deltas": {
+        "cryptid": 12,
+        "enemy_gold_drops": -50,
+        "stat_hp_regeneration": 3,
+        "stat_lifesteal": -100,
+        "stat_range": -100,
+        "trees": 6
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_cryptid",
+        "number": 0,
+        "reward_id": "weapon_claw_1",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "exploration",
+        "stat_dodge"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "melee_damage",
+        "elemental_damage"
+      ],
+      "banned_items": [
+        "item_charcoal",
+        "item_gnome"
+      ],
+      "banned_upgrades": [
+        "upgrade_melee_damage",
+        "upgrade_elemental_damage"
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_weapon",
+          "effect_sign": 3,
+          "key": "weapon_minigun_3",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 200
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "convert_stats_half_wave",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 1,
+          "text_key": "EFFECT_CONVERT_STAT_TEMP_HALF_WAVE",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -75
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        }
+      ],
+      "id": "character_cyborg",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "赛博格",
+      "name_key": "CHARACTER_CYBORG",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_wrench_1",
+        "weapon_screwdriver_1",
+        "weapon_plank_1",
+        "weapon_pistol_1",
+        "weapon_smg_1",
+        "weapon_revolver_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_crossbow_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 200,
+        "effect_reduce_stat_gains": -275
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_cyborg",
+        "number": 0,
+        "reward_id": "item_improved_tools",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "structure",
+        "stat_ranged_damage"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "convert_stats_end_of_wave",
+          "effect_sign": 3,
+          "key": "materials",
+          "storage_method": 1,
+          "text_key": "effect_convert_stat_end_of_wave",
+          "value": 13
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "hp_shop",
+          "storage_method": 2,
+          "text_key": "effect_hp_shop",
+          "value": 1
+        }
+      ],
+      "id": "character_demon",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "恶魔",
+      "name_key": "CHARACTER_DEMON",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_dagger_1",
+        "weapon_lightning_shiv_1",
+        "weapon_ghost_axe_1",
+        "weapon_ghost_flint_1",
+        "weapon_torch_1",
+        "weapon_chopper_1",
+        "weapon_sharp_tooth_1",
+        "weapon_wrench_1",
+        "weapon_ghost_scepter_1",
+        "weapon_wand_1",
+        "weapon_taser_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_demon",
+        "number": 0,
+        "reward_id": "weapon_obliterator_3",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "EFFECT_WEAPON_CLASS_BONUS",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 200
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_doctor",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "医生",
+      "name_key": "CHARACTER_DOCTOR",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_scissors_1",
+        "weapon_medical_gun_1"
+      ],
+      "stat_deltas": {
+        "EFFECT_WEAPON_CLASS_BONUS": 200,
+        "effect_increase_stat_gains": 100,
+        "effect_reduce_stat_gains": -50,
+        "stat_attack_speed": -100,
+        "stat_harvesting": 5,
+        "stat_hp_regeneration": 5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_doctor",
+        "number": 0,
+        "reward_id": "item_medikit",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_hp_regeneration"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_weapon",
+          "effect_sign": 3,
+          "key": "weapon_wrench_1",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "group_structures",
+          "storage_method": 0,
+          "text_key": "effect_group_structures",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_engineer",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "工程师",
+      "name_key": "CHARACTER_ENGINEER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_wrench_1",
+        "weapon_screwdriver_1",
+        "weapon_plank_1",
+        "weapon_hammer_2"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 25,
+        "effect_reduce_stat_gains": -50,
+        "group_structures": 1,
+        "stat_engineering": 10
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_engineer",
+        "number": 0,
+        "reward_id": "item_robot_arm",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_engineering",
+        "structure"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "items_price",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "recycling_gains",
+          "storage_method": 0,
+          "text_key": "effect_recycling_gains",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "gain_pct_gold_start_wave",
+          "storage_method": 0,
+          "text_key": "effect_gain_pct_gold_start_wave",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "EFFECT_REDUCE_STAT_GAINS",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_entrepreneur",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "企业家",
+      "name_key": "CHARACTER_ENTREPRENEUR",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_claw_1",
+        "weapon_hand_1",
+        "weapon_knife_1",
+        "weapon_dagger_1",
+        "weapon_pruner_1",
+        "weapon_fighting_stick_1",
+        "weapon_hatchet_1",
+        "weapon_ghost_flint_1",
+        "weapon_wrench_1",
+        "weapon_plank_1",
+        "weapon_pistol_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_taser_1",
+        "weapon_shuriken_1",
+        "weapon_crossbow_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "EFFECT_REDUCE_STAT_GAINS": -50,
+        "effect_increase_stat_gains": 50,
+        "gain_pct_gold_start_wave": -100,
+        "items_price": -25,
+        "recycling_gains": 25
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_entrepreneur",
+        "number": 0,
+        "reward_id": "item_bowler_hat",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_harvesting",
+        "economy"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "trees",
+          "storage_method": 0,
+          "text_key": "effect_trees",
+          "value": 12
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_lumberjack_shirt",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "pickup_range",
+          "storage_method": 0,
+          "text_key": "effect_pickup_range",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 2,
+          "key": "map_size",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 33
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 2,
+          "key": "number_of_enemies",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "enemy_gold_drops",
+          "storage_method": 0,
+          "text_key": "effect_enemy_gold_drops",
+          "value": -50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "enemy_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -40
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "trees_start_wave",
+          "storage_method": 2,
+          "text_key": "[EMPTY]",
+          "value": 1
+        }
+      ],
+      "id": "character_explorer",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "探险家",
+      "name_key": "CHARACTER_EXPLORER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_hand_1",
+        "weapon_cacti_club_1",
+        "weapon_screwdriver_1",
+        "weapon_dagger_1",
+        "weapon_wrench_1",
+        "weapon_stick_1",
+        "weapon_torch_1",
+        "weapon_chopper_1",
+        "weapon_plank_1",
+        "weapon_hatchet_1",
+        "weapon_jousting_lance_1",
+        "weapon_ghost_axe_1",
+        "weapon_crossbow_1",
+        "weapon_shredder_1",
+        "weapon_taser_1",
+        "weapon_wand_1"
+      ],
+      "stat_deltas": {
+        "enemy_gold_drops": -50,
+        "enemy_speed": 10,
+        "map_size": 33,
+        "number_of_enemies": 25,
+        "pickup_range": 50,
+        "stat_percent_damage": -40,
+        "stat_speed": 10,
+        "trees": 12
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_explorer",
+        "number": 0,
+        "reward_id": "item_compass",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_speed",
+        "exploration",
+        "consumable"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "harvesting_growth",
+          "storage_method": 0,
+          "text_key": "effect_harvesting_growth",
+          "value": 3
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "consumable_stats_while_max",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 1,
+          "text_key": "EFFECT_CONSUMABLE_STAT_WHILE_MAX",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "gold_drops",
+          "storage_method": 0,
+          "text_key": "effect_gold_drops",
+          "value": -50
+        }
+      ],
+      "id": "character_farmer",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "农夫",
+      "name_key": "CHARACTER_FARMER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_hand_1",
+        "weapon_spear_1",
+        "weapon_stick_1",
+        "weapon_torch_1",
+        "weapon_fighting_stick_1",
+        "weapon_screwdriver_1",
+        "weapon_pruner_1",
+        "weapon_dagger_1",
+        "weapon_wrench_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_slingshot_1",
+        "weapon_potato_thrower_2"
+      ],
+      "stat_deltas": {
+        "gold_drops": -50,
+        "harvesting_growth": 3,
+        "stat_harvesting": 20
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_farmer",
+        "number": 0,
+        "reward_id": "item_wheat",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_harvesting",
+        "consumable"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 0,
+              "arg_key": "",
+              "arg_sign": 0,
+              "arg_value": 2
+            }
+          ],
+          "custom_key": "guaranteed_shop_items",
+          "effect_sign": 0,
+          "key": "item_bait",
+          "storage_method": 1,
+          "text_key": "effect_guaranteed_shop_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "specific_items_price",
+          "effect_sign": 0,
+          "key": "item_bait",
+          "storage_method": 1,
+          "text_key": "EFFECT_SPECIFIC_ITEM_PRICE",
+          "value": -100
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 2
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "upgraded_baits",
+          "storage_method": 2,
+          "text_key": "effect_upgraded_baits",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "enemy_gold_drops",
+          "storage_method": 0,
+          "text_key": "effect_enemy_gold_drops",
+          "value": -50
+        }
+      ],
+      "id": "character_fisherman",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "渔夫",
+      "name_key": "CHARACTER_FISHERMAN",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_knife_1",
+        "weapon_rock_1",
+        "weapon_spear_1",
+        "weapon_fighting_stick_1",
+        "weapon_spiky_shield_1",
+        "weapon_torch_1",
+        "weapon_stick_1",
+        "weapon_sharp_tooth_1",
+        "weapon_plank_1",
+        "weapon_pruner_1",
+        "weapon_scissors_1",
+        "weapon_pistol_1",
+        "weapon_smg_1",
+        "weapon_crossbow_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_laser_gun_1",
+        "weapon_revolver_1",
+        "weapon_shredder_1",
+        "weapon_slingshot_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "enemy_gold_drops": -50,
+        "stat_harvesting": 22,
+        "stat_max_hp": 5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_fisherman",
+        "number": 0,
+        "reward_id": "item_lure",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+        "item_mastery"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 2
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_ranged_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "max_melee_weapons",
+          "storage_method": 2,
+          "text_key": "effect_generalist",
+          "value": 3
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "max_ranged_weapons",
+          "storage_method": 2,
+          "text_key": "[EMPTY]",
+          "value": 3
+        }
+      ],
+      "id": "character_generalist",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "博学家",
+      "name_key": "CHARACTER_GENERALIST",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_cacti_club_1",
+        "weapon_ghost_axe_1",
+        "weapon_ghost_flint_1",
+        "weapon_lightning_shiv_1",
+        "weapon_knife_1",
+        "weapon_scissors_1",
+        "weapon_spear_1",
+        "weapon_shuriken_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_smg_1",
+        "weapon_shredder_1",
+        "weapon_revolver_1",
+        "weapon_laser_gun_1",
+        "weapon_slingshot_1",
+        "weapon_ghost_scepter_1"
+      ],
+      "stat_deltas": {
+        "stat_melee_damage": 2,
+        "stat_ranged_damage": 1
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_generalist",
+        "number": 0,
+        "reward_id": "item_big_arms",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_melee_damage",
+        "stat_ranged_damage"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "armor"
+      ],
+      "banned_items": [
+        "item_duct_tape",
+        "item_ghost_outfit"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "EFFECT_WEAPON_CLASS_BONUS",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 30
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "dodge_cap",
+          "storage_method": 2,
+          "text_key": "effect_dodge_cap",
+          "value": 90
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        }
+      ],
+      "id": "character_ghost",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "幽灵",
+      "name_key": "CHARACTER_GHOST",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_ghost_flint_1",
+        "weapon_ghost_axe_1",
+        "weapon_ghost_scepter_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "EFFECT_WEAPON_CLASS_BONUS": 10,
+        "stat_armor": -100,
+        "stat_dodge": 30
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_ghost",
+        "number": 0,
+        "reward_id": "item_ritual",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_dodge"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "ranged_damage"
+      ],
+      "banned_items": [
+        "item_seashell"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 3
+            }
+          ],
+          "custom_key": "unique_weapon_effects",
+          "effect_sign": 0,
+          "key": "stat_attack_speed",
+          "storage_method": 1,
+          "text_key": "effect_unique_weapon_bonus",
+          "value": 20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "no_ranged_weapons",
+          "storage_method": 0,
+          "text_key": "effect_no_ranged_weapons",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -40
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -30
+        }
+      ],
+      "id": "character_gladiator",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "角斗士",
+      "name_key": "CHARACTER_GLADIATOR",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_spear_1",
+        "weapon_jousting_lance_1",
+        "weapon_cacti_club_1",
+        "weapon_torch_1",
+        "weapon_dagger_1",
+        "weapon_knife_1",
+        "weapon_plank_1",
+        "weapon_ghost_axe_1",
+        "weapon_ghost_flint_1",
+        "weapon_sharp_tooth_1",
+        "weapon_fist_1",
+        "weapon_claw_1",
+        "weapon_fighting_stick_1",
+        "weapon_hatchet_1",
+        "weapon_lightning_shiv_1"
+      ],
+      "stat_deltas": {
+        "no_ranged_weapons": 1,
+        "stat_attack_speed": -40,
+        "stat_luck": -30,
+        "stat_melee_damage": 5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_gladiator",
+        "number": 0,
+        "reward_id": "item_spider",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_melee_damage"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "consumable_stats_while_max",
+          "effect_sign": 3,
+          "key": "explosion_damage",
+          "storage_method": 1,
+          "text_key": "EFFECT_CONSUMABLE_STAT_WHILE_MAX",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "explode_on_consumable",
+          "storage_method": 0,
+          "text_key": "effect_explode_on_consumable",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "items_price",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "xp_gain",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -25
+        }
+      ],
+      "id": "character_glutton",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "暴食",
+      "name_key": "CHARACTER_GLUTTON",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_pruner_1",
+        "weapon_chopper_1",
+        "weapon_dagger_1",
+        "weapon_fist_1",
+        "weapon_jousting_lance_1",
+        "weapon_screwdriver_1",
+        "weapon_plank_1",
+        "weapon_shredder_1"
+      ],
+      "stat_deltas": {
+        "explode_on_consumable": 1,
+        "items_price": 25,
+        "stat_luck": 50,
+        "xp_gain": -25
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_glutton",
+        "number": 0,
+        "reward_id": "item_spicy_sauce",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "explosive",
+        "stat_melee_damage",
+        "consumable"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "hp_regeneration",
+        "lifesteal",
+        "lifesteal_and_hp_regeneration",
+        "consumable_heal"
+      ],
+      "banned_items": [
+        "item_tentacle",
+        "item_goblet",
+        "item_cute_monkey",
+        "item_turret_healing",
+        "item_garden",
+        "item_extra_stomach",
+        "item_adrenaline",
+        "item_weird_ghost",
+        "item_doc_moth"
+      ],
+      "banned_upgrades": [
+        "upgrade_hp_regeneration",
+        "upgrade_lifesteal"
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 33
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 33
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_below_half_health",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 1,
+          "text_key": "effect_stat_below_half_health",
+          "value": 40
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_below_half_health",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 1,
+          "text_key": "effect_stat_below_half_health",
+          "value": 20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 2,
+          "key": "no_heal",
+          "storage_method": 0,
+          "text_key": "effect_no_heal",
+          "value": 1
+        }
+      ],
+      "id": "character_golem",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "魔像",
+      "name_key": "CHARACTER_GOLEM",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_cacti_club_1",
+        "weapon_chopper_1",
+        "weapon_fist_1",
+        "weapon_ghost_axe_1",
+        "weapon_hatchet_1",
+        "weapon_knife_1",
+        "weapon_plank_1",
+        "weapon_rock_1",
+        "weapon_spiky_shield_1",
+        "weapon_stick_1",
+        "weapon_torch_1",
+        "weapon_pistol_1",
+        "weapon_revolver_1",
+        "weapon_slingshot_1",
+        "weapon_crossbow_1",
+        "weapon_ghost_scepter_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 66,
+        "no_heal": 1,
+        "stat_max_hp": 20
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_golem",
+        "number": 0,
+        "reward_id": "item_stone_skin",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_max_hp",
+        "stat_armor"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "harvesting"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+        "upgrade_harvesting"
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 100
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -33
+        }
+      ],
+      "id": "character_hunter",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "猎人",
+      "name_key": "CHARACTER_HUNTER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_cacti_club_1",
+        "weapon_dagger_1",
+        "weapon_spear_1",
+        "weapon_claw_1",
+        "weapon_scissors_1",
+        "weapon_shuriken_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_crossbow_1",
+        "weapon_icicle_1",
+        "weapon_rail_gun_1",
+        "weapon_screwdriver_1",
+        "weapon_knife_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 25,
+        "effect_reduce_stat_gains": -133,
+        "stat_percent_damage": 1,
+        "stat_range": 100
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_hunter",
+        "number": 0,
+        "reward_id": "weapon_sniper_gun_3",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_range",
+        "stat_crit_chance"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "damage_against_bosses",
+          "storage_method": 0,
+          "text_key": "effect_damage_against_bosses",
+          "value": 125
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "gold_drops",
+          "storage_method": 0,
+          "text_key": "effect_gold_drops",
+          "value": 200
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 2,
+          "key": "number_of_enemies",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -70
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "enemy_health",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 175
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "enemy_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 35
+        }
+      ],
+      "id": "character_jack",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "杰克",
+      "name_key": "CHARACTER_JACK",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_knife_1",
+        "weapon_jousting_lance_1",
+        "weapon_wrench_1",
+        "weapon_torch_1",
+        "weapon_hatchet_1",
+        "weapon_stick_1",
+        "weapon_spear_1",
+        "weapon_spiky_shield_1",
+        "weapon_shuriken_1",
+        "weapon_laser_gun_1",
+        "weapon_revolver_1",
+        "weapon_crossbow_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "damage_against_bosses": 125,
+        "enemy_damage": 35,
+        "enemy_health": 175,
+        "gold_drops": 200,
+        "number_of_enemies": -70
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_jack",
+        "number": 0,
+        "reward_id": "item_giant_belt",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 9
+            }
+          ],
+          "custom_key": "tier_iv_weapon_effects",
+          "effect_sign": 0,
+          "key": "stat_percent_damage",
+          "storage_method": 1,
+          "text_key": "EFFECT_TIER_IV_WEAPON_BONUS",
+          "value": 25
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 9
+            }
+          ],
+          "custom_key": "tier_iv_weapon_effects",
+          "effect_sign": 0,
+          "key": "stat_attack_speed",
+          "storage_method": 1,
+          "text_key": "EFFECT_TIER_IV_WEAPON_BONUS",
+          "value": 25
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 2,
+              "arg_value": 0
+            },
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT",
+          "value": 5
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 10
+            }
+          ],
+          "custom_key": "tier_i_weapon_effects",
+          "effect_sign": 1,
+          "key": "stat_percent_damage",
+          "storage_method": 1,
+          "text_key": "EFFECT_TIER_I_WEAPON_BONUS",
+          "value": -15
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 10
+            }
+          ],
+          "custom_key": "tier_i_weapon_effects",
+          "effect_sign": 1,
+          "key": "stat_attack_speed",
+          "storage_method": 1,
+          "text_key": "EFFECT_TIER_I_WEAPON_BONUS",
+          "value": -15
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT",
+          "value": -2
+        }
+      ],
+      "id": "character_king",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "国王",
+      "name_key": "CHARACTER_KING",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_2",
+        "weapon_circular_saw_2",
+        "weapon_knife_2",
+        "weapon_hatchet_2",
+        "weapon_ghost_axe_2",
+        "weapon_lightning_shiv_2",
+        "weapon_torch_2",
+        "weapon_plank_2",
+        "weapon_spear_2",
+        "weapon_jousting_lance_2",
+        "weapon_sword_2",
+        "weapon_hammer_2",
+        "weapon_spiky_shield_2",
+        "weapon_pistol_2",
+        "weapon_smg_2",
+        "weapon_crossbow_2",
+        "weapon_double_barrel_shotgun_2",
+        "weapon_rocket_launcher_2",
+        "weapon_taser_2",
+        "weapon_fireball_2",
+        "weapon_vorpal_sword_2"
+      ],
+      "stat_deltas": {
+        "stat_luck": 50,
+        "stat_max_hp": 3
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_king",
+        "number": 0,
+        "reward_id": "weapon_excalibur_4",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "harvesting",
+        "ranged_damage"
+      ],
+      "banned_items": [
+        "item_seashell"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 2
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "no_ranged_weapons",
+          "storage_method": 0,
+          "text_key": "effect_no_ranged_weapons",
+          "value": 1
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 0,
+              "arg_key": "",
+              "arg_sign": 1,
+              "arg_value": 5
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "min_weapon_tier",
+          "storage_method": 2,
+          "text_key": "effect_min_weapon_tier",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -80
+        }
+      ],
+      "id": "character_knight",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "骑士",
+      "name_key": "CHARACTER_KNIGHT",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_sword_2",
+        "weapon_hammer_2",
+        "weapon_spear_2",
+        "weapon_torch_2",
+        "weapon_jousting_lance_2",
+        "weapon_fighting_stick_2",
+        "weapon_plank_2",
+        "weapon_rock_2",
+        "weapon_fist_2",
+        "weapon_knife_2",
+        "weapon_scissors_2",
+        "weapon_cacti_club_2",
+        "weapon_vorpal_sword_2"
+      ],
+      "stat_deltas": {
+        "effect_reduce_stat_gains": -130,
+        "no_ranged_weapons": 1,
+        "stat_armor": 3,
+        "stat_melee_damage": 2
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_knight",
+        "number": 0,
+        "reward_id": "weapon_plasma_sledgehammer_3",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_armor"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "dmg_when_heal",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 1,
+          "text_key": "EFFECT_DEAL_DMG_WHEN_HEAL",
+          "value": 100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_lich",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "巫妖",
+      "name_key": "CHARACTER_LICH",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_scissors_1",
+        "weapon_chopper_1",
+        "weapon_dagger_1",
+        "weapon_stick_1",
+        "weapon_knife_1",
+        "weapon_ghost_flint_1",
+        "weapon_sharp_tooth_1",
+        "weapon_pruner_1",
+        "weapon_hatchet_1",
+        "weapon_rock_1",
+        "weapon_spiky_shield_1",
+        "weapon_lightning_shiv_1",
+        "weapon_ghost_scepter_1",
+        "weapon_medical_gun_1",
+        "weapon_smg_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_slingshot_1",
+        "weapon_crossbow_1"
+      ],
+      "stat_deltas": {
+        "effect_reduce_stat_gains": -50,
+        "stat_hp_regeneration": 10,
+        "stat_lifesteal": 10
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_lich",
+        "number": 0,
+        "reward_id": "item_tentacle",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_max_hp",
+        "stat_hp_regeneration",
+        "stat_lifesteal"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 30
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 2,
+          "key": "number_of_enemies",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "stats_end_of_wave",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 1,
+          "text_key": "effect_gain_stat_end_of_wave",
+          "value": -3
+        }
+      ],
+      "id": "character_loud",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "大嗓门",
+      "name_key": "CHARACTER_LOUD",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_cacti_club_1",
+        "weapon_ghost_axe_1",
+        "weapon_ghost_flint_1",
+        "weapon_lightning_shiv_1",
+        "weapon_dagger_1",
+        "weapon_claw_1",
+        "weapon_spear_1",
+        "weapon_torch_1",
+        "weapon_rock_1",
+        "weapon_hatchet_1",
+        "weapon_plank_1",
+        "weapon_wrench_1",
+        "weapon_jousting_lance_1",
+        "weapon_fighting_stick_1",
+        "weapon_pruner_1",
+        "weapon_screwdriver_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_pistol_1",
+        "weapon_smg_1",
+        "weapon_shredder_1",
+        "weapon_icicle_1",
+        "weapon_shuriken_1",
+        "weapon_slingshot_1",
+        "weapon_crossbow_1"
+      ],
+      "stat_deltas": {
+        "number_of_enemies": 50,
+        "stat_percent_damage": 30
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_loud",
+        "number": 0,
+        "reward_id": "item_rip_and_tear",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "more_enemies"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "dmg_when_pickup_gold",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 1,
+          "text_key": "EFFECT_DEAL_DMG_WHEN_PICKUP_GOLD",
+          "value": 15
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -60
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "xp_gain",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_lucky",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "幸运星",
+      "name_key": "CHARACTER_LUCKY",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_stick_1",
+        "weapon_rock_1",
+        "weapon_fist_1",
+        "weapon_chopper_1",
+        "weapon_plank_1",
+        "weapon_screwdriver_1",
+        "weapon_jousting_lance_1",
+        "weapon_torch_1",
+        "weapon_pruner_1",
+        "weapon_slingshot_1",
+        "weapon_wand_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 25,
+        "stat_attack_speed": -60,
+        "stat_luck": 100,
+        "xp_gain": -50
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_lucky",
+        "number": 0,
+        "reward_id": "item_lucky_charm",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_luck",
+        "pickup",
+        "exploration"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "melee_damage",
+        "ranged_damage",
+        "melee_and_ranged_damage"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+        "upgrade_melee_damage",
+        "upgrade_ranged_damage"
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_snake",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_scared_sausage",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_mage",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "法师",
+      "name_key": "CHARACTER_MAGE",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_wand_1",
+        "weapon_torch_1",
+        "weapon_plank_1",
+        "weapon_taser_1",
+        "weapon_lightning_shiv_1",
+        "weapon_icicle_1",
+        "weapon_smg_1",
+        "weapon_double_barrel_shotgun_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 25,
+        "effect_reduce_stat_gains": -250
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_mage",
+        "number": 0,
+        "reward_id": "weapon_thunder_sword_3",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": true,
+      "wanted_tags": [
+        "stat_elemental_damage"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "temp_stats_on_hit",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 1,
+          "text_key": "effect_on_hit",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 8
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        }
+      ],
+      "id": "character_masochist",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "受虐狂",
+      "name_key": "CHARACTER_MASOCHIST",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_rock_1",
+        "weapon_scissors_1",
+        "weapon_cacti_club_1",
+        "weapon_ghost_axe_1",
+        "weapon_spiky_shield_1",
+        "weapon_sharp_tooth_1",
+        "weapon_torch_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_medical_gun_1",
+        "weapon_wand_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "stat_armor": 8,
+        "stat_hp_regeneration": 20,
+        "stat_max_hp": 10,
+        "stat_percent_damage": -100
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_masochist",
+        "number": 0,
+        "reward_id": "weapon_spiky_shield_1",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_max_hp",
+        "stat_armor",
+        "stat_hp_regeneration",
+        "stat_lifesteal"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "weapon_slot",
+          "storage_method": 2,
+          "text_key": "effect_max_weapons",
+          "value": 12
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 4
+            }
+          ],
+          "custom_key": "additional_weapon_effects",
+          "effect_sign": 1,
+          "key": "stat_percent_damage",
+          "storage_method": 1,
+          "text_key": "effect_additional_weapon_bonus",
+          "value": -5
+        }
+      ],
+      "id": "character_multitasker",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "多面手",
+      "name_key": "CHARACTER_MULTITASKER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_cacti_club_1",
+        "weapon_fist_1",
+        "weapon_claw_1",
+        "weapon_knife_1",
+        "weapon_spear_1",
+        "weapon_stick_1",
+        "weapon_fighting_stick_1",
+        "weapon_lightning_shiv_1",
+        "weapon_screwdriver_1",
+        "weapon_wrench_1",
+        "weapon_ghost_flint_1",
+        "weapon_ghost_axe_1",
+        "weapon_plank_1",
+        "weapon_chopper_1",
+        "weapon_hatchet_1",
+        "weapon_jousting_lance_1",
+        "weapon_pruner_1",
+        "weapon_rock_1",
+        "weapon_spiky_shield_1",
+        "weapon_sharp_tooth_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_smg_1",
+        "weapon_revolver_1",
+        "weapon_laser_gun_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_slingshot_1",
+        "weapon_taser_1",
+        "weapon_shuriken_1",
+        "weapon_crossbow_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "stat_percent_damage": 20
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_multitasker",
+        "number": 0,
+        "reward_id": "weapon_chopper_1",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "next_level_xp_needed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -66
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "items_price",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        }
+      ],
+      "id": "character_mutant",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "异变体",
+      "name_key": "CHARACTER_MUTANT",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_cacti_club_1",
+        "weapon_ghost_axe_1",
+        "weapon_stick_1",
+        "weapon_fighting_stick_1",
+        "weapon_rock_1",
+        "weapon_plank_1",
+        "weapon_lightning_shiv_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_smg_1",
+        "weapon_revolver_1",
+        "weapon_shredder_1",
+        "weapon_crossbow_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "items_price": 50,
+        "next_level_xp_needed": -66
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_mutant",
+        "number": 0,
+        "reward_id": "item_octopus",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "xp_gain"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "enemy_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 2,
+          "key": "map_size",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -33
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 2,
+          "key": "number_of_enemies",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -10
+        }
+      ],
+      "id": "character_old",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "老叟",
+      "name_key": "CHARACTER_OLD",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_scissors_1",
+        "weapon_screwdriver_1",
+        "weapon_wrench_1",
+        "weapon_rock_1",
+        "weapon_plank_1",
+        "weapon_chopper_1",
+        "weapon_pruner_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_revolver_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "enemy_speed": -25,
+        "map_size": -33,
+        "number_of_enemies": -10,
+        "stat_harvesting": 10,
+        "stat_speed": -10
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_old",
+        "number": 0,
+        "reward_id": "item_snail",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "less_enemies",
+        "less_enemy_speed"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+        "item_jelly"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 200
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "weapon_slot",
+          "storage_method": 0,
+          "text_key": "EFFECT_ONE_WEAPON_SLOT_LIMIT",
+          "value": -5
+        }
+      ],
+      "id": "character_one_arm",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "独臂",
+      "name_key": "CHARACTER_ONE_ARM",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_claw_1",
+        "weapon_dagger_1",
+        "weapon_ghost_axe_1",
+        "weapon_lightning_shiv_1",
+        "weapon_scissors_1",
+        "weapon_cacti_club_1",
+        "weapon_torch_1",
+        "weapon_plank_1",
+        "weapon_hatchet_1",
+        "weapon_pruner_1",
+        "weapon_jousting_lance_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_shredder_1",
+        "weapon_smg_1",
+        "weapon_taser_1",
+        "weapon_revolver_1",
+        "weapon_icicle_1",
+        "weapon_shuriken_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 100,
+        "stat_attack_speed": 200,
+        "weapon_slot": -5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_one_arm",
+        "number": 0,
+        "reward_id": "item_focus",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_percent_damage"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "engineering"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+            {
+              "arg_format": 1,
+              "arg_index": 0,
+              "arg_key": "",
+              "arg_sign": 0,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "pacifist",
+          "storage_method": 0,
+          "text_key": "effect_pacifist",
+          "value": 65
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_lumberjack_shirt",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        }
+      ],
+      "id": "character_pacifist",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "和平主义者",
+      "name_key": "CHARACTER_PACIFIST",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_hand_1",
+        "weapon_taser_1",
+        "weapon_pruner_1"
+      ],
+      "stat_deltas": {
+        "pacifist": 65,
+        "stat_engineering": -100,
+        "stat_percent_damage": -100
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_pacifist",
+        "number": 0,
+        "reward_id": "item_panda",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_max_hp",
+        "stat_hp_regeneration",
+        "stat_armor"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "melee_damage"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_weapon",
+          "effect_sign": 3,
+          "key": "weapon_pistol_1",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_increase_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "no_melee_weapons",
+          "storage_method": 0,
+          "text_key": "effect_no_melee_weapons",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -25
+        }
+      ],
+      "id": "character_ranger",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "游侠",
+      "name_key": "CHARACTER_RANGER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_pistol_1",
+        "weapon_smg_1",
+        "weapon_revolver_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_laser_gun_1",
+        "weapon_shredder_1",
+        "weapon_crossbow_1",
+        "weapon_slingshot_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "effect_increase_stat_gains": 50,
+        "effect_reduce_stat_gains": -25,
+        "no_melee_weapons": 1,
+        "stat_range": 50
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_ranger",
+        "number": 0,
+        "reward_id": "item_night_goggles",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": true,
+      "wanted_tags": [
+        "stat_ranged_damage",
+        "stat_range"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "projectiles",
+          "storage_method": 0,
+          "text_key": "EFFECT_PROJECTILES",
+          "value": 2
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "piercing",
+          "storage_method": 0,
+          "text_key": "effect_piercing",
+          "value": 1
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_DIFFERENT_STAT",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "no_melee_weapons",
+          "storage_method": 0,
+          "text_key": "effect_no_melee_weapons",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -400
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "accuracy",
+          "storage_method": 0,
+          "text_key": "EFFECT_ACCURACY",
+          "value": -50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -80
+        }
+      ],
+      "id": "character_renegade",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "叛徒",
+      "name_key": "CHARACTER_RENEGADE",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_pistol_1",
+        "weapon_revolver_1",
+        "weapon_shredder_1",
+        "weapon_smg_1",
+        "weapon_laser_gun_1",
+        "weapon_medical_gun_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_ghost_scepter_1",
+        "weapon_crossbow_1",
+        "weapon_shuriken_1",
+        "weapon_slingshot_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "accuracy": -50,
+        "effect_reduce_stat_gains": -80,
+        "no_melee_weapons": 1,
+        "piercing": 1,
+        "projectiles": 2,
+        "stat_percent_damage": -390
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_renegade",
+        "number": 0,
+        "reward_id": "item_fairy",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 15
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_piggy_bank",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "items_price",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        }
+      ],
+      "id": "character_saver",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "节俭者",
+      "name_key": "CHARACTER_SAVER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_chopper_1",
+        "weapon_dagger_1",
+        "weapon_ghost_flint_1",
+        "weapon_pruner_1",
+        "weapon_lightning_shiv_1",
+        "weapon_cacti_club_1",
+        "weapon_spear_1",
+        "weapon_pistol_1",
+        "weapon_revolver_1",
+        "weapon_laser_gun_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "items_price": 50,
+        "stat_harvesting": 15,
+        "stat_percent_damage": 1
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_saver",
+        "number": 0,
+        "reward_id": "item_padding",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "hp_regeneration"
+      ],
+      "banned_items": [
+        "item_weird_ghost",
+        "item_tardigrade"
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 12
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "lose_hp_per_second",
+          "storage_method": 0,
+          "text_key": "effect_lose_hp_per_second",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        }
+      ],
+      "id": "character_sick",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "病人",
+      "name_key": "CHARACTER_SICK",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_scissors_1",
+        "weapon_hatchet_1",
+        "weapon_ghost_flint_1",
+        "weapon_cacti_club_1",
+        "weapon_lightning_shiv_1",
+        "weapon_sharp_tooth_1",
+        "weapon_pruner_1",
+        "weapon_ghost_scepter_1",
+        "weapon_slingshot_1",
+        "weapon_smg_1",
+        "weapon_medical_gun_1"
+      ],
+      "stat_deltas": {
+        "lose_hp_per_second": 1,
+        "stat_hp_regeneration": -100,
+        "stat_lifesteal": 25,
+        "stat_max_hp": 12
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_sick",
+        "number": 0,
+        "reward_id": "item_whetstone",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_lifesteal"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "pickup_range",
+          "storage_method": 0,
+          "text_key": "effect_pickup_range",
+          "value": 200
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "knockback",
+          "storage_method": 0,
+          "text_key": "effect_knockback",
+          "value": 15
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "can_attack_while_moving",
+          "storage_method": 2,
+          "text_key": "effect_cant_attack_while_moving",
+          "value": 0
+        }
+      ],
+      "id": "character_soldier",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "士兵",
+      "name_key": "CHARACTER_SOLDIER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_knife_1",
+        "weapon_lightning_shiv_1",
+        "weapon_crossbow_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_laser_gun_1",
+        "weapon_pistol_1",
+        "weapon_shredder_1",
+        "weapon_revolver_1",
+        "weapon_smg_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "knockback": 15,
+        "pickup_range": 200,
+        "stat_attack_speed": 50,
+        "stat_percent_damage": 50,
+        "stat_speed": 10
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_soldier",
+        "number": 0,
+        "reward_id": "weapon_nuclear_launcher_3",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stand_still"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 30
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "temp_stats_while_not_moving",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 1,
+          "text_key": "effect_stat_while_not_moving",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -3
+        }
+      ],
+      "id": "character_speedy",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "飞毛腿",
+      "name_key": "CHARACTER_SPEEDY",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_claw_1",
+        "weapon_knife_1",
+        "weapon_dagger_1",
+        "weapon_stick_1",
+        "weapon_spear_1",
+        "weapon_fighting_stick_1",
+        "weapon_jousting_lance_1",
+        "weapon_screwdriver_1",
+        "weapon_ghost_flint_1",
+        "weapon_pruner_1",
+        "weapon_shuriken_1"
+      ],
+      "stat_deltas": {
+        "stat_armor": -3,
+        "stat_melee_damage": 1,
+        "stat_speed": 30
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_speedy",
+        "number": 0,
+        "reward_id": "item_fin",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_speed"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "temp_stats_while_not_moving",
+          "effect_sign": 3,
+          "key": "percent_materials",
+          "storage_method": 1,
+          "text_key": "EFFECT_GOLD_WHILE_NOT_MOVING",
+          "value": 3
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "temp_stats_while_moving",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 1,
+          "text_key": "effect_stat_while_moving",
+          "value": 40
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "temp_stats_while_moving",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 1,
+          "text_key": "effect_stat_while_moving",
+          "value": 40
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 2
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "gold_drops",
+          "storage_method": 0,
+          "text_key": "effect_gold_drops",
+          "value": -50
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 0,
+              "arg_value": 0
+            },
+            {
+              "arg_format": 0,
+              "arg_index": 3,
+              "arg_key": "",
+              "arg_sign": 0,
+              "arg_value": 0
+            },
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": -1
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 2,
+              "arg_key": "",
+              "arg_sign": 0,
+              "arg_value": 0
+            },
+            {
+              "arg_format": 0,
+              "arg_index": 3,
+              "arg_key": "",
+              "arg_sign": 0,
+              "arg_value": 0
+            },
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": -1
+        }
+      ],
+      "id": "character_streamer",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "网络主播",
+      "name_key": "CHARACTER_STREAMER",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_stick_1",
+        "weapon_cacti_club_1",
+        "weapon_ghost_flint_1",
+        "weapon_ghost_axe_1",
+        "weapon_scissors_1",
+        "weapon_screwdriver_1",
+        "weapon_wrench_1",
+        "weapon_spear_1",
+        "weapon_plank_1",
+        "weapon_pruner_1",
+        "weapon_spiky_shield_1",
+        "weapon_crossbow_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_laser_gun_1",
+        "weapon_medical_gun_1",
+        "weapon_pistol_1",
+        "weapon_shredder_1",
+        "weapon_smg_1",
+        "weapon_revolver_1",
+        "weapon_slingshot_1",
+        "weapon_ghost_scepter_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "gold_drops": -50,
+        "stat_armor": 2,
+        "stat_percent_damage": -1,
+        "stat_speed": -1
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_streamer",
+        "number": 0,
+        "reward_id": "item_community_support",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "structure"
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "melee_damage",
+        "ranged_damage",
+        "melee_and_ranged_damage"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+        "upgrade_melee_damage",
+        "upgrade_ranged_damage"
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_turret",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 2
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "structure_attack_speed",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_PERM_STAT",
+          "value": 5
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_elemental_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_STAT",
+          "value": 2
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "next_level_xp_needed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 75
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        }
+      ],
+      "id": "character_technomage",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "科技法师",
+      "name_key": "CHARACTER_TECHNOMAGE",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_wrench_1",
+        "weapon_screwdriver_1",
+        "weapon_plank_1",
+        "weapon_torch_1",
+        "weapon_lightning_shiv_1",
+        "weapon_pruner_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1"
+      ],
+      "stat_deltas": {
+        "effect_reduce_stat_gains": -200,
+        "next_level_xp_needed": 75,
+        "stat_elemental_damage": 2,
+        "structure_attack_speed": 5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_technomage",
+        "number": 0,
+        "reward_id": "weapon_particle_accelerator_3",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_elemental_damage",
+        "stat_engineering",
+        "structure"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "all_weapons_count_for_sets",
+          "storage_method": 0,
+          "text_key": "effect_all_weapons_count_for_sets",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "no_duplicate_weapons",
+          "storage_method": 0,
+          "text_key": "effect_no_duplicate_weapons",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "effect_reduce_stat_gains",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -50
+        }
+      ],
+      "id": "character_vagabond",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "流浪汉",
+      "name_key": "CHARACTER_VAGABOND",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_cacti_club_1",
+        "weapon_chopper_1",
+        "weapon_dagger_1",
+        "weapon_spear_1",
+        "weapon_sharp_tooth_1",
+        "weapon_hand_1",
+        "weapon_claw_1",
+        "weapon_fighting_stick_1",
+        "weapon_hatchet_1",
+        "weapon_plank_1",
+        "weapon_ghost_flint_1",
+        "weapon_spiky_shield_1",
+        "weapon_lightning_shiv_1",
+        "weapon_torch_1",
+        "weapon_shuriken_1",
+        "weapon_crossbow_1",
+        "weapon_revolver_1",
+        "weapon_laser_gun_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "all_weapons_count_for_sets": 1,
+        "effect_reduce_stat_gains": -100,
+        "no_duplicate_weapons": 1,
+        "stat_armor": -5,
+        "stat_dodge": -5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_vagabond",
+        "number": 0,
+        "reward_id": "item_jelly",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+        "hp_regeneration",
+        "consumable_heal"
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_PERCENT_PLAYER_MISSING_HEALTH",
+          "value": 2
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_PERCENT_PLAYER_MISSING_HEALTH",
+          "value": 1
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 4,
+              "arg_key": "",
+              "arg_sign": 4,
+              "arg_value": 0
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 0,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "EFFECT_GAIN_STAT_FOR_EVERY_PERCENT_PLAYER_MISSING_HEALTH",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "EFFECT_REDUCE_STAT_GAINS",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -25
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -60
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": -100
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "consumable_heal",
+          "storage_method": 0,
+          "text_key": "effect_consumable_heal",
+          "value": -100
+        }
+      ],
+      "id": "character_vampire",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "吸血鬼",
+      "name_key": "CHARACTER_VAMPIRE",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_fist_1",
+        "weapon_claw_1",
+        "weapon_sharp_tooth_1",
+        "weapon_ghost_flint_1",
+        "weapon_hatchet_1",
+        "weapon_knife_1",
+        "weapon_dagger_1",
+        "weapon_lightning_shiv_1",
+        "weapon_scissors_1",
+        "weapon_spiky_shield_1",
+        "weapon_stick_1",
+        "weapon_torch_1",
+        "weapon_screwdriver_1",
+        "weapon_wrench_1",
+        "weapon_shuriken_1",
+        "weapon_pistol_1",
+        "weapon_smg_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_medical_gun_1",
+        "weapon_revolver_1",
+        "weapon_shredder_1",
+        "weapon_crossbow_1"
+      ],
+      "stat_deltas": {
+        "EFFECT_REDUCE_STAT_GAINS": -25,
+        "consumable_heal": -100,
+        "stat_armor": 1,
+        "stat_hp_regeneration": -100,
+        "stat_lifesteal": 1,
+        "stat_percent_damage": -58
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_vampire",
+        "number": 0,
+        "reward_id": "item_decomposing_flesh",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+        "stat_lifesteal"
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 8
+        }
+      ],
+      "id": "character_well_rounded",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "全能者",
+      "name_key": "CHARACTER_WELL_ROUNDED",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_knife_1",
+        "weapon_stick_1",
+        "weapon_fist_1",
+        "weapon_chopper_1",
+        "weapon_fighting_stick_1",
+        "weapon_cacti_club_1",
+        "weapon_hatchet_1",
+        "weapon_spiky_shield_1",
+        "weapon_ghost_flint_1",
+        "weapon_wrench_1",
+        "weapon_pistol_1",
+        "weapon_smg_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_slingshot_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "stat_harvesting": 8,
+        "stat_max_hp": 5,
+        "stat_speed": 5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_well_rounded",
+        "number": 0,
+        "reward_id": "item_potato",
+        "reward_type": 0,
+        "stat": ""
+      },
+      "unlocked_by_default": true,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+
+      ],
+      "banned_upgrades": [
+
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "EFFECT_WEAPON_CLASS_BONUS",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 30
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_weapon",
+          "effect_sign": 3,
+          "key": "weapon_stick_1",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+            {
+              "arg_format": 0,
+              "arg_index": 0,
+              "arg_key": "",
+              "arg_sign": 1,
+              "arg_value": 5
+            }
+          ],
+          "custom_key": "",
+          "effect_sign": 1,
+          "key": "max_weapon_tier",
+          "storage_method": 2,
+          "text_key": "effect_max_weapon_tier",
+          "value": 1
+        }
+      ],
+      "id": "character_wildling",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "野人",
+      "name_key": "CHARACTER_WILDLING",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_stick_1",
+        "weapon_spear_1",
+        "weapon_torch_1",
+        "weapon_rock_1",
+        "weapon_cacti_club_1",
+        "weapon_hatchet_1",
+        "weapon_fighting_stick_1",
+        "weapon_sharp_tooth_1",
+        "weapon_slingshot_1"
+      ],
+      "stat_deltas": {
+        "EFFECT_WEAPON_CLASS_BONUS": 30
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_wildling",
+        "number": 0,
+        "reward_id": "weapon_hatchet_1",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    },
+    {
+      "banned_item_groups": [
+
+      ],
+      "banned_items": [
+        "item_acid",
+        "item_alien_baby",
+        "item_alien_magic",
+        "item_alien_worm",
+        "item_baby_squid",
+        "item_bat",
+        "item_blood_donation",
+        "item_blood_leech",
+        "item_bloody_hand",
+        "item_broken_mouth",
+        "item_butterfly",
+        "item_cake",
+        "item_coral",
+        "item_cute_monkey",
+        "item_decomposing_flesh",
+        "item_estys_couch",
+        "item_extra_stomach",
+        "item_fairy",
+        "item_fresh_meat",
+        "item_fried_rice",
+        "item_goblet",
+        "item_grinds_magical_leaf",
+        "item_helmet",
+        "item_jelly",
+        "item_jerky",
+        "item_krakens_eye",
+        "item_lemonade",
+        "item_medikit",
+        "item_metal_plate",
+        "item_mushroom",
+        "item_octopus",
+        "item_padding",
+        "item_penguin",
+        "item_plant",
+        "item_potion",
+        "item_sad_tomato",
+        "item_shmoop",
+        "item_spicy_sauce",
+        "item_stone_skin",
+        "item_sunken_bell",
+        "item_torture",
+        "item_warrior_helmet",
+        "item_weird_food",
+        "item_weird_ghost",
+        "item_whetstone",
+        "item_alien_eyes",
+        "item_garden",
+        "item_doc_moth",
+        "item_fruit_basket",
+        "item_turret_healing"
+      ],
+      "banned_upgrades": [
+        "upgrade_armor",
+        "upgrade_max_hp",
+        "upgrade_hp_regeneration",
+        "upgrade_lifesteal"
+      ],
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "DIE_IN_ONE_HIT",
+          "effect_sign": 3,
+          "key": "die_in_one_hit",
+          "storage_method": 2,
+          "text_key": "EFFECT_DIE_IN_ONE_HIT",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "starting_item",
+          "effect_sign": 3,
+          "key": "item_tardigrade",
+          "storage_method": 1,
+          "text_key": "effect_starting_item",
+          "value": 1
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 8
+        },
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "",
+          "storage_method": 0,
+          "text_key": "WOUNDED_ITEMS_EXPLANATION",
+          "value": 0
+        }
+      ],
+      "id": "character_wounded",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "伤者",
+      "name_key": "CHARACTER_WOUNDED",
+      "starting_items": [
+
+      ],
+      "starting_weapons": [
+        "weapon_knife_1",
+        "weapon_stick_1",
+        "weapon_fist_1",
+        "weapon_chopper_1",
+        "weapon_fighting_stick_1",
+        "weapon_cacti_club_1",
+        "weapon_hatchet_1",
+        "weapon_spiky_shield_1",
+        "weapon_ghost_flint_1",
+        "weapon_wrench_1",
+        "weapon_pistol_1",
+        "weapon_smg_1",
+        "weapon_double_barrel_shotgun_1",
+        "weapon_slingshot_1",
+        "weapon_taser_1",
+        "weapon_wand_1",
+        "weapon_icicle_1",
+        "weapon_rail_gun_1"
+      ],
+      "stat_deltas": {
+        "stat_harvesting": 8,
+        "stat_speed": 5
+      },
+      "tags": [
+
+      ],
+      "tier": 0,
+      "unlock_challenge": {
+        "description_key": "CHAL_CHARACTER_DESC",
+        "id": "chal_wounded",
+        "number": 0,
+        "reward_id": "weapon_rail_gun_1",
+        "reward_type": 1,
+        "stat": ""
+      },
+      "unlocked_by_default": false,
+      "wanted_tags": [
+
+      ]
+    }
+  ],
+  "game_version": "1.1.15.4",
+  "mod_version": "0.2.0",
+  "schema_version": 1
+}

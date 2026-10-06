@@ -211,7 +211,12 @@
 - **menu 动作**（`menu_actions.gd`，票据 06）：`menu_set_difficulty {value}`（对目标难度元素 `grab_focus` 移动焦点，按 `_latest_focused_element` 读回校验；目标已选中=空操作）、`menu_start_run {}`（按焦点元素 `pressed` 触发游戏 `change_scene` 开局，以难度页离场且非返回确认）、`menu_pick_upgrade {index}`（options 差分确认）；幂等/串行/超时/ack 语义与 `shop_*` 一致；`menu_pause` 未实现，未支持动作一律拒绝（`unsupported_kind`）。
 - **协议 v2 集成**：`PROTOCOL_VERSION=2`，hello/welcome 版本校验，不匹配拒绝会话。
 
-### 6.3 引擎兼容与脆弱性
+### 6.3 知识库导出（P3 票据 11）
+
+- `knowledge_export.gd` 提供调试动作 `debug_export_knowledge`：只读遍历 `/root/ItemService`（物品/武器/升级/英雄/套装）与 `/root/ChallengeService`（英雄解锁），输出四类 JSON 到 `user://auto_brotato_knowledge/`；不碰游戏状态、结果与 TTL 无关、同版本重复导出逐字节一致。
+- `tools/export_knowledge.py` 触发并收集入仓 `docs/knowledge/`；`tools/verify_knowledge.py` 以游戏 PCK 静态资源做覆盖性与抽样字段对照；agent 侧 `agent/ab_agent/knowledge.py` 加载并校验版本（不匹配告警）。
+
+### 6.4 引擎兼容与脆弱性
 
 - 动态访问游戏内部：统一 `get()/call()/has_method()`，不依赖 `class_name`（ADR-0006）；数值收敛用 `engine_compat.int_arg`。
 - 依赖的游戏私有字段清单见 [protocol.md](./protocol.md) §8；游戏更新后按冒烟清单（§10）逐项验证。
@@ -229,7 +234,7 @@
 | 战术层 | 3–5Hz | 目标选择（材料/Boss/危险区）、采集与血量管理、波次节奏 |
 | 经济层 | 事件驱动 | 商店评分（Tier 表 + 经济规则）、购买/刷新/锁定/出售、升级选卡 |
 
-- 知识库：由 mod 导出脚本从游戏资源提取物品/武器/升级/英雄静态数据生成 JSON（与锁定版本一致），叠加人工 Tier 标注；见票据 11。
+- 知识库：由 mod 导出脚本从游戏资源提取物品/武器/升级/英雄静态数据生成 JSON（与锁定版本一致），叠加人工 Tier 标注；agent 侧由 `knowledge.py` 加载并在启动时校验版本（不匹配告警）；见票据 11。
 - 参数外置（JSON/YAML），支持回放离线调参。
 
 ---
@@ -255,6 +260,7 @@
    - move 注入（实机移动、TTL 停住）
    - 商店动作（进入商店后买/卖/刷新/锁定/离开各一）
    - 菜单观测（难度页字段）+ 难度设置/开始 + 升级选卡 + 终局识别
+   - 知识库导出（票据 11）：`debug_export_knowledge` → `tools/export_knowledge.py` 收集 → `tools/verify_knowledge.py` 抽样对照
    - **端到端闭环**（票据 08，`python -m tools.smoke_e2e`）：人工前置仅「选好英雄/初始武器、关闭无尽/禁用等模式开关、停在难度选择页」；
      脚本自动输入难度（替代唯一允许的人工输入）→ 读回校验 → 自动开局 → 自动通过第 1–2 波（占位走位）→
      商店打开自动评估后离开 → 升级页出现时自动选卡 → 第 2 波结束（或死亡/终局）主动停止、刷盘录制并输出冒烟战报；
@@ -284,7 +290,8 @@ auto-brotato/
 │   │   ├── menu_view.py     # 难度页/终局页解析与终端文案（票据 07）
 │   │   ├── autopilot.py     # 占位走位基线（正式策略：decision.reflex，票据 09）
 │   │   ├── move_control.py  # 走位控制器接口（对局编排与回放评估共用）
-│   │   ├── hero_names.py    # 英雄 ID→中文名（临时表，票据 11 替换）
+│   │   ├── knowledge.py     # 知识库加载/版本校验（票据 11；docs/knowledge/*.json）
+│   │   ├── hero_names.py    # 英雄 ID→中文名临时表（缺省回退；知识库 characters.json 优先）
 │   │   ├── decision/        # reflex/danger/geometry（票据 09）/ tactical（票据 10）/ economy；
 │   │   │                   #   config/reflex.json、config/tactical.json（参数外置）
 │   │   ├── cli.py
@@ -297,6 +304,8 @@ auto-brotato/
 │   ├── smoke_e2e.py         # 端到端闭环冒烟：难度页→第 2 波→回放校验（票据 08）
 │   ├── smoke_analysis.py    # 冒烟回放解析与清单校验（票据 08）
 │   ├── smoke_agent.py       # 冒烟用 agent 子进程封装（票据 08）
+│   ├── export_knowledge.py  # 知识库导出收集（触发 mod 调试动作 → docs/knowledge，票据 11）
+│   ├── verify_knowledge.py  # 知识库 PCK 抽样对照校验（票据 11）
 │   └── replay/              # 离线回放与回归；movement.py 走位指标对比报告（票据 09）；
 │                            #   tactical.py/tactical_report.py 战术层报告与双录制实机对照、recording_facts.py 对局事实切分（票据 10）
 ├── recordings/              # 回放文件（不入库）

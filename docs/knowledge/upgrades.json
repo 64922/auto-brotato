@@ -1,0 +1,1864 @@
+{
+  "data_version": "ae4dfc5ef081f6396eec5ef6cd7ca5f09ccb01bf3b9c9b2160b5b0963d37f216",
+  "entries": [
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 1
+        }
+      ],
+      "id": "upgrade_armor_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "胸",
+      "name_key": "UPGRADE_ARMOR",
+      "stat_deltas": {
+        "stat_armor": 1
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_armor"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 2
+        }
+      ],
+      "id": "upgrade_armor_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "胸",
+      "name_key": "UPGRADE_ARMOR",
+      "stat_deltas": {
+        "stat_armor": 2
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_armor"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_armor_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "胸",
+      "name_key": "UPGRADE_ARMOR",
+      "stat_deltas": {
+        "stat_armor": 3
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_armor"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_armor",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 4
+        }
+      ],
+      "id": "upgrade_armor_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "胸",
+      "name_key": "UPGRADE_ARMOR",
+      "stat_deltas": {
+        "stat_armor": 4
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_armor"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        }
+      ],
+      "id": "upgrade_attack_speed_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "反应能力",
+      "name_key": "UPGRADE_ATTACK_SPEED",
+      "stat_deltas": {
+        "stat_attack_speed": 5
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_attack_speed"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        }
+      ],
+      "id": "upgrade_attack_speed_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "反应能力",
+      "name_key": "UPGRADE_ATTACK_SPEED",
+      "stat_deltas": {
+        "stat_attack_speed": 10
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_attack_speed"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 15
+        }
+      ],
+      "id": "upgrade_attack_speed_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "反应能力",
+      "name_key": "UPGRADE_ATTACK_SPEED",
+      "stat_deltas": {
+        "stat_attack_speed": 15
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_attack_speed"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_attack_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        }
+      ],
+      "id": "upgrade_attack_speed_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "反应能力",
+      "name_key": "UPGRADE_ATTACK_SPEED",
+      "stat_deltas": {
+        "stat_attack_speed": 20
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_attack_speed"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_crit_chance",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_crit_chance_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手指",
+      "name_key": "UPGRADE_CRIT_CHANCE",
+      "stat_deltas": {
+        "stat_crit_chance": 3
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_crit_chance"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_crit_chance",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        }
+      ],
+      "id": "upgrade_crit_chance_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手指",
+      "name_key": "UPGRADE_CRIT_CHANCE",
+      "stat_deltas": {
+        "stat_crit_chance": 5
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_crit_chance"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_crit_chance",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 7
+        }
+      ],
+      "id": "upgrade_crit_chance_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手指",
+      "name_key": "UPGRADE_CRIT_CHANCE",
+      "stat_deltas": {
+        "stat_crit_chance": 7
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_crit_chance"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_crit_chance",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 9
+        }
+      ],
+      "id": "upgrade_crit_chance_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手指",
+      "name_key": "UPGRADE_CRIT_CHANCE",
+      "stat_deltas": {
+        "stat_crit_chance": 9
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_crit_chance"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_dodge_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "背",
+      "name_key": "UPGRADE_DODGE",
+      "stat_deltas": {
+        "stat_dodge": 3
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_dodge"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 6
+        }
+      ],
+      "id": "upgrade_dodge_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "背",
+      "name_key": "UPGRADE_DODGE",
+      "stat_deltas": {
+        "stat_dodge": 6
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_dodge"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 9
+        }
+      ],
+      "id": "upgrade_dodge_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "背",
+      "name_key": "UPGRADE_DODGE",
+      "stat_deltas": {
+        "stat_dodge": 9
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_dodge"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_dodge",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 12
+        }
+      ],
+      "id": "upgrade_dodge_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "背",
+      "name_key": "UPGRADE_DODGE",
+      "stat_deltas": {
+        "stat_dodge": 12
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_dodge"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_elemental_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 1
+        }
+      ],
+      "id": "upgrade_elemental_damage_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "脑",
+      "name_key": "UPGRADE_ELEMENTAL_DAMAGE",
+      "stat_deltas": {
+        "stat_elemental_damage": 1
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_elemental_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_elemental_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 2
+        }
+      ],
+      "id": "upgrade_elemental_damage_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "脑",
+      "name_key": "UPGRADE_ELEMENTAL_DAMAGE",
+      "stat_deltas": {
+        "stat_elemental_damage": 2
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_elemental_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_elemental_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_elemental_damage_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "脑",
+      "name_key": "UPGRADE_ELEMENTAL_DAMAGE",
+      "stat_deltas": {
+        "stat_elemental_damage": 3
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_elemental_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_elemental_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 4
+        }
+      ],
+      "id": "upgrade_elemental_damage_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "脑",
+      "name_key": "UPGRADE_ELEMENTAL_DAMAGE",
+      "stat_deltas": {
+        "stat_elemental_damage": 4
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_elemental_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 2
+        }
+      ],
+      "id": "upgrade_engineering_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "头骨",
+      "name_key": "UPGRADE_ENGINEERING",
+      "stat_deltas": {
+        "stat_engineering": 2
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_engineering"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_engineering_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "头骨",
+      "name_key": "UPGRADE_ENGINEERING",
+      "stat_deltas": {
+        "stat_engineering": 3
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_engineering"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 4
+        }
+      ],
+      "id": "upgrade_engineering_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "头骨",
+      "name_key": "UPGRADE_ENGINEERING",
+      "stat_deltas": {
+        "stat_engineering": 4
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_engineering"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_engineering",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        }
+      ],
+      "id": "upgrade_engineering_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "头骨",
+      "name_key": "UPGRADE_ENGINEERING",
+      "stat_deltas": {
+        "stat_engineering": 5
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_engineering"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        }
+      ],
+      "id": "upgrade_harvesting_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手",
+      "name_key": "UPGRADE_HARVESTING",
+      "stat_deltas": {
+        "stat_harvesting": 5
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_harvesting"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 8
+        }
+      ],
+      "id": "upgrade_harvesting_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手",
+      "name_key": "UPGRADE_HARVESTING",
+      "stat_deltas": {
+        "stat_harvesting": 8
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_harvesting"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        }
+      ],
+      "id": "upgrade_harvesting_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手",
+      "name_key": "UPGRADE_HARVESTING",
+      "stat_deltas": {
+        "stat_harvesting": 10
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_harvesting"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_harvesting",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 12
+        }
+      ],
+      "id": "upgrade_harvesting_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "手",
+      "name_key": "UPGRADE_HARVESTING",
+      "stat_deltas": {
+        "stat_harvesting": 12
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_harvesting"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 2
+        }
+      ],
+      "id": "upgrade_hp_regeneration_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肺",
+      "name_key": "UPGRADE_HP_REGENERATION",
+      "stat_deltas": {
+        "stat_hp_regeneration": 2
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_hp_regeneration"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_hp_regeneration_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肺",
+      "name_key": "UPGRADE_HP_REGENERATION",
+      "stat_deltas": {
+        "stat_hp_regeneration": 3
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_hp_regeneration"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 4
+        }
+      ],
+      "id": "upgrade_hp_regeneration_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肺",
+      "name_key": "UPGRADE_HP_REGENERATION",
+      "stat_deltas": {
+        "stat_hp_regeneration": 4
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_hp_regeneration"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_hp_regeneration",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        }
+      ],
+      "id": "upgrade_hp_regeneration_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肺",
+      "name_key": "UPGRADE_HP_REGENERATION",
+      "stat_deltas": {
+        "stat_hp_regeneration": 5
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_hp_regeneration"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 1
+        }
+      ],
+      "id": "upgrade_lifesteal_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "牙齿",
+      "name_key": "UPGRADE_LIFESTEAL",
+      "stat_deltas": {
+        "stat_lifesteal": 1
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_lifesteal"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 2
+        }
+      ],
+      "id": "upgrade_lifesteal_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "牙齿",
+      "name_key": "UPGRADE_LIFESTEAL",
+      "stat_deltas": {
+        "stat_lifesteal": 2
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_lifesteal"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_lifesteal_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "牙齿",
+      "name_key": "UPGRADE_LIFESTEAL",
+      "stat_deltas": {
+        "stat_lifesteal": 3
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_lifesteal"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_lifesteal",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 4
+        }
+      ],
+      "id": "upgrade_lifesteal_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "牙齿",
+      "name_key": "UPGRADE_LIFESTEAL",
+      "stat_deltas": {
+        "stat_lifesteal": 4
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_lifesteal"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        }
+      ],
+      "id": "upgrade_luck_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "鼻子",
+      "name_key": "UPGRADE_LUCK",
+      "stat_deltas": {
+        "stat_luck": 5
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_luck"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 10
+        }
+      ],
+      "id": "upgrade_luck_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "鼻子",
+      "name_key": "UPGRADE_LUCK",
+      "stat_deltas": {
+        "stat_luck": 10
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_luck"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 15
+        }
+      ],
+      "id": "upgrade_luck_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "鼻子",
+      "name_key": "UPGRADE_LUCK",
+      "stat_deltas": {
+        "stat_luck": 15
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_luck"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_luck",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 20
+        }
+      ],
+      "id": "upgrade_luck_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "鼻子",
+      "name_key": "UPGRADE_LUCK",
+      "stat_deltas": {
+        "stat_luck": 20
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_luck"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_max_hp_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "心脏",
+      "name_key": "UPGRADE_MAX_HP",
+      "stat_deltas": {
+        "stat_max_hp": 3
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_max_hp"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 6
+        }
+      ],
+      "id": "upgrade_max_hp_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "心脏",
+      "name_key": "UPGRADE_MAX_HP",
+      "stat_deltas": {
+        "stat_max_hp": 6
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_max_hp"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 9
+        }
+      ],
+      "id": "upgrade_max_hp_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "心脏",
+      "name_key": "UPGRADE_MAX_HP",
+      "stat_deltas": {
+        "stat_max_hp": 9
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_max_hp"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_max_hp",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 12
+        }
+      ],
+      "id": "upgrade_max_hp_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "心脏",
+      "name_key": "UPGRADE_MAX_HP",
+      "stat_deltas": {
+        "stat_max_hp": 12
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_max_hp"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 2
+        }
+      ],
+      "id": "upgrade_melee_damage_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "前臂",
+      "name_key": "UPGRADE_MELEE_DAMAGE",
+      "stat_deltas": {
+        "stat_melee_damage": 2
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_melee_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 4
+        }
+      ],
+      "id": "upgrade_melee_damage_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "前臂",
+      "name_key": "UPGRADE_MELEE_DAMAGE",
+      "stat_deltas": {
+        "stat_melee_damage": 4
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_melee_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 6
+        }
+      ],
+      "id": "upgrade_melee_damage_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "前臂",
+      "name_key": "UPGRADE_MELEE_DAMAGE",
+      "stat_deltas": {
+        "stat_melee_damage": 6
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_melee_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_melee_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 8
+        }
+      ],
+      "id": "upgrade_melee_damage_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "前臂",
+      "name_key": "UPGRADE_MELEE_DAMAGE",
+      "stat_deltas": {
+        "stat_melee_damage": 8
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_melee_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 5
+        }
+      ],
+      "id": "upgrade_percent_damage_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "三头肌",
+      "name_key": "UPGRADE_PERCENT_DAMAGE",
+      "stat_deltas": {
+        "stat_percent_damage": 5
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_percent_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 8
+        }
+      ],
+      "id": "upgrade_percent_damage_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "三头肌",
+      "name_key": "UPGRADE_PERCENT_DAMAGE",
+      "stat_deltas": {
+        "stat_percent_damage": 8
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_percent_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 12
+        }
+      ],
+      "id": "upgrade_percent_damage_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "三头肌",
+      "name_key": "UPGRADE_PERCENT_DAMAGE",
+      "stat_deltas": {
+        "stat_percent_damage": 12
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_percent_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_percent_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 16
+        }
+      ],
+      "id": "upgrade_percent_damage_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "三头肌",
+      "name_key": "UPGRADE_PERCENT_DAMAGE",
+      "stat_deltas": {
+        "stat_percent_damage": 16
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_percent_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 15
+        }
+      ],
+      "id": "upgrade_range_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "眼睛",
+      "name_key": "UPGRADE_RANGE",
+      "stat_deltas": {
+        "stat_range": 15
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_range"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 30
+        }
+      ],
+      "id": "upgrade_range_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "眼睛",
+      "name_key": "UPGRADE_RANGE",
+      "stat_deltas": {
+        "stat_range": 30
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_range"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 45
+        }
+      ],
+      "id": "upgrade_range_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "眼睛",
+      "name_key": "UPGRADE_RANGE",
+      "stat_deltas": {
+        "stat_range": 45
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_range"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_range",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 60
+        }
+      ],
+      "id": "upgrade_range_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "眼睛",
+      "name_key": "UPGRADE_RANGE",
+      "stat_deltas": {
+        "stat_range": 60
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_range"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 1
+        }
+      ],
+      "id": "upgrade_ranged_damage_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肩膀",
+      "name_key": "UPGRADE_RANGED_DAMAGE",
+      "stat_deltas": {
+        "stat_ranged_damage": 1
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_ranged_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 2
+        }
+      ],
+      "id": "upgrade_ranged_damage_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肩膀",
+      "name_key": "UPGRADE_RANGED_DAMAGE",
+      "stat_deltas": {
+        "stat_ranged_damage": 2
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_ranged_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_ranged_damage_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肩膀",
+      "name_key": "UPGRADE_RANGED_DAMAGE",
+      "stat_deltas": {
+        "stat_ranged_damage": 3
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_ranged_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_ranged_damage",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 4
+        }
+      ],
+      "id": "upgrade_ranged_damage_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "肩膀",
+      "name_key": "UPGRADE_RANGED_DAMAGE",
+      "stat_deltas": {
+        "stat_ranged_damage": 4
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_ranged_damage"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 3
+        }
+      ],
+      "id": "upgrade_speed_1",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "腿",
+      "name_key": "UPGRADE_SPEED",
+      "stat_deltas": {
+        "stat_speed": 3
+      },
+      "tier": 0,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_speed"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 6
+        }
+      ],
+      "id": "upgrade_speed_2",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "腿",
+      "name_key": "UPGRADE_SPEED",
+      "stat_deltas": {
+        "stat_speed": 6
+      },
+      "tier": 1,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_speed"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 9
+        }
+      ],
+      "id": "upgrade_speed_3",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "腿",
+      "name_key": "UPGRADE_SPEED",
+      "stat_deltas": {
+        "stat_speed": 9
+      },
+      "tier": 2,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_speed"
+    },
+    {
+      "can_be_looted": true,
+      "curse_factor": 0,
+      "effects": [
+        {
+          "custom_args": [
+
+          ],
+          "custom_key": "",
+          "effect_sign": 3,
+          "key": "stat_speed",
+          "storage_method": 0,
+          "text_key": "",
+          "value": 12
+        }
+      ],
+      "id": "upgrade_speed_4",
+      "is_cursed": false,
+      "is_lockable": true,
+      "max_nb": -1,
+      "name": "腿",
+      "name_key": "UPGRADE_SPEED",
+      "stat_deltas": {
+        "stat_speed": 12
+      },
+      "tier": 3,
+      "unlocked_by_default": true,
+      "upgrade_id": "upgrade_speed"
+    }
+  ],
+  "game_version": "1.1.15.4",
+  "mod_version": "0.2.0",
+  "schema_version": 1
+}

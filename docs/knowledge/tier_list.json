@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "game_version": "1.1.15.4",
+  "updated_at": "2026-10-06",
+  "source": "人工标注初版：社区共识（Brotato 1.x 远程/游侠向常用项）整理，未经实机回放复盘修订（票据 11 骨架，票据 12/13 迭代）",
+  "grades": {
+    "S": "核心/强势",
+    "A": "优秀",
+    "B": "可用",
+    "C": "边缘",
+    "D": "弱势"
+  },
+  "ratings": {
+    "weapon_smg": {
+      "tier": "S",
+      "note": "廉价高射速，游侠前期过渡与成型主力，合并链平滑",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_minigun": {
+      "tier": "S",
+      "note": "高波次核心输出（需三阶成型，价格高）",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_laser_gun": {
+      "tier": "A",
+      "note": "单发高伤长射程，游侠初始武器之一",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_rail_gun": {
+      "tier": "A",
+      "note": "穿透直线高伤，清怪线优秀",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_revolver": {
+      "tier": "B",
+      "note": "前期单点爆发，后期成长一般",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_shredder": {
+      "tier": "B",
+      "note": "散射覆盖，中距泛用",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_icicle": {
+      "tier": "B",
+      "note": "远程减速投射物，控场辅助",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_ghost_scepter": {
+      "tier": "B",
+      "note": "穿透幽灵弹，泛用远程",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_slingshot": {
+      "tier": "B",
+      "note": "弹射弹道，前期可用",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_shuriken": {
+      "tier": "B",
+      "note": "廉价弹射投射物，前期过渡",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_crossbow": {
+      "tier": "B",
+      "note": "穿透弩箭，射速偏慢",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_double_barrel_shotgun": {
+      "tier": "B",
+      "note": "近距离双管爆发，风筝流收益一般",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_taser": {
+      "tier": "C",
+      "note": "短射程连锁，定位尴尬",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_medical_gun": {
+      "tier": "C",
+      "note": "治疗弹辅助，输出低",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_pistol": {
+      "tier": "C",
+      "note": "基础初始武器，仅前期过渡",
+      "hero_tags": ["character_ranger"]
+    },
+    "weapon_wand": {
+      "tier": "D",
+      "note": "低伤弹幕，游侠不推荐",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_coffee": {
+      "tier": "S",
+      "note": "+10% 攻速，廉价高性价比",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_glass_cannon": {
+      "tier": "S",
+      "note": "+25% 伤害（-3 护甲），输出核心件",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_night_goggles": {
+      "tier": "A",
+      "note": "+15% 暴击 +50 射程（-3 生命），远程强件",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_small_magazine": {
+      "tier": "A",
+      "note": "+10% 攻速 +2 远程伤害",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_sunglasses": {
+      "tier": "A",
+      "note": "+10% 暴击，廉价暴击件",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_wings": {
+      "tier": "A",
+      "note": "+30 射程 +10 移速，风筝与拉扯",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_heavy_bullets": {
+      "tier": "B",
+      "note": "+10% 伤害 +5 远程伤害（-5% 攻速）",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_scope": {
+      "tier": "B",
+      "note": "+25 射程 +2 远程伤害（-7% 攻速）",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_glasses": {
+      "tier": "B",
+      "note": "+20 射程，廉价",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_ritual": {
+      "tier": "B",
+      "note": "+6% 伤害 +2 吸血",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_silver_bullet": {
+      "tier": "B",
+      "note": "对 Boss +25% 伤害，末段保障",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_medal": {
+      "tier": "B",
+      "note": "全属性小幅增益",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_sharp_bullet": {
+      "tier": "B",
+      "note": "+1 穿透（-5% 伤害），清线件",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_helmet": {
+      "tier": "B",
+      "note": "廉价 +1 护甲",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_leather_vest": {
+      "tier": "B",
+      "note": "+2 护甲 +6% 闪避",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_metal_plate": {
+      "tier": "B",
+      "note": "+2 护甲（-3% 伤害）",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_mushroom": {
+      "tier": "C",
+      "note": "+3 生命再生（-2 幸运），通用生存件",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_medikit": {
+      "tier": "C",
+      "note": "+10 生命再生（-10 幸运），价格高",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_power_generator": {
+      "tier": "C",
+      "note": "站桩类加成，与风筝走位冲突",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_adrenaline": {
+      "tier": "C",
+      "note": "+5% 闪避，生存向",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_bandana": {
+      "tier": "C",
+      "note": "+1 穿透（-10% 伤害），代价偏高",
+      "hero_tags": ["character_ranger"]
+    },
+    "item_little_muscley_dude": {
+      "tier": "D",
+      "note": "近战伤害与 -15 射程，游侠不取",
+      "hero_tags": ["character_ranger"]
+    }
+  }
+}

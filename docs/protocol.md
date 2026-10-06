@@ -132,6 +132,7 @@
 | --- | --- | --- |
 | `move` | `vector: [dx, dy]` | 模长 ≤1（超界归一化）；分量必须是数字（NaN 拒绝）；按 TTL 生效 |
 | `debug_overlay` | `enabled: bool` | 调试叠加层开关 |
+| `debug_export_knowledge`【票据 11】 | 无 | 调试动作：从游戏运行时资源（`/root/ItemService` / `/root/ChallengeService`）导出知识库 JSON 到 `user://auto_brotato_knowledge/`，只读、不碰游戏状态、与 TTL 无关。成功 ack 附带 `dir`（绝对路径）、`files`（每个文件 `name/sha256/bytes`）、`data_versions`（每个文件 data_version）、`counts`（各类条目数）；失败见 §6 |
 | `shop_buy` | `slot: int` | 购买槽位；前置校验（在商店、槽位有效、未售出、金币足够）；等游戏信号回执 |
 | `shop_sell` | `inv_kind: "item"\|"weapon"`、`index: int` | 仅武器可回收（游戏规则：`inv_kind=item` 返回 `not_discardable`）；差分验证 |
 | `shop_reroll` | 无 | 免费刷新或金币足够；差分验证（报价/金币/次数） |
@@ -183,6 +184,7 @@ agent ◀── ack({ok:true}, ref=18) ────── mod
 | `not_in_level_up` | menu_pick_upgrade | 当前不在升级选卡页 |
 | `difficulty_timeout` / `start_timeout` / `pick_timeout` | menu_* | 设置难度读回 / 开局信号 / 选卡差分超时 |
 | `busy` | shop_* / menu_* | 队列已满 |
+| `item_service_missing` / `mkdir_failed:<n>` / `write_failed:<file>` / `export_failed` | debug_export_knowledge | 游戏单例未就绪 / 创建输出目录失败 / 写文件失败 / 其他导出失败（票据 11） |
 | `buy_timeout` / `sell_failed` / `reroll_failed` | shop_* | 超时或差分验证失败 |
 | `link_lost` | shop_* / menu_* | 断连导致在途动作终止 |
 

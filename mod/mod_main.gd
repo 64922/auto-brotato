@@ -2,11 +2,12 @@ extends Node
 
 # AutoBrotato mod 入口（票据 02：move 注入；票据 03：完整战斗观测 + 调试叠加层；
 # 票据 06：商店观测与 shop_* 动作；票据 05：菜单观测（难度页/终局）与协议 v2；
-# 票据 06：菜单动作（设置难度/开始对局/升级选卡）与升级页观测）。
+# 票据 06：菜单动作（设置难度/开始对局/升级选卡）与升级页观测；
+# 票据 11：知识库导出动作 debug_export_knowledge）。
 #
 # 决策在 Python 侧；本 mod 只做四件事：TCP 协议客户端、战斗/商店/菜单观测上送、
 # move 与 shop_*/menu_* 动作经游戏输入系统/UI 流程注入（含 TTL 与幂等防护）、
-# 可开关的调试叠加层。
+# 可开关的调试叠加层；调试动作除外（debug_export_knowledge 只读游戏资源写 JSON）。
 
 const MOD_VERSION := "0.2.0"
 const GAME_VERSION := "1.1.15.4"
@@ -33,6 +34,9 @@ const LevelUpObservation := preload(
 const MenuActions := preload(
 	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/menu_actions.gd"
 )
+const KnowledgeExport := preload(
+	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/knowledge_export.gd"
+)
 
 var _ipc
 var _observation
@@ -43,6 +47,7 @@ var _shop_actions
 var _menu
 var _level_up
 var _menu_actions
+var _knowledge_export
 var _snapshot_interval := 1.0 / 60.0
 var _snapshot_accum := 0.0
 var _shop_accum := 0.0
@@ -67,6 +72,7 @@ func _init() -> void:
 	_menu = MenuObservation.new()
 	_level_up = LevelUpObservation.new()
 	_menu_actions = MenuActions.new(_menu, _level_up)
+	_knowledge_export = KnowledgeExport.new(GAME_VERSION, MOD_VERSION)
 
 
 func _ready() -> void:
@@ -231,6 +237,18 @@ func _handle_action(envelope: Dictionary) -> void:
 		_overlay.set_enabled(enabled)
 		ModLoaderLog.info("调试叠加层：%s" % ("开" if enabled else "关"), LOG_NAME)
 		_ipc.send("ack", {"ok": true, "enabled": enabled}, ref)
+		return
+	if kind == "debug_export_knowledge":
+		# 只读游戏运行时资源导出静态知识库（票据 11）；结果与 TTL 无关，同步执行。
+		var outcome: Dictionary = _knowledge_export.export_all()
+		if outcome.get("ok", false):
+			ModLoaderLog.success(
+				"知识库导出完成：%s" % JSON.print(outcome.get("counts", {})), LOG_NAME
+			)
+			_ipc.send("ack", outcome, ref)
+		else:
+			ModLoaderLog.error("知识库导出失败：%s" % str(outcome.get("error", "")), LOG_NAME)
+			_ipc.send("ack", {"ok": false, "error": str(outcome.get("error", "export_failed"))}, ref)
 		return
 	if _shop_actions.handles(kind):
 		var outcome = _shop_actions.execute(kind, payload, ref, OS.get_ticks_msec())

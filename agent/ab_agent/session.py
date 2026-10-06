@@ -18,7 +18,7 @@ import json
 import re
 import time
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable, Mapping, Optional
 
 from .menu_view import DifficultyMenu, RunEndMenu, difficulty_my_id
 from .protocol import ack_error, ack_ok
@@ -58,6 +58,7 @@ class RunSession:
         clock: Callable[[], float] = time.monotonic,
         replay_path: Optional[Callable[[], Optional[str]]] = None,
         autopilot=None,
+        hero_names: Optional[Mapping[str, str]] = None,
         ack_timeout_s: float = ACK_TIMEOUT_S,
         readback_timeout_s: float = READBACK_TIMEOUT_S,
         start_timeout_s: float = START_TIMEOUT_S,
@@ -69,6 +70,7 @@ class RunSession:
         self.difficulty: Optional[DifficultyMenu] = None
         self._out = output
         self._clock = clock
+        self._hero_names = hero_names
         self._ack_timeout_s = ack_timeout_s
         self._readback_timeout_s = readback_timeout_s
         self._start_timeout_s = start_timeout_s
@@ -265,10 +267,10 @@ class RunSession:
             self._prompted_signature = signature
             self._confirm_value = None
             self.phase = Phase.AWAIT_INPUT
-            self._print(menu.format_prompt())
+            self._print(menu.format_prompt(self._hero_names))
         elif self.phase in (Phase.IDLE, Phase.MENU_READY):
             self.phase = Phase.AWAIT_INPUT
-            self._print(menu.format_prompt())
+            self._print(menu.format_prompt(self._hero_names))
 
     def _on_difficulty_left(self) -> None:
         if self.phase in (Phase.STARTING, Phase.RUNNING, Phase.ENDED):
@@ -390,7 +392,7 @@ class RunSession:
             self.difficulty = DifficultyMenu.from_payload(menu)
             self._prompted_signature = _signature(menu)
             self.phase = Phase.AWAIT_INPUT
-            self._print(self.difficulty.format_prompt())
+            self._print(self.difficulty.format_prompt(self._hero_names))
         else:
             self.phase = Phase.IDLE
 
@@ -439,7 +441,7 @@ class RunSession:
 
     def _reprint_prompt(self) -> None:
         if self.difficulty is not None:
-            self._print(self.difficulty.format_prompt())
+            self._print(self.difficulty.format_prompt(self._hero_names))
 
     def _cancel_start_task(self) -> None:
         task = self._start_task

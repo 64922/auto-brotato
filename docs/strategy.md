@@ -129,18 +129,22 @@ value(item) = Σ_stat 属性价值(权重[英雄/构筑][stat] × 物品属性�
 
 ## 7. 知识库（票据 11）
 
+**生成方式**：mod 侧调试动作 `debug_export_knowledge`（`mod/src/knowledge_export.gd`）从游戏运行时资源（`/root/ItemService`、`/root/ChallengeService`）导出；`tools/export_knowledge.py` 收集到 `docs/knowledge/`（默认导出两次并校验逐字节一致）；`tools/verify_knowledge.py` 以游戏 PCK 静态资源为基准做覆盖性与抽样字段对照。
+
 ```
 docs/knowledge/
-├── items.json        # 物品：id、名称、tier、价格、属性增量、特殊效果、标签
-├── weapons.json      # 武器：id、名称、tier、类别、射程、伤害、冷却、合并链
-├── upgrades.json     # 升级项：id、属性增量、上限限制
-├── characters.json   # 英雄：id、基础属性、初始武器池、解锁条件
+├── items.json        # 物品：id、名称、tier、price、属性增量（stat_deltas）、特殊效果、标签
+├── weapons.json      # 武器：id、名称、tier、price、类别、stats、套装、合并链
+├── upgrades.json     # 升级项：id、属性增量、效果、上限限制（max_nb）
+├── characters.json   # 英雄：id、基础属性（effects/stat_deltas）、初始武器池、解锁（默认/挑战）
 └── tier_list.json    # 人工标注：物品/武器强度评级与备注（随版本更新）
 ```
 
-- **生成方式**：mod 侧一次性导出脚本（从游戏资源读取静态数据 → JSON），保证与锁定版本一致（票据 11）；
-- **Tier 标注**：人工维护（社区共识 + 实机回放复盘修订），与自动数据分离，便于快速更新；
-- 决策引擎启动时校验知识库版本哈希与游戏版本匹配，不匹配则告警。
+- 每个导出文件含 `schema_version`、`game_version`（锁定 1.1.15.4）、`data_version`（对条目规范 JSON 的 SHA-256，作为知识库版本标识）与 `entries`（按 id 排序，同版本重复导出稳定）；`weapons.json` 另含顶层 `sets`（套装加成按件数分层）。
+- **字段口径**：`stat_deltas` 与游戏 `Effect.apply()` 一致（SUM 存储按 `value` 累加，负值即负面）；`effects` 保留 `key/custom_key/text_key/value/storage_method/effect_sign/custom_args` 原始字段，供特殊效果规则表使用。英雄 `unlock_challenge` 由 `ChallengeService` 按名称关联（默认解锁英雄也可能带挑战数据）。
+- **Tier 标注**：人工维护（社区共识 + 实机回放复盘修订），与自动数据分离；`ratings` 以物品 id 或武器族 `weapon_id` 为键（精确 id 优先）。
+- **决策引擎加载**：`agent/ab_agent/knowledge.py` 的 `load_knowledge()` 读取并以 id 索引，启动时（`cli.py --knowledge-dir`，默认 `docs/knowledge`）校验四文件版本字段整备与 `game_version` 匹配，不匹配则告警。
+- **更新流程**：部署新 mod → 启动游戏 → `python tools/export_knowledge.py` → `python tools/verify_knowledge.py` → 提交 JSON 变更。
 
 ## 8. 参数与调优（ADR-0008）
 

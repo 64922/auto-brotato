@@ -23,6 +23,7 @@ from .decision.reflex import ReflexController
 from .decision.tactical import TacticalController
 from .decision.tactical_config import load_tactical_config
 from .ipc_server import DEFAULT_PING_INTERVAL_S, IpcServer
+from .knowledge import KnowledgeError, load_knowledge
 from .recorder import Recorder
 from .session import RunSession
 from .state import AgentState
@@ -98,6 +99,11 @@ def build_parser() -> argparse.ArgumentParser:
         choices=("tactical", "reflex", "placeholder"),
         default="tactical",
         help="战斗走位控制器（默认 tactical=战术层+反射层；reflex/placeholder 为对照基线）",
+    )
+    parser.add_argument(
+        "--knowledge-dir",
+        default=None,
+        help="知识库目录（默认 <仓库>/docs/knowledge；票据 11）",
     )
     parser.add_argument("--version", action="version", version="ab_agent %s" % __version__)
     return parser
@@ -225,8 +231,39 @@ async def _session_loop(session: RunSession, interval: float) -> None:
         await asyncio.sleep(interval)
 
 
+def _log_knowledge(
+    log: logging.Logger, directory: Optional[str]
+) -> Optional[dict[str, str]]:
+    """启动时加载知识库并校验版本哈希/游戏版本（strategy.md §7；不匹配告警）。
+
+    返回英雄 ID → 中文名映射（供难度页展示），加载失败时返回 None。
+    """
+    try:
+        knowledge = load_knowledge(directory)
+    except KnowledgeError as exc:
+        log.warning("知识库加载失败：%s（经济层相关功能将在票据 12 前不可用）", exc)
+        return None
+    for warning in knowledge.warnings:
+        log.warning("知识库：%s", warning)
+    log.info(
+        "知识库已加载：game_version=%s schema=%d（物品 %d / 武器 %d / 升级 %d / 英雄 %d；tier 标注 %d 条，更新于 %s）",
+        knowledge.game_version,
+        knowledge.schema_version,
+        len(knowledge.items),
+        len(knowledge.weapons),
+        len(knowledge.upgrades),
+        len(knowledge.characters),
+        len(knowledge.tier_ratings),
+        knowledge.tier_updated_at or "未知",
+    )
+    for name, data_version in knowledge.data_versions.items():
+        log.debug("知识库 data_version[%s]=%s", name, data_version)
+    return knowledge.character_names()
+
+
 async def _run(args: argparse.Namespace) -> int:
     log = logging.getLogger(LOGGER_NAME)
+    hero_names = _log_knowledge(log, args.knowledge_dir)
     state = AgentState()
     recorder: Optional[Recorder] = None
     if not args.no_record:
@@ -258,6 +295,7 @@ async def _run(args: argparse.Namespace) -> int:
         output=_print_flush,
         autopilot=move_controller,
         replay_path=(lambda: str(recorder.recording_path) if recorder and recorder.recording_path else None),
+        hero_names=hero_names,
     )
     await server.start()
     log.info(
