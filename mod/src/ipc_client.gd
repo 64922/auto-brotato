@@ -1,12 +1,12 @@
 extends Reference
 
-# auto_brotato TCP/NDJSON 客户端（协议 v1，docs/architecture.md §4）。
+# auto_brotato TCP/NDJSON 客户端（协议 v2，docs/protocol.md §7；docs/architecture.md §4）。
 #
 # 职责：连接/指数退避重连、hello/welcome 握手、逐行解析 NDJSON、心跳应答 pong、
 # 记录最近一次 Python 消息时间（供断线兜底判定）。不含策略逻辑。
 
 const LOG_NAME := "BrotatoPlayer-AutoBrotato:IPC"
-const PROTOCOL_VERSION := 1
+const PROTOCOL_VERSION := 2
 const RETRY_INITIAL_MS := 2000
 const RETRY_MAX_MS := 10000
 const WELCOME_TIMEOUT_MS := 10000

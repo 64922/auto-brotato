@@ -3,7 +3,7 @@
 """AutoBrotato mod 冒烟客户端（票据 01）。
 
 最简 TCP 工具（仅标准库），替代尚未实现的 agent（票据 02），用于验收：
-  1. hello/welcome 握手（协议 v1，game_version 1.1.15.4）；
+  1. hello/welcome 握手（协议 v2，game_version 1.1.15.4）；
   2. snapshot 上送速率与字段 sanity；
   3. （可选）注入 move 动作验证实机位移；
   4. 停止注入后 TTL（默认 250ms）内安全停住。
@@ -21,7 +21,7 @@ import socket
 import sys
 import time
 
-PROTOCOL_VERSION = 1
+PROTOCOL_VERSION = 2
 GAME_VERSION = "1.1.15.4"
 MOVE_SEND_INTERVAL = 0.08
 RAMP_SECONDS = 0.5

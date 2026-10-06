@@ -1,9 +1,9 @@
 extends Node
 
 # AutoBrotato mod 入口（票据 02：move 注入；票据 03：完整战斗观测 + 调试叠加层；
-# 票据 06：商店观测与 shop_* 动作）。
+# 票据 06：商店观测与 shop_* 动作；票据 05：菜单观测（难度页/终局）与协议 v2）。
 #
-# 决策在 Python 侧；本 mod 只做四件事：TCP 协议客户端、战斗/商店观测上送、
+# 决策在 Python 侧；本 mod 只做四件事：TCP 协议客户端、战斗/商店/菜单观测上送、
 # move 与 shop_* 动作经游戏输入系统/UI 流程注入（含 TTL 与幂等防护）、
 # 可开关的调试叠加层。
 
@@ -12,6 +12,8 @@ const GAME_VERSION := "1.1.15.4"
 const LOG_NAME := "BrotatoPlayer-AutoBrotato:Main"
 const SHOP_SAMPLE_INTERVAL := 0.1
 const SHOP_RESEND_INTERVAL_MS := 1000
+const MENU_SAMPLE_INTERVAL := 0.1
+const MENU_RESEND_INTERVAL_MS := 1000
 
 const IpcClient := preload("res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/ipc_client.gd")
 const Observation := preload("res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/observation.gd")
@@ -21,6 +23,9 @@ const ShopObservation := preload(
 	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/shop_observation.gd"
 )
 const ShopActions := preload("res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/shop_actions.gd")
+const MenuObservation := preload(
+	"res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/menu_observation.gd"
+)
 # 临时探针（票据 04）路径：动态 load，配置缺失时保持 null（见 spike_menu_probe.gd 头注释）。
 const SPIKE_PROBE_PATH := "res://mods-unpacked/BrotatoPlayer-AutoBrotato/src/spike_menu_probe.gd"
 
@@ -30,12 +35,16 @@ var _movement
 var _overlay
 var _shop
 var _shop_actions
+var _menu
 var _spike_probe = null
 var _snapshot_interval := 1.0 / 60.0
 var _snapshot_accum := 0.0
 var _shop_accum := 0.0
 var _last_shop_signature := ""
 var _last_shop_sent_ms := 0
+var _menu_accum := 0.0
+var _last_menu_signature := ""
+var _last_menu_sent_ms := 0
 var _link_was_ready := false
 
 
@@ -49,6 +58,7 @@ func _init() -> void:
 	_overlay.movement = _movement
 	_shop = ShopObservation.new()
 	_shop_actions = ShopActions.new(_shop)
+	_menu = MenuObservation.new()
 	# 票据 04 临时探针：文件不存在时 load 失败仅打印错误，不影响正式功能。
 	if ResourceLoader.exists(SPIKE_PROBE_PATH):
 		var probe_script = load(SPIKE_PROBE_PATH)
@@ -79,6 +89,7 @@ func _process(delta: float) -> void:
 		_ipc.send("snapshot", _observation.latest())
 	_flush_shop_actions()
 	_pump_shop(delta)
+	_pump_menu(delta)
 
 
 # 结算异步商店动作（购买/卖出/刷新）并回执；购买成功附带 purchase_done 事件。
@@ -108,6 +119,25 @@ func _pump_shop(delta: float) -> void:
 			_last_shop_sent_ms = now
 
 
+# 菜单观测（难度页/终局）：与 shop 相同的推送策略（内容变化 + 1s 心跳；不在菜单时不发送）。
+func _pump_menu(delta: float) -> void:
+	_menu_accum += delta
+	if _menu_accum < MENU_SAMPLE_INTERVAL:
+		return
+	_menu_accum = fmod(_menu_accum, MENU_SAMPLE_INTERVAL)
+	_menu.sample()
+	var payload = _menu.latest()
+	if payload == null:
+		_last_menu_signature = ""
+		return
+	var signature := JSON.print(payload)
+	var now := OS.get_ticks_msec()
+	if signature != _last_menu_signature or now - _last_menu_sent_ms >= MENU_RESEND_INTERVAL_MS:
+		if _ipc.send("menu", payload):
+			_last_menu_signature = signature
+			_last_menu_sent_ms = now
+
+
 func _physics_process(delta: float) -> void:
 	_observation.sample(delta)
 	_movement.apply(OS.get_ticks_msec())
@@ -127,6 +157,8 @@ func _check_link() -> void:
 		_shop_actions.reset()
 		_shop.invalidate()
 		_last_shop_signature = ""
+		_menu.invalidate()
+		_last_menu_signature = ""
 		ModLoaderLog.warning("IPC 断开，move 注入已归零（安全停住）", LOG_NAME)
 
 
