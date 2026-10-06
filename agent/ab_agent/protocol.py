@@ -1,4 +1,4 @@
-"""IPC 协议 v1 纯函数编解码（docs/protocol.md §1–§3）。
+"""IPC 协议 v2 纯函数编解码（docs/protocol.md §1–§3、§7）。
 
 信封：``{"v": int, "seq": int, "ts": float, "type": str, "ref": any, "payload": object}``
 
@@ -11,8 +11,8 @@ import time
 from dataclasses import dataclass
 from typing import Any
 
-#: 当前协议版本（mod 0.2.0 为 v1；v2 演进见 ADR-0009，票据 05/06 实施）
-PROTOCOL_VERSION = 1
+#: 当前协议版本（v2：菜单观测/动作；单客户端同步演进，ADR-0009）
+PROTOCOL_VERSION = 2
 
 #: 锁定游戏版本（ADR-0005）
 GAME_VERSION = "1.1.15.4"
@@ -128,6 +128,18 @@ def welcome_payload(session_id: str | None) -> dict:
 def error_payload(code: str, message: str) -> dict:
     """构造 error 载荷；mod 仅记录日志，不据此重连（v1）。"""
     return {"code": code, "message": message}
+
+
+def ack_ok(ack: dict | None) -> bool:
+    """动作回执是否成功（action_ack.ok，protocol.md §5.2）。"""
+    return bool(ack and ack.get("ok"))
+
+
+def ack_error(ack: dict | None) -> str:
+    """动作回执的中文失败原因。"""
+    if ack is None:
+        return "无回执（超时或断链）"
+    return str(ack.get("error") or "未知错误")
 
 
 def _as_int(value: Any, name: str) -> int:

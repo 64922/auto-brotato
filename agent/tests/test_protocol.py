@@ -109,15 +109,18 @@ class HelloCheckTest(unittest.TestCase):
         "capabilities": {"snapshot_hz": 60, "move_analog": True},
     }
 
+    def test_protocol_version_is_v2(self):
+        self.assertEqual(protocol.PROTOCOL_VERSION, 2)
+
     def test_accepts_matching_versions(self):
         self.assertIsNone(protocol.check_hello(dict(self.HELLO)))
 
     def test_rejects_protocol_mismatch_with_clear_message(self):
-        hello = dict(self.HELLO, protocol_version=2)
+        hello = dict(self.HELLO, protocol_version=1)
         error = protocol.check_hello(hello)
         self.assertIsNotNone(error)
         self.assertIn("protocol_version", error)
-        self.assertIn("2", error)
+        self.assertIn("1", error)
 
     def test_rejects_game_mismatch_with_clear_message(self):
         hello = dict(self.HELLO, game_version="1.1.15.5")

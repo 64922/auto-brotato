@@ -308,6 +308,10 @@ class IpcServer:
             self.state.update_shop(payload)
             self.log.debug("shop 更新：wave_next=%s", payload.get("wave_next"))
             return True
+        if msg_type == "menu":
+            self.state.update_menu(payload)
+            self.log.debug("menu 更新：phase=%s", payload.get("phase"))
+            return True
         if msg_type == "event":
             self.state.note_event(payload)
             self.log.info("事件：%s %s", payload.get("name"), payload.get("data", {}))

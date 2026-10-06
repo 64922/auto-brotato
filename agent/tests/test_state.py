@@ -50,14 +50,30 @@ class ObserveOnlyTest(unittest.TestCase):
     def test_default_observe_only(self):
         self.assertTrue(AgentState().observe_only)
 
+    def test_first_connect_takes_control(self):
+        state = AgentState()
+        state.mark_connected("s1", {})
+        self.assertFalse(state.observe_only, "本进程首次连接应直接接管（PRD 主流程）")
+
     def test_reconnect_restores_observe_only(self):
         state = AgentState()
         state.mark_connected("s1", {})
-        state.observe_only = False
         state.mark_disconnected()
         state.mark_connected("s2", {})
         self.assertTrue(state.observe_only)
         self.assertEqual(state.session_id, "s2")
+
+
+class MenuStateTest(unittest.TestCase):
+    def test_update_menu_and_age(self):
+        state = AgentState()
+        state.update_menu({"phase": "difficulty_select"}, now=100.0)
+        self.assertEqual(state.menu_count, 1)
+        self.assertEqual(state.latest_menu["phase"], "difficulty_select")
+        self.assertAlmostEqual(state.menu_age(now=101.5), 1.5)
+
+    def test_menu_age_none_before_first(self):
+        self.assertIsNone(AgentState().menu_age(now=1.0))
 
 
 class SummaryTest(unittest.TestCase):
@@ -88,7 +104,7 @@ class SummaryTest(unittest.TestCase):
         state.update_snapshot(snapshot(wave={"index": 1, "phase": "combat", "time_left": 5}), now=1.0)
         text = state.describe(now=1.02)
         self.assertIn("已连接", text)
-        self.assertIn("OBSERVE_ONLY", text)
+        self.assertIn("接管", text)
         self.assertIn("快照=", text)
         self.assertIn("第 1 波", text)
 

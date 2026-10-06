@@ -1,8 +1,11 @@
-"""agent 命令行入口骨架：启动 IPC 服务端、周期状态打印、status/stop/resume 命令。
+"""agent 命令行入口：启动 IPC 服务端与会话状态机、周期状态打印、命令与难度输入。
 
 用法（conda 环境 brotato）：
     python -m ab_agent.cli
     python -m ab_agent.cli --port 37650 --status-interval 5
+
+终端输入在难度页由 ``RunSession`` 接管：``D0–Dn`` 选难度、``y/n`` 确认模式开关、
+``q`` 取消；其余时刻为命令（status/stop/resume/help/quit，``q`` 亦可退出）。
 """
 from __future__ import annotations
 
@@ -17,6 +20,7 @@ from typing import Optional, Sequence
 from . import __version__
 from .ipc_server import DEFAULT_PING_INTERVAL_S, IpcServer
 from .recorder import Recorder
+from .session import RunSession
 from .state import AgentState
 
 LOGGER_NAME = "ab.cli"
@@ -24,18 +28,25 @@ LOGGER_NAME = "ab.cli"
 #: 默认录制目录：仓库根 ``recordings/``（不入库，见 .gitignore）
 DEFAULT_RECORD_DIR = Path(__file__).resolve().parents[2] / "recordings"
 
+#: 全局命令（非难度选择阶段可用；其余输入交给 RunSession 处理）
+GLOBAL_COMMANDS = {"status", "stop", "resume", "quit", "exit", "q", "help"}
+
+#: 会话 tick 间隔（秒）：快照 60Hz，20Hz 轮询足够且开销低
+SESSION_TICK_INTERVAL_S = 0.05
+
 HELP_TEXT = """命令：
-  status   打印当前状态（连接/模式/快照频率/波次）
+  status   打印当前状态（连接/模式/阶段/快照频率/波次）
   stop     断开连接、让出控制（mod 自动重连后保持 OBSERVE_ONLY）
   resume   恢复接管（清除 OBSERVE_ONLY）
-  quit/q   退出
-  help     显示本帮助"""
+  quit/q   退出（难度选择页的 q 表示取消，不退出）
+  help     显示本帮助
+难度页：输入 D0–Dn 选择难度；回车重打印清单；q 取消（保持待命）。"""
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ab_agent",
-        description="AutoBrotato agent（IPC 服务端骨架，协议 v1）",
+        description="AutoBrotato agent（IPC 服务端 + 会话状态机，协议 v2）",
     )
     parser.add_argument("--host", default="127.0.0.1", help="监听地址（默认 127.0.0.1）")
     parser.add_argument("--port", type=int, default=37650, help="监听端口（默认 37650）")
@@ -80,11 +91,19 @@ def setup_logging(level: str) -> None:
     )
 
 
-def format_status(server: IpcServer, state: AgentState) -> str:
+def _print_flush(text: str) -> None:
+    """会话输出走带 flush 的 print：stdout 非 tty（管道/重定向）时不吞缓冲。"""
+    print(text, flush=True)
+
+
+def format_status(server: IpcServer, state: AgentState, session: RunSession) -> str:
     """一行状态摘要（status 命令与周期打印共用）。"""
+    text = state.describe()
+    if session is not None:
+        text += " · " + session.describe()
     if server.connected:
-        return "[状态] " + state.describe()
-    return "[状态] " + state.describe() + "（等待 mod 连接 %s:%d）" % (
+        return "[状态] " + text
+    return "[状态] " + text + "（等待 mod 连接 %s:%d）" % (
         server.host,
         server.bound_port,
     )
@@ -107,14 +126,17 @@ def _pump_stdin(queue: "asyncio.Queue[Optional[str]]", loop: asyncio.AbstractEve
         loop.call_soon_threadsafe(queue.put_nowait, line)
 
 
-async def _handle_command(command: str, server: IpcServer, state: AgentState) -> bool:
+async def _handle_command(
+    command: str, server: IpcServer, state: AgentState, session: RunSession
+) -> bool:
     """处理一条命令；返回 False 表示退出。"""
-    if command in ("quit", "q", "exit"):
+    if command in ("quit", "exit", "q"):
         return False
     if command == "status":
-        print(format_status(server, state), flush=True)
+        print(format_status(server, state, session), flush=True)
     elif command == "stop":
         state.observe_only = True
+        session.on_stop()
         if server.disconnect_client():
             print(
                 "已断开连接并让出控制；mod 将自动重连，重连后保持 OBSERVE_ONLY（输入 resume 恢复接管）",
@@ -124,7 +146,7 @@ async def _handle_command(command: str, server: IpcServer, state: AgentState) ->
             print("当前无活动连接；已保持 OBSERVE_ONLY", flush=True)
     elif command == "resume":
         state.observe_only = False
-        print("已恢复接管（OBSERVE_ONLY=false）", flush=True)
+        session.on_resume()
     elif command == "help":
         print(HELP_TEXT, flush=True)
     elif command:
@@ -132,7 +154,7 @@ async def _handle_command(command: str, server: IpcServer, state: AgentState) ->
     return True
 
 
-async def _command_loop(server: IpcServer, state: AgentState) -> None:
+async def _command_loop(server: IpcServer, state: AgentState, session: RunSession) -> None:
     log = logging.getLogger(LOGGER_NAME)
     loop = asyncio.get_running_loop()
     queue: "asyncio.Queue[Optional[str]]" = asyncio.Queue()
@@ -147,15 +169,40 @@ async def _command_loop(server: IpcServer, state: AgentState) -> None:
             log.info("标准输入已关闭，保持运行（Ctrl+C 退出；状态仍会周期打印）")
             await asyncio.Event().wait()
             return
-        if not await _handle_command(command.strip(), server, state):
+        text = command.strip()
+        lowered = text.lower()
+        if lowered in GLOBAL_COMMANDS:
+            if lowered == "q" and session.handle_input(text):
+                continue  # 难度选择中 q 为取消，不退出
+            if not await _handle_command(lowered, server, state, session):
+                return
+            continue
+        if session.handle_input(text):
+            continue
+        if not await _handle_command(text, server, state, session):
             return
 
 
-async def _status_loop(server: IpcServer, state: AgentState, interval: float) -> None:
+async def _status_loop(
+    server: IpcServer, state: AgentState, session: RunSession, interval: float
+) -> None:
     while True:
         await asyncio.sleep(interval)
         if server.connected or state.session_id is not None:
-            print(format_status(server, state), flush=True)
+            print(format_status(server, state, session), flush=True)
+
+
+async def _session_loop(session: RunSession, interval: float) -> None:
+    """周期驱动状态机；单次 tick 异常记录后继续，不拖垮链路。"""
+    log = logging.getLogger(LOGGER_NAME)
+    while True:
+        try:
+            await session.tick()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            log.exception("会话状态机 tick 异常（已忽略，继续运行）")
+        await asyncio.sleep(interval)
 
 
 async def _run(args: argparse.Namespace) -> int:
@@ -171,9 +218,15 @@ async def _run(args: argparse.Namespace) -> int:
         ping_interval=args.ping_interval,
         recorder=recorder,
     )
+    session = RunSession(
+        state,
+        server,
+        output=_print_flush,
+        replay_path=(lambda: str(recorder.recording_path) if recorder and recorder.recording_path else None),
+    )
     await server.start()
     log.info(
-        "AutoBrotato agent v%s 已启动，监听 %s:%d（等待 mod 连接）",
+        "AutoBrotato agent v%s 已启动，监听 %s:%d（协议 v2，等待 mod 连接）",
         __version__,
         args.host,
         server.bound_port,
@@ -184,21 +237,25 @@ async def _run(args: argparse.Namespace) -> int:
             args.record_dir,
             "gzip 归档" if args.record_compress else "NDJSON",
         )
-    log.info("命令：status / stop / resume / quit（help 查看帮助）")
+    log.info("命令：status / stop / resume / quit / q（help 查看帮助；难度页直接输入 D0–Dn）")
     status_task: Optional[asyncio.Task] = None
     if args.status_interval > 0:
         status_task = asyncio.create_task(
-            _status_loop(server, state, args.status_interval), name="ab-status"
+            _status_loop(server, state, session, args.status_interval), name="ab-status"
         )
+    session_task = asyncio.create_task(
+        _session_loop(session, SESSION_TICK_INTERVAL_S), name="ab-session"
+    )
     try:
-        await _command_loop(server, state)
+        await _command_loop(server, state, session)
     finally:
-        if status_task is not None:
-            status_task.cancel()
-            try:
-                await status_task
-            except asyncio.CancelledError:
-                pass
+        for task in (status_task, session_task):
+            if task is not None:
+                task.cancel()
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
         await server.shutdown()
         log.info("agent 已退出")
     return 0

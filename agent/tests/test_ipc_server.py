@@ -126,7 +126,7 @@ class HandshakeTest(IpcServerTestBase):
 
     async def test_protocol_version_mismatch_rejects_and_closes(self):
         mod = await FakeMod.connect(self.server)
-        error = await mod.hello(protocol_version=2)
+        error = await mod.hello(protocol_version=1, mod_version="0.1.0")
         self.assertEqual(error["type"], "error")
         self.assertEqual(error["payload"]["code"], "version_mismatch")
         self.assertIn("protocol_version", error["payload"]["message"])
@@ -181,6 +181,15 @@ class ObservationTest(IpcServerTestBase):
         self.assertEqual(self.state.last_event["name"], "purchase_done")
         mod.close()
 
+    async def test_menu_updates_state(self):
+        mod, _ = await self.handshake()
+        await mod.send("menu", {"phase": "difficulty_select", "can_start": True})
+        self.assertTrue(await wait_for(lambda: self.state.latest_menu is not None))
+        self.assertEqual(self.state.latest_menu["phase"], "difficulty_select")
+        self.assertEqual(self.state.menu_count, 1)
+        self.assertIsNotNone(self.state.menu_age())
+        mod.close()
+
     async def test_malformed_line_ignored_without_dropping_link(self):
         mod, _ = await self.handshake()
         await mod.send_raw("{broken json\n")
@@ -205,12 +214,12 @@ class SingleClientTest(IpcServerTestBase):
 
     async def test_reconnect_defaults_to_observe_only(self):
         mod, _ = await self.handshake()
-        self.state.observe_only = False
+        self.assertFalse(self.state.observe_only, "首次连接即接管")
         mod.close()
         self.assertTrue(await wait_for(lambda: not self.state.connected))
         mod_again = await FakeMod.connect(self.server)
         await mod_again.hello(session_id="session-again")
-        self.assertTrue(self.state.observe_only)
+        self.assertTrue(self.state.observe_only, "重连默认 OBSERVE_ONLY")
         mod_again.close()
 
 
@@ -221,7 +230,7 @@ class ActionTest(IpcServerTestBase):
 
     async def test_action_rejected_in_observe_only(self):
         mod, _ = await self.handshake()
-        self.assertTrue(self.state.observe_only)
+        self.state.observe_only = True
         ref = await self.server.send_action("debug_overlay", {"enabled": True})
         self.assertIsNone(ref)
         with self.assertRaises(asyncio.TimeoutError):

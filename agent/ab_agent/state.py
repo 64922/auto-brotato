@@ -15,6 +15,13 @@ SNAPSHOT_HZ_WINDOW = 120
 #: ready 后超过该秒数未收到快照视为链路不健康（protocol.md §1 兜底 2s）
 LINK_TIMEOUT_S = 2.0
 
+#: 快照新鲜窗口（链路 2s 兜底前的保守值）
+SNAPSHOT_FRESH_S = 1.5
+
+#: menu/shop 心跳为 1s，超过该秒数视为已离开页面
+MENU_FRESH_S = 2.5
+SHOP_FRESH_S = 2.5
+
 
 class AgentState:
     """最新观测与链路状态（视图模型）。"""
@@ -28,23 +35,32 @@ class AgentState:
         self.latest_snapshot_at: Optional[float] = None
         self.latest_shop: Optional[dict] = None
         self.latest_shop_at: Optional[float] = None
+        self.latest_menu: Optional[dict] = None
+        self.latest_menu_at: Optional[float] = None
         self.last_ack: Optional[dict] = None
         self.last_ack_ref: Any = None
         self.last_event: Optional[dict] = None
         self.last_pong_at: Optional[float] = None
         self.snapshot_count = 0
         self.shop_count = 0
+        self.menu_count = 0
         self.protocol_errors = 0
+        self._ever_connected = False
         self._snapshot_times: Deque[float] = deque(maxlen=SNAPSHOT_HZ_WINDOW)
 
     # ---- 连接生命周期 ----
 
     def mark_connected(self, session_id: str | None, hello: dict) -> None:
-        """握手完成；重连后默认 OBSERVE_ONLY（架构 §3.1 不变量 4）。"""
+        """握手完成。
+
+        本进程首次连接即接管（PRD 主流程：启动 agent → 停留在难度页 → 提示选难度）；
+        之后的**重连**默认 OBSERVE_ONLY，需人工 resume 才再次接管（架构 §3.1 不变量 4）。
+        """
         self.connected = True
         self.session_id = session_id
         self.hello = hello
-        self.observe_only = True
+        self.observe_only = self._ever_connected
+        self._ever_connected = True
         self._snapshot_times.clear()
 
     def mark_disconnected(self) -> None:
@@ -64,6 +80,12 @@ class AgentState:
         self.latest_shop = payload
         self.latest_shop_at = now
         self.shop_count += 1
+
+    def update_menu(self, payload: dict, *, now: float | None = None) -> None:
+        now = time.monotonic() if now is None else now
+        self.latest_menu = payload
+        self.latest_menu_at = now
+        self.menu_count += 1
 
     def note_ack(self, ref: Any, payload: dict) -> None:
         self.last_ack = payload
@@ -96,9 +118,51 @@ class AgentState:
         now = time.monotonic() if now is None else now
         return now - self.latest_snapshot_at
 
+    def menu_age(self, *, now: float | None = None) -> Optional[float]:
+        """距最近一条 menu 消息的秒数；从未收到返回 None（心跳 1s，>2.5s 视为离场）。"""
+        if self.latest_menu_at is None:
+            return None
+        now = time.monotonic() if now is None else now
+        return now - self.latest_menu_at
+
+    def shop_age(self, *, now: float | None = None) -> Optional[float]:
+        """距最近一条 shop 消息的秒数；从未收到返回 None。"""
+        if self.latest_shop_at is None:
+            return None
+        now = time.monotonic() if now is None else now
+        return now - self.latest_shop_at
+
     def link_healthy(self, *, now: float | None = None, timeout: float = LINK_TIMEOUT_S) -> bool:
         age = self.snapshot_age(now=now)
         return self.connected and age is not None and age <= timeout
+
+    def fresh_snapshot(
+        self, *, now: float | None = None, max_age: float = SNAPSHOT_FRESH_S
+    ) -> Optional[dict]:
+        """连接的且足够新鲜的最新快照；否则 None。"""
+        return self._fresh(self.latest_snapshot, self.latest_snapshot_at, now, max_age)
+
+    def fresh_shop(
+        self, *, now: float | None = None, max_age: float = SHOP_FRESH_S
+    ) -> Optional[dict]:
+        """连接的且足够新鲜的最新商店视图；否则 None。"""
+        return self._fresh(self.latest_shop, self.latest_shop_at, now, max_age)
+
+    def fresh_menu(
+        self, *, now: float | None = None, max_age: float = MENU_FRESH_S
+    ) -> Optional[dict]:
+        """连接的且足够新鲜的最新 menu 视图；否则 None。"""
+        return self._fresh(self.latest_menu, self.latest_menu_at, now, max_age)
+
+    def _fresh(
+        self, payload: Optional[dict], at: Optional[float], now: float | None, max_age: float
+    ) -> Optional[dict]:
+        if not self.connected or payload is None or at is None:
+            return None
+        now = time.monotonic() if now is None else now
+        if now - at > max_age:
+            return None
+        return payload if isinstance(payload, dict) else None
 
     def wave_summary(self) -> str:
         """最新快照的波次/玩家摘要（中文一行）。"""
