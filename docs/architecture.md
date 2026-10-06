@@ -262,7 +262,7 @@
      死亡即停止视为流程通过（须验证死亡检测）；本局未触发升级页时该项记为跳过（累计经验不足时不会出现）。
      模式开关开启为已知阻碍（无尽模式原生警告弹窗会挡住自动开局，见 §13 与票据 07 限制④）：
      冒烟直接拒绝，需人工关闭后重跑。
-2. **回放**：agent 录制 NDJSON（header + 观测流 + 动作 + ack + 决策理由）；`tools/replay` 离线重放供回归与调参（票据 03）；`tools/replay/movement` 用录制回放对比走位策略（危险暴露/贴边/方向直方图，票据 09）。
+2. **回放**：agent 录制 NDJSON（header + 观测流 + 动作 + ack + 决策理由）；`tools/replay` 离线重放供回归与调参（票据 03）；`tools/replay/movement` 用录制回放对比走位策略（危险暴露/贴边/方向直方图，票据 09）；`tools/replay/tactical` 输出战术层报告并按对局汇总双录制实机对照（材料/存活，票据 10）。
 3. **单元测试**：协议编解码、输入解析（D 值校验）、决策评分函数、危险场几何。
 4. **真实验收**：§1.2 的 10 局 ≥9 胜；每局回放 + 复盘记录。
 
@@ -297,7 +297,8 @@ auto-brotato/
 │   ├── smoke_e2e.py         # 端到端闭环冒烟：难度页→第 2 波→回放校验（票据 08）
 │   ├── smoke_analysis.py    # 冒烟回放解析与清单校验（票据 08）
 │   ├── smoke_agent.py       # 冒烟用 agent 子进程封装（票据 08）
-│   └── replay/              # 离线回放与回归；movement.py 走位指标对比报告（票据 09）
+│   └── replay/              # 离线回放与回归；movement.py 走位指标对比报告（票据 09）；
+│                            #   tactical.py/tactical_report.py 战术层报告与双录制实机对照、recording_facts.py 对局事实切分（票据 10）
 ├── recordings/              # 回放文件（不入库）
 ├── docs/
 │   ├── architecture.md      # 本文件

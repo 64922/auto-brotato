@@ -134,6 +134,19 @@ class FactsTest(unittest.TestCase):
         self.assertAlmostEqual(events[0].nearest_enemy_px, 100.0 - 20.0 - 10.0)
         self.assertEqual(events[0].enemies_near, 1)
 
+    def test_segment_steps_splits_runs(self):
+        steps = [
+            tactical_metrics.TacticalStep(ts=0.0, snapshot={"wave": {"index": 1}}, vector=(1.0, 0.0)),
+            tactical_metrics.TacticalStep(ts=1.0, snapshot={"wave": {"index": 2}}, vector=(1.0, 0.0)),
+            tactical_metrics.TacticalStep(ts=1.5, snapshot={}, vector=(1.0, 0.0)),
+            tactical_metrics.TacticalStep(ts=2.0, snapshot={"wave": {"index": 1}}, vector=(1.0, 0.0)),
+            tactical_metrics.TacticalStep(ts=3.0, snapshot={"wave": {"index": 2}}, vector=(1.0, 0.0)),
+            tactical_metrics.TacticalStep(ts=4.0, snapshot={"wave": {"index": 3}}, vector=(1.0, 0.0)),
+        ]
+        groups = recording_facts.segment_steps(steps)
+        self.assertEqual(len(groups), 2)
+        self.assertEqual([len(group) for group in groups], [2, 3])
+
 
 class OutcomeTest(unittest.TestCase):
     def _recording(self, tmp, *, death=False, materials=(4, 9)):
@@ -163,6 +176,53 @@ class OutcomeTest(unittest.TestCase):
             path = self._recording(tmp)
             outcome = recording_facts.recording_outcome(tactical.open_recording(path))
             self.assertIsNone(outcome.death_ts)
+
+    def test_recording_runs_segments_multi_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "multi.ndjson"
+            lines = [
+                snapshot_line(1000.0, wave=1, materials=4),
+                snapshot_line(1001.0, wave=2, materials=9),
+                snapshot_line(1002.0, wave=2, hp=0.0),
+                support.snapshot(1003.0),
+                snapshot_line(1004.0, wave=1, materials=3),
+                snapshot_line(1005.0, wave=2, materials=5),
+                snapshot_line(1006.0, wave=3, materials=1),
+            ]
+            lines[2]["envelope"]["payload"]["player"]["alive"] = False
+            support.write_recording(path, lines)
+            runs = recording_facts.recording_runs(tactical.open_recording(path))
+            self.assertEqual(len(runs), 2)
+            first, second = runs
+            self.assertEqual(first.max_wave, 2)
+            self.assertEqual(first.materials_by_wave, ((1, 4), (2, 9)))
+            self.assertEqual(first.total_materials, 13)
+            self.assertAlmostEqual(first.death_ts, 1002.0)
+            self.assertEqual(first.death_wave, 2)
+            self.assertEqual(second.max_wave, 3)
+            self.assertEqual(second.materials_by_wave, ((1, 3), (2, 5), (3, 1)))
+            self.assertEqual(second.total_materials, 9)
+            self.assertIsNone(second.death_ts)
+
+    def test_recording_runs_restart_at_wave_one(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "wave-one.ndjson"
+            lines = [
+                snapshot_line(1000.0, wave=1, materials=4),
+                snapshot_line(1001.0, wave=1, hp=0.0),
+                support.snapshot(1002.0),
+                snapshot_line(1003.0, wave=1, materials=7),
+                snapshot_line(1004.0, wave=2, materials=1),
+            ]
+            lines[1]["envelope"]["payload"]["player"]["alive"] = False
+            support.write_recording(path, lines)
+            runs = recording_facts.recording_runs(tactical.open_recording(path))
+            self.assertEqual(len(runs), 2)
+            self.assertEqual(runs[0].max_wave, 1)
+            self.assertAlmostEqual(runs[0].death_ts, 1001.0)
+            self.assertEqual(runs[1].max_wave, 2)
+            self.assertEqual(runs[1].total_materials, 8)
+            self.assertIsNone(runs[1].death_ts)
 
 
 class CollectAndReportTest(unittest.TestCase):
@@ -212,29 +272,53 @@ class CollectAndReportTest(unittest.TestCase):
             payload = json.loads(outputs[0])
             self.assertEqual(payload["runs"][0]["name"], "战术层")
             self.assertEqual(len(payload["runs"]), 2)
-            self.assertEqual(payload["materials_by_wave"], [[1, 0], [2, 2]])
-            self.assertEqual(payload["damage_events"], [])
+            self.assertEqual(len(payload["facts"]), 1)
+            self.assertEqual(payload["facts"][0]["materials_by_wave"], [[1, 0], [2, 2]])
+            self.assertEqual(payload["facts"][0]["total_materials"], 2)
+            self.assertEqual(payload["facts"][0]["damage_events"], [])
+
+    def _multi_run_recording(self, tmp):
+        path = Path(tmp) / "other.ndjson"
+        support.write_recording(
+            path,
+            [
+                snapshot_line(2000.0, wave=1, materials=3),
+                snapshot_line(2001.0, wave=2, materials=6),
+                support.snapshot(2001.5),
+                snapshot_line(2002.0, wave=1, materials=2),
+                snapshot_line(2003.0, wave=2, materials=4),
+                snapshot_line(2004.0, wave=3, materials=5),
+            ],
+        )
+        return path
 
     def test_main_compare_with(self):
         with tempfile.TemporaryDirectory() as tmp:
             first = self._recording(tmp, waves=(1, 2))
-            second = Path(tmp) / "other.ndjson"
-            support.write_recording(
-                second,
-                [
-                    snapshot_line(2000.0, wave=1, materials=3),
-                    snapshot_line(2001.0, wave=2, materials=6),
-                    snapshot_line(2002.0, wave=3, materials=2),
-                ],
-            )
+            second = self._multi_run_recording(tmp)
             buffer = io.StringIO()
             with contextlib.redirect_stdout(buffer):
                 code = tactical.main([str(first), "--compare-with", str(second), "--json"])
             self.assertEqual(code, 0)
             payload = json.loads(buffer.getvalue())
-            self.assertEqual(payload["compare"]["base"]["total_materials"], 2)
-            self.assertEqual(payload["compare"]["other"]["total_materials"], 11)
-            self.assertEqual(payload["compare"]["other"]["max_wave"], 3)
+            self.assertEqual(payload["compare"]["base"]["summary"]["runs"], 1)
+            self.assertEqual(payload["compare"]["base"]["runs"][0]["total_materials"], 2)
+            self.assertEqual(payload["compare"]["other"]["summary"]["runs"], 2)
+            self.assertEqual(payload["compare"]["other"]["runs"][0]["total_materials"], 9)
+            self.assertEqual(payload["compare"]["other"]["runs"][1]["max_wave"], 3)
+            self.assertEqual(payload["compare"]["other"]["runs"][1]["total_materials"], 11)
+
+    def test_main_compare_text_shows_runs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            first = self._recording(tmp, waves=(1, 2))
+            second = self._multi_run_recording(tmp)
+            buffer = io.StringIO()
+            with contextlib.redirect_stdout(buffer):
+                code = tactical.main([str(first), "--compare-with", str(second)])
+            self.assertEqual(code, 0)
+            text = buffer.getvalue()
+            self.assertIn("双录制结果对比", text)
+            self.assertIn("对局数：本录制 1 局 · 对比录制 2 局", text)
 
     def test_main_text_report_reproducible(self):
         with tempfile.TemporaryDirectory() as tmp:

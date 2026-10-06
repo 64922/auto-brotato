@@ -3,7 +3,8 @@
 这些量与策略无关（录制既定事实），供战术层报告与双录制实机对照：
 - 材料收入/波次曲线：每波 ``economy.materials_this_wave`` 的峰值；
 - 死亡归因：每次 hp 下降最近 3 秒内敌人/弹幕/地雷的最小间距与受伤时刻 300px 内数量；
-- 对局结果：存活波次、材料总量、死亡时刻（供 ``--compare-with`` 对比两局实机录制）。
+- 对局结果：存活波次、材料总量、死亡时刻。单进程多局时快照连续写入同一文件，
+  按对局切分见 :func:`recording_runs` / :func:`segment_steps`。
 
 危险源间距口径与 ``movement_metrics`` 一致（0.3s 外推、弹幕 ttl 截断、玩家半径 10px）。
 """
@@ -104,15 +105,64 @@ def damage_attribution(
     return tuple(events)
 
 
-def recording_outcome(recording: Recording) -> Outcome:
-    """流式扫描录制，汇总存活波次、材料总量与死亡时刻（与策略无关的事实）。"""
-    snapshots = 0
-    waves: set[int] = set()
-    peaks: dict[int, int] = {}
-    first_ts: Optional[float] = None
-    last_ts: Optional[float] = None
-    death_ts: Optional[float] = None
-    death_wave: Optional[int] = None
+class _RunOutcomeBuilder:
+    """单局事实累加器（内部）。"""
+
+    def __init__(self, start_ts: float) -> None:
+        self.start_ts = start_ts
+        self.last_ts = start_ts
+        self.snapshots = 0
+        self.waves: set[int] = set()
+        self.peaks: dict[int, int] = {}
+        self.death_ts: Optional[float] = None
+        self.death_wave: Optional[int] = None
+
+    def add(self, ts: float, wave: int, payload: dict) -> None:
+        self.snapshots += 1
+        self.last_ts = ts
+        self.waves.add(wave)
+        economy = payload.get("economy")
+        if isinstance(economy, dict):
+            materials = economy.get("materials_this_wave")
+            if isinstance(materials, int) and not isinstance(materials, bool):
+                self.peaks[wave] = max(self.peaks.get(wave, 0), materials)
+        player = payload.get("player")
+        if (
+            self.death_ts is None
+            and isinstance(player, dict)
+            and player.get("alive") is False
+        ):
+            self.death_ts = ts
+            self.death_wave = wave
+
+    def finish(self, path: Path) -> Outcome:
+        materials_by_wave = tuple(sorted(self.peaks.items()))
+        waves = tuple(sorted(self.waves))
+        return Outcome(
+            path=path,
+            snapshots=self.snapshots,
+            start_ts=self.start_ts,
+            duration_s=self.last_ts - self.start_ts,
+            waves=waves,
+            max_wave=max(waves) if waves else None,
+            materials_by_wave=materials_by_wave,
+            total_materials=sum(count for _, count in materials_by_wave),
+            death_ts=self.death_ts,
+            death_wave=self.death_wave,
+        )
+
+
+def recording_runs(recording: Recording) -> tuple[Outcome, ...]:
+    """按对局切分录制（单进程多局时快照连续写入同一文件），返回每局结果。
+
+    新局边界：``wave==1``，且当前局已开始、上一非空波次 != 1 或两波之间隔过菜单快照
+    （wave 缺失：难度页/终局页等）。仅统计含波次的快照；``start_ts``/``duration_s``
+    为该局首末快照时刻。无对局快照时返回空元组。
+    """
+    runs: list[Outcome] = []
+    current: Optional[_RunOutcomeBuilder] = None
+    last_wave: Optional[int] = None
+    saw_gap = False
     for record in iter_records(recording):
         if record.kind != "in":
             continue
@@ -122,38 +172,66 @@ def recording_outcome(recording: Recording) -> Outcome:
         payload = envelope.get("payload")
         if not isinstance(payload, dict):
             continue
-        snapshots += 1
-        if first_ts is None:
-            first_ts = record.ts
-        last_ts = record.ts
         wave = wave_index(payload)
-        if wave is not None:
-            waves.add(wave)
-        economy = payload.get("economy")
-        if wave is not None and isinstance(economy, dict):
-            materials = economy.get("materials_this_wave")
-            if isinstance(materials, int) and not isinstance(materials, bool):
-                peaks[wave] = max(peaks.get(wave, 0), materials)
-        player = payload.get("player")
-        if (
-            death_ts is None
-            and isinstance(player, dict)
-            and player.get("alive") is False
-        ):
-            death_ts = record.ts
-            death_wave = wave
-    materials_by_wave = tuple(sorted(peaks.items()))
+        if wave is None:
+            saw_gap = True
+            continue
+        if current is not None and wave == 1 and (last_wave != 1 or saw_gap):
+            runs.append(current.finish(recording.path))
+            current = None
+        if current is None:
+            current = _RunOutcomeBuilder(record.ts)
+        current.add(record.ts, wave, payload)
+        last_wave = wave
+        saw_gap = False
+    if current is not None:
+        runs.append(current.finish(recording.path))
+    return tuple(runs)
+
+
+def segment_steps(
+    steps: Sequence["TacticalStep"],
+) -> tuple[tuple["TacticalStep", ...], ...]:
+    """按对局切分快照步序列（口径同 :func:`recording_runs`；单局返回单元素元组）。"""
+    groups: list[list["TacticalStep"]] = []
+    current: list["TacticalStep"] = []
+    last_wave: Optional[int] = None
+    saw_gap = False
+    for step in steps:
+        wave = wave_index(step.snapshot)
+        if wave is None:
+            saw_gap = True
+            continue
+        if current and wave == 1 and (last_wave != 1 or saw_gap):
+            groups.append(current)
+            current = []
+        current.append(step)
+        last_wave = wave
+        saw_gap = False
+    if current:
+        groups.append(current)
+    return tuple(tuple(group) for group in groups)
+
+
+def recording_outcome(recording: Recording) -> Outcome:
+    """单局录制的对局结果（多局录制请用 :func:`recording_runs`）。
+
+    返回首个对局；无对局快照时返回空结果（保持既有调用方语义）。
+    """
+    runs = recording_runs(recording)
+    if runs:
+        return runs[0]
     return Outcome(
         path=recording.path,
-        snapshots=snapshots,
-        start_ts=first_ts,
-        duration_s=(last_ts - first_ts) if first_ts is not None and last_ts is not None else 0.0,
-        waves=tuple(sorted(waves)),
-        max_wave=max(waves) if waves else None,
-        materials_by_wave=materials_by_wave,
-        total_materials=sum(count for _, count in materials_by_wave),
-        death_ts=death_ts,
-        death_wave=death_wave,
+        snapshots=0,
+        start_ts=None,
+        duration_s=0.0,
+        waves=(),
+        max_wave=None,
+        materials_by_wave=(),
+        total_materials=0,
+        death_ts=None,
+        death_wave=None,
     )
 
 
