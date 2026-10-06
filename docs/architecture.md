@@ -261,6 +261,7 @@ auto-brotato/
 ├── agent/                   # Python 决策端（conda brotato）
 │   ├── ab_agent/
 │   │   ├── ipc_server.py    # TCP 服务端 + NDJSON + 握手
+│   │   ├── protocol.py      # 信封编解码与版本校验（纯函数，票据 02）
 │   │   ├── state.py         # 视图与状态机
 │   │   ├── decision/        # reflex / tactical / economy
 │   │   ├── cli.py

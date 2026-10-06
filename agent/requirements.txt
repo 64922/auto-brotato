@@ -1,0 +1,8 @@
+# AutoBrotato agent 运行时依赖
+#
+# P0 骨架（票据 02）仅使用 Python 标准库（asyncio / json / dataclasses / logging），
+# 无第三方运行时依赖：conda activate brotato 后可直接运行。
+#
+# 测试运行方式（pytest 已在 conda brotato 环境具备；亦可 unittest）：
+#   cd agent && python -m pytest tests -q
+#   cd agent && python -m unittest discover -s tests -t .
