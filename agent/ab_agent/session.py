@@ -58,6 +58,7 @@ class RunSession:
         clock: Callable[[], float] = time.monotonic,
         replay_path: Optional[Callable[[], Optional[str]]] = None,
         autopilot=None,
+        economy=None,
         ack_timeout_s: float = ACK_TIMEOUT_S,
         readback_timeout_s: float = READBACK_TIMEOUT_S,
         start_timeout_s: float = START_TIMEOUT_S,
@@ -80,6 +81,7 @@ class RunSession:
             autopilot=autopilot,
             replay_path=replay_path,
             ack_timeout_s=ack_timeout_s,
+            economy=economy,
         )
 
         self._connected_seen = False
@@ -372,7 +374,8 @@ class RunSession:
         self._run_started_at = self._clock()
         self._run_finished = False
         self._death_since = None
-        self._controller.begin()
+        hero_id = self.difficulty.hero_id if self.difficulty is not None else ""
+        self._controller.begin(hero_id=hero_id)
         self._print(
             "[对局] 已进入第 1 波（D%d）；走位控制器 %s 接管"
             % (value, self._controller.autopilot_name)

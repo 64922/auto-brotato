@@ -310,13 +310,14 @@ def format_duration(seconds: Optional[float]) -> str:
     return "%d 秒" % secs
 
 
-def format_shop_summary(shop: dict) -> str:
-    """商店固定动作日志（票据 07 占位：只评估打印后离开）。"""
+def format_shop_summary(shop: dict, action: Optional[str] = None) -> str:
+    """商店进入时的一行摘要；``action=None`` 为固定动作占位（票据 07 基线的"离开"）。"""
     slots = shop.get("slots") or []
-    return "[商店] 下一波=%s · 金币=%s · 商品 %d 件 → 固定动作：离开" % (
+    return "[商店] 下一波=%s · 金币=%s · 商品 %d 件 → %s" % (
         shop.get("wave_next"),
         shop.get("gold"),
         len(slots),
+        action or "固定动作：离开",
     )
 
 

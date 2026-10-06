@@ -14,18 +14,22 @@ import asyncio
 import logging
 import sys
 import threading
+import time
 from pathlib import Path
 from typing import Optional, Sequence
 
 from . import __version__
 from .decision.config import load_reflex_config
+from .decision.economy import EconomyPlanner
+from .decision.economy_config import load_economy_config
+from .decision.economy_runner import EconomyRunner
 from .decision.reflex import ReflexController
 from .decision.tactical import TacticalController
 from .decision.tactical_config import load_tactical_config
 from .ipc_server import DEFAULT_PING_INTERVAL_S, IpcServer
-from .knowledge import KnowledgeError, load_knowledge
+from .knowledge import KnowledgeBase, KnowledgeError, load_knowledge
 from .recorder import Recorder
-from .session import RunSession
+from .session import ACK_TIMEOUT_S, RunSession
 from .state import AgentState
 
 LOGGER_NAME = "ab.cli"
@@ -93,6 +97,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--tactical-config",
         default=None,
         help="战术层参数文件（默认 ab_agent/decision/config/tactical.json）",
+    )
+    parser.add_argument(
+        "--economy-config",
+        default=None,
+        help="经济层参数文件（默认 ab_agent/decision/config/economy.json；票据 12）",
     )
     parser.add_argument(
         "--move-controller",
@@ -231,13 +240,16 @@ async def _session_loop(session: RunSession, interval: float) -> None:
         await asyncio.sleep(interval)
 
 
-def _log_knowledge(log: logging.Logger, directory: Optional[str]) -> None:
-    """启动时加载知识库并校验游戏版本/内容哈希（strategy.md §7；不匹配告警，不阻断启动）。"""
+def _log_knowledge(log: logging.Logger, directory: Optional[str]) -> Optional[KnowledgeBase]:
+    """启动时加载知识库并校验游戏版本/内容哈希（strategy.md §7；不匹配告警，不阻断启动）。
+
+    返回知识库供经济层使用；加载失败返回 None（经济层降级：商店直接离开、升级选第一张）。
+    """
     try:
         knowledge = load_knowledge(directory)
     except KnowledgeError as exc:
-        log.warning("知识库加载失败：%s（经济层相关功能将在票据 12 前不可用）", exc)
-        return
+        log.warning("知识库加载失败：%s（经济层降级：商店直接离开、升级选第一张）", exc)
+        return None
     for warning in knowledge.warnings:
         log.warning("知识库：%s", warning)
     log.info(
@@ -253,11 +265,12 @@ def _log_knowledge(log: logging.Logger, directory: Optional[str]) -> None:
     )
     for name, data_version in knowledge.data_versions.items():
         log.debug("知识库 data_version[%s]=%s", name, data_version)
+    return knowledge
 
 
 async def _run(args: argparse.Namespace) -> int:
     log = logging.getLogger(LOGGER_NAME)
-    _log_knowledge(log, args.knowledge_dir)
+    knowledge = _log_knowledge(log, args.knowledge_dir)
     state = AgentState()
     recorder: Optional[Recorder] = None
     if not args.no_record:
@@ -283,11 +296,23 @@ async def _run(args: argparse.Namespace) -> int:
             reflex=ReflexController(load_reflex_config(args.reflex_config)),
         )
         log.info("战斗走位使用战术层（战术 + 反射；--move-controller 可切对照基线）")
+    economy = EconomyRunner(
+        EconomyPlanner(knowledge, load_economy_config(args.economy_config)),
+        output=_print_flush,
+        clock=time.monotonic,
+        ack_timeout_s=ACK_TIMEOUT_S,
+    )
+    log.info(
+        "经济层已启用（参数：%s；知识库：%s）",
+        args.economy_config or "包内默认 config/economy.json",
+        "已加载" if knowledge is not None else "缺失（降级模式）",
+    )
     session = RunSession(
         state,
         server,
         output=_print_flush,
         autopilot=move_controller,
+        economy=economy,
         replay_path=(lambda: str(recorder.recording_path) if recorder and recorder.recording_path else None),
     )
     await server.start()
