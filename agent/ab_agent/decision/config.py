@@ -8,7 +8,17 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Mapping
+
+from .config_util import (
+    DecisionConfigError,
+    boolean as _boolean,
+    check_keys as _check_keys,
+    integer as _integer,
+    number as _number,
+    numbers as _numbers,
+    section as _section,
+)
 
 #: 默认参数文件（随包发布；所有键必填，缺失即报错）
 DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent / "config" / "reflex.json"
@@ -67,8 +77,8 @@ _SECTION_KEYS = {
 }
 
 
-class ReflexConfigError(ValueError):
-    """配置缺失/类型非法/数值越界（中文信息，带字段路径）。"""
+class ReflexConfigError(DecisionConfigError):
+    """反射层配置缺失/类型非法/数值越界（中文信息，带字段路径）。"""
 
 
 @dataclass(frozen=True)
@@ -192,6 +202,13 @@ def load_reflex_config(path: str | Path | None = None) -> ReflexConfig:
 
 def reflex_config_from_mapping(raw: Mapping[str, Any]) -> ReflexConfig:
     """由 mapping 构造 :class:`ReflexConfig`；键缺失/类型或数值非法抛错。"""
+    try:
+        return _build_reflex_config(raw)
+    except DecisionConfigError as exc:
+        raise ReflexConfigError(str(exc)) from exc
+
+
+def _build_reflex_config(raw: Mapping[str, Any]) -> ReflexConfig:
     if not isinstance(raw, Mapping):
         raise ReflexConfigError("配置必须是对象")
     _check_keys(raw, _SECTIONS, "顶层")
@@ -303,87 +320,3 @@ def reflex_config_from_mapping(raw: Mapping[str, Any]) -> ReflexConfig:
         invuln=invuln,
         player=player,
     )
-
-
-# ---- 校验辅助 ----
-
-
-def _section(raw: Mapping[str, Any], name: str) -> Mapping[str, Any]:
-    value = raw.get(name)
-    if not isinstance(value, Mapping):
-        raise ReflexConfigError("缺少配置分区 %s（必须是对象）" % name)
-    return value
-
-
-def _check_keys(section: Mapping[str, Any], expected: Sequence[str], where: str) -> None:
-    expected_set = set(expected)
-    missing = [key for key in expected if key not in section]
-    extra = [key for key in section if key not in expected_set]
-    if missing:
-        raise ReflexConfigError("%s 缺少键：%s" % (where, "、".join(sorted(missing))))
-    if extra:
-        raise ReflexConfigError("%s 存在未知键：%s" % (where, "、".join(sorted(extra))))
-
-
-def _number(
-    section: Mapping[str, Any],
-    key: str,
-    where: str,
-    *,
-    minimum: float,
-    maximum: float | None = None,
-) -> float:
-    value = section.get(key)
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ReflexConfigError("%s.%s 必须是数字，得到 %r" % (where, key, value))
-    number = float(value)
-    if number < minimum or (maximum is not None and number > maximum):
-        bound = "[%g, %g]" % (minimum, maximum) if maximum is not None else ">= %g" % minimum
-        raise ReflexConfigError("%s.%s=%g 超出范围 %s" % (where, key, number, bound))
-    return number
-
-
-def _integer(
-    section: Mapping[str, Any],
-    key: str,
-    where: str,
-    *,
-    minimum: int,
-    maximum: int,
-) -> int:
-    value = section.get(key)
-    if isinstance(value, bool) or not isinstance(value, int):
-        raise ReflexConfigError("%s.%s 必须是整数，得到 %r" % (where, key, value))
-    if value < minimum or value > maximum:
-        raise ReflexConfigError(
-            "%s.%s=%d 超出范围 [%d, %d]" % (where, key, value, minimum, maximum)
-        )
-    return value
-
-
-def _boolean(section: Mapping[str, Any], key: str, where: str) -> bool:
-    value = section.get(key)
-    if not isinstance(value, bool):
-        raise ReflexConfigError("%s.%s 必须是布尔值，得到 %r" % (where, key, value))
-    return value
-
-
-def _numbers(
-    section: Mapping[str, Any], key: str, where: str, *, minimum: float
-) -> tuple[float, ...]:
-    value = section.get(key)
-    if not isinstance(value, (list, tuple)):
-        raise ReflexConfigError("%s.%s 必须是数字数组，得到 %r" % (where, key, value))
-    result = []
-    for index, item in enumerate(value):
-        if isinstance(item, bool) or not isinstance(item, (int, float)):
-            raise ReflexConfigError(
-                "%s.%s[%d] 必须是数字，得到 %r" % (where, key, index, item)
-            )
-        number = float(item)
-        if number < minimum:
-            raise ReflexConfigError("%s.%s[%d]=%g 超出范围 >= %g" % (where, key, index, number, minimum))
-        result.append(number)
-    if not result:
-        raise ReflexConfigError("%s.%s 不能为空" % (where, key))
-    return tuple(result)

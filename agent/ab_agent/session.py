@@ -1,4 +1,4 @@
-"""会话状态机：难度交互 → 自动开局 → 对局（反射层走位 + 固定商店/升级动作）→ 终局战报。
+"""会话状态机：难度交互 → 自动开局 → 对局（战术层走位 + 固定商店/升级动作）→ 终局战报。
 
 状态（架构 §4）：``IDLE → MENU_READY → AWAIT_INPUT → STARTING → RUNNING → ENDED → IDLE``。
 其中 ``MENU_READY`` 为 OBSERVE_ONLY 下已看到难度页、等待 ``resume`` 接管的等待位；
@@ -8,7 +8,7 @@
 - 读 ``AgentState`` 观测，识别难度页/终局页；
 - 开局序列：``menu_set_difficulty`` → 读回选中值 → ``menu_start_run`` → 等第 1 波；
 - 对局内动作（move / shop_leave / menu_pick_upgrade）委托 ``RunController``（走位为
-  反射层，商店/升级仍为固定动作，正式策略见票据 10–12），终局战报由控制器记账汇总；
+  战术层+反射层，商店/升级仍为固定动作，正式策略见票据 11–12），终局战报由控制器记账汇总；
 - 终端输入由 CLI 转交 ``handle_input``（难度 D0–Dn、模式确认 y/n、q 取消）。
 """
 from __future__ import annotations

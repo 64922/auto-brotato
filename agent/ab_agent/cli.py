@@ -20,6 +20,8 @@ from typing import Optional, Sequence
 from . import __version__
 from .decision.config import load_reflex_config
 from .decision.reflex import ReflexController
+from .decision.tactical import TacticalController
+from .decision.tactical_config import load_tactical_config
 from .ipc_server import DEFAULT_PING_INTERVAL_S, IpcServer
 from .recorder import Recorder
 from .session import RunSession
@@ -84,13 +86,18 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--reflex-config",
         default=None,
-        help="反射层参数文件（默认 ab_agent/decision/config/reflex.json）",
+        help="反射层参数文件（默认 ab_agent/decision/config/reflex.json；战术层下同样生效）",
+    )
+    parser.add_argument(
+        "--tactical-config",
+        default=None,
+        help="战术层参数文件（默认 ab_agent/decision/config/tactical.json）",
     )
     parser.add_argument(
         "--move-controller",
-        choices=("reflex", "placeholder"),
-        default="reflex",
-        help="战斗走位控制器（默认 reflex；placeholder 为随机游走占位，用于对照实验）",
+        choices=("tactical", "reflex", "placeholder"),
+        default="tactical",
+        help="战斗走位控制器（默认 tactical=战术层+反射层；reflex/placeholder 为对照基线）",
     )
     parser.add_argument("--version", action="version", version="ab_agent %s" % __version__)
     return parser
@@ -235,9 +242,16 @@ async def _run(args: argparse.Namespace) -> int:
         from .autopilot import PlaceholderAutopilot
 
         move_controller = PlaceholderAutopilot()
-        log.info("战斗走位使用占位控制器（对照实验；反射层见 --move-controller reflex）")
-    else:
+        log.info("战斗走位使用占位控制器（对照实验；战术层见 --move-controller tactical）")
+    elif args.move_controller == "reflex":
         move_controller = ReflexController(load_reflex_config(args.reflex_config))
+        log.info("战斗走位使用反射层（对照实验；战术层见 --move-controller tactical）")
+    else:
+        move_controller = TacticalController(
+            load_tactical_config(args.tactical_config),
+            reflex=ReflexController(load_reflex_config(args.reflex_config)),
+        )
+        log.info("战斗走位使用战术层（战术 + 反射；--move-controller 可切对照基线）")
     session = RunSession(
         state,
         server,

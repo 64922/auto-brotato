@@ -1,0 +1,44 @@
+{
+  "update": {
+    "interval_s": 0.25
+  },
+  "cluster": {
+    "join_radius": 170.0,
+    "max_distance": 700.0,
+    "distance_decay": 260.0,
+    "danger_weight": 1.0
+  },
+  "conservative": {
+    "enter_hp_ratio": 0.5,
+    "exit_hp_ratio": 0.65,
+    "danger_scale": 1.35,
+    "attraction_scale": 0.35,
+    "max_pickup_distance": 300.0
+  },
+  "consumable": {
+    "hp_ratio": 0.6,
+    "max_distance": 550.0,
+    "attraction_scale": 1.4
+  },
+  "boss": {
+    "band": [380.0, 620.0],
+    "candidates": 16,
+    "edge_margin": 130.0,
+    "edge_weight": 1.2,
+    "attraction_scale": 0.8,
+    "danger_scale": 1.2
+  },
+  "rhythm": {
+    "early_wave_max": 8,
+    "late_wave_min": 15,
+    "early_danger_scale": 0.9,
+    "early_attraction_scale": 1.3,
+    "mid_danger_scale": 1.1,
+    "mid_attraction_scale": 0.8,
+    "late_danger_scale": 1.25,
+    "late_attraction_scale": 0.5,
+    "clear_enemy_threshold": 3,
+    "clear_danger_scale": 0.9,
+    "clear_attraction_scale": 1.5
+  }
+}

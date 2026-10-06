@@ -1,7 +1,8 @@
-"""对局内动作编排（票据 07/09 的 RUNNING 阶段）。
+"""对局内动作编排（票据 07/09/10 的 RUNNING 阶段）。
 
 职责：
-- 战斗走位（默认 ``ReflexController``，票据 09；可注入占位控制器做对照）；
+- 战斗走位（默认 ``TacticalController`` = 战术层 + 反射层，票据 10；可注入
+  反射层/占位控制器做对照）；
 - 商店固定动作：打印摘要后直接离开（每店一次，失败冷却重试；经济策略见票据 12）；
 - 升级固定动作：选第一张可选卡（每套选项一次，失败冷却重试；评分见票据 12）；
 - 战报数据记账：波次/金币/材料/最终构建。
@@ -14,7 +15,7 @@ import asyncio
 from enum import Enum
 from typing import Callable, Optional
 
-from .decision.reflex import ReflexController
+from .decision.tactical import TacticalController
 from .move_control import MoveController
 from .menu_view import (
     BattleReport,
@@ -52,7 +53,7 @@ class RunController:
         self.server = server
         self._out = output
         self._clock = clock
-        self._autopilot = autopilot or ReflexController()
+        self._autopilot = autopilot or TacticalController()
         self._replay_path = replay_path or (lambda: None)
         self._ack_timeout_s = ack_timeout_s
         self.activity: Optional[Activity] = None
