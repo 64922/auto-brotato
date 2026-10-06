@@ -287,7 +287,7 @@ class RunSession:
     def _begin_start(self, value: int) -> None:
         self._confirm_value = None
         self.phase = Phase.STARTING
-        self._print("[开始] 设置 D%d → 读回校验 → 开始对局（反射层走位接管）…" % value)
+        self._print("[开始] 设置 D%d → 读回校验 → 开始对局（走位控制器接管）…" % value)
         self._cancel_start_task()
         self._start_task = asyncio.create_task(self._start_sequence(value))
 
@@ -373,7 +373,10 @@ class RunSession:
         self._run_finished = False
         self._death_since = None
         self._controller.begin()
-        self._print("[对局] 已进入第 1 波（D%d）；反射层走位接管（票据 09，参数见 decision/config/reflex.json）" % value)
+        self._print(
+            "[对局] 已进入第 1 波（D%d）；走位控制器 %s 接管"
+            % (value, self._controller.autopilot_name)
+        )
 
     def _back_to_input_or_idle(self) -> None:
         now = self._clock()

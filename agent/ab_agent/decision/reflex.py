@@ -9,6 +9,8 @@
 - 输出向量经指数平滑与模长钳制，默认 30Hz 重算，避免 8 向 PWM 下的抖振；
 - 低血紧急策略（提高危险权重、优先回血消耗品）与 ``invuln`` 穿越弹幕（可配置）；
 - ``truncated=true`` 时放大危险权重（保守）；
+- 8 向数字回退对齐（mod movement.gd）：输出扇区迟滞 ``decision.sector_switch_margin``，
+  跨扇区需比原扇区最优显著更优才切换，避免合成输入下的方向抖振；
 - 战术层（票据 10）通过 :class:`TacticalIntent` 提供期望位置/距离带/权重；缺省时使用
   默认目标（最近材料，低血优先回血消耗品，否则场地中心）。
 
@@ -34,6 +36,9 @@ from .geometry import Band, Point, arena_rect, band_pair, distance, items, point
 
 _PICKUP_MATERIAL = "material"
 _PICKUP_CONSUMABLE = "consumable"
+
+#: 与 mod 数字回退一致的分量死区（movement.gd DIGITAL_DEADBAND）
+_DIGITAL_DEADBAND = 0.05
 
 
 @dataclass(frozen=True)
@@ -205,8 +210,12 @@ class ReflexController:
 
     def _choose(self, context: "_Context") -> Point:
         config = self._config
+        emitted = self._output if self._output is not None else context.prev_dir
+        emitted_sector = _actuator_sector(emitted) if emitted is not None else None
         best_dir: Optional[Point] = None
         best_score = -math.inf
+        sticky_dir: Optional[Point] = None
+        sticky_score = -math.inf
         for direction in _candidates(config.decision.candidate_count, context.prev_dir):
             score = -self._direction_cost(direction, context)
             if context.prev_dir is not None:
@@ -215,6 +224,18 @@ class ReflexController:
             if score > best_score:
                 best_score = score
                 best_dir = direction
+            if emitted_sector is not None and _actuator_sector(direction) == emitted_sector:
+                if score > sticky_score:
+                    sticky_score = score
+                    sticky_dir = direction
+        # 扇区迟滞：离开当前输出扇区需超过 switch margin（8 向数字回退下防抖）
+        if (
+            sticky_dir is not None
+            and best_dir is not None
+            and _actuator_sector(best_dir) != emitted_sector
+            and sticky_score + config.decision.sector_switch_margin >= best_score
+        ):
+            return sticky_dir
         return best_dir if best_dir is not None else (1.0, 0.0)
 
     def _direction_cost(self, direction: Point, context: "_Context") -> float:
@@ -365,3 +386,17 @@ def _angle_between(a: Point, b: Point) -> float:
     dot = a[0] * b[0] + a[1] * b[1]
     cross = a[0] * b[1] - a[1] * b[0]
     return abs(math.atan2(cross, dot))
+
+
+def _actuator_sector(direction: Point) -> int:
+    """mod 数字回退的实际 8 向扇区（分量符号 + 死区，见 movement.gd）。"""
+    bits = 0
+    if direction[0] > _DIGITAL_DEADBAND:
+        bits |= 1
+    elif direction[0] < -_DIGITAL_DEADBAND:
+        bits |= 2
+    if direction[1] > _DIGITAL_DEADBAND:
+        bits |= 4
+    elif direction[1] < -_DIGITAL_DEADBAND:
+        bits |= 8
+    return bits

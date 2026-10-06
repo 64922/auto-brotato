@@ -1,11 +1,12 @@
 {
   "decision": {
-    "interval_s": 0.033,
+    "interval_s": 0.015,
     "candidate_count": 16,
     "turn_penalty": 1.6,
     "smoothing_alpha": 0.8,
-    "min_magnitude": 0.55,
-    "max_magnitude": 1.0
+    "min_magnitude": 1.0,
+    "max_magnitude": 1.0,
+    "sector_switch_margin": 1.5
   },
   "danger": {
     "enemy_weight": 1.4,

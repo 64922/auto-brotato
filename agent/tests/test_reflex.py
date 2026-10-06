@@ -14,7 +14,11 @@ from ab_agent.decision.danger import (
     select_threats,
     threats_from_snapshot,
 )
-from ab_agent.decision.reflex import ReflexController, TacticalIntent
+from ab_agent.decision.reflex import (
+    ReflexController,
+    TacticalIntent,
+    _actuator_sector,
+)
 
 ARENA = {"min": [0.0, 0.0], "max": [2048.0, 1536.0]}
 CENTER = (1024.0, 768.0)
@@ -278,6 +282,36 @@ class ThreatSelectionTest(unittest.TestCase):
         )
         snapshot = combat_snapshot(enemies=[enemy(1500.0, 768.0)])
         self.assertEqual(controller.danger_at(snapshot, CENTER), 0.0)
+
+
+class ActuatorSectorTest(unittest.TestCase):
+    def test_sector_matches_digital_mapping(self):
+        self.assertEqual(_actuator_sector((1.0, 0.0)), 1)  # 右
+        self.assertEqual(_actuator_sector((-1.0, 0.0)), 2)  # 左
+        self.assertEqual(_actuator_sector((0.707, 0.707)), 5)  # 右下
+        self.assertEqual(_actuator_sector((-0.707, -0.707)), 10)  # 左上
+        self.assertEqual(_actuator_sector((0.01, -0.01)), 0)  # 死区内按无分量
+
+    def test_switch_required_for_meaningful_change(self):
+        controller = ReflexController()
+        right = combat_snapshot(pickups=[pickup("material", 1524.0, 768.0)])
+        first = controller.next_move(right, now=1.0)
+        self.assertEqual(_actuator_sector(first), 1)
+        blocked = combat_snapshot(
+            pickups=[pickup("material", 1524.0, 768.0)],
+            hazards=[{"kind": "landmine", "pos": [1150.0, 768.0], "radius": 36.0}],
+        )
+        after = controller.next_move(blocked, now=1.1)
+        self.assertNotEqual(_actuator_sector(after), 1)
+
+    def test_tiny_perturbation_does_not_switch(self):
+        controller = ReflexController()
+        snapshot = combat_snapshot(pickups=[pickup("material", 1324.0, 768.0)])
+        sector = _actuator_sector(controller.next_move(snapshot, now=1.0))
+        nudged = combat_snapshot(pickups=[pickup("material", 1324.0, 770.0)])
+        for step in range(10):
+            vector = controller.next_move(nudged, now=1.05 + step * 0.05)
+            self.assertEqual(_actuator_sector(vector), sector)
 
 
 class SmoothingTest(unittest.TestCase):

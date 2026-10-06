@@ -32,6 +32,7 @@ _SECTION_KEYS = {
         "smoothing_alpha",
         "min_magnitude",
         "max_magnitude",
+        "sector_switch_margin",
     ),
     "danger": (
         "enemy_weight",
@@ -80,6 +81,7 @@ class DecisionConfig:
     smoothing_alpha: float
     min_magnitude: float
     max_magnitude: float
+    sector_switch_margin: float
 
 
 @dataclass(frozen=True)
@@ -211,6 +213,9 @@ def reflex_config_from_mapping(raw: Mapping[str, Any]) -> ReflexConfig:
         smoothing_alpha=_number(decision_raw, "smoothing_alpha", "decision", minimum=0.01, maximum=1.0),
         min_magnitude=_number(decision_raw, "min_magnitude", "decision", minimum=0.01, maximum=1.0),
         max_magnitude=_number(decision_raw, "max_magnitude", "decision", minimum=0.01, maximum=1.0),
+        sector_switch_margin=_number(
+            decision_raw, "sector_switch_margin", "decision", minimum=0.0
+        ),
     )
     if decision.min_magnitude > decision.max_magnitude:
         raise ReflexConfigError("decision.min_magnitude 不能大于 max_magnitude")

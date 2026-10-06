@@ -68,6 +68,11 @@ class RunController:
         self._level_up_pending = False
         self._level_up_retry_at = 0.0
 
+    @property
+    def autopilot_name(self) -> str:
+        """当前走位控制器类名（日志/状态展示，reflex 与占位对照可区分）。"""
+        return type(self._autopilot).__name__
+
     # ---- 生命周期 ----
 
     def begin(self) -> None:
