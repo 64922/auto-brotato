@@ -35,10 +35,10 @@ def in_line(ts, msg_type, payload=None, ref=None):
     return {"kind": "in", "ts": ts, "envelope": envelope(msg_type, payload, ref)}
 
 
-def out_line(ts, kind, **params):
+def out_line(ts, kind, ref=None, **params):
     payload = {"kind": kind}
     payload.update(params)
-    return {"kind": "out", "ts": ts, "envelope": envelope("action", payload)}
+    return {"kind": "out", "ts": ts, "envelope": envelope("action", payload, ref)}
 
 
 def decision_line(ts, layer, action, reason):
