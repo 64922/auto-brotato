@@ -160,8 +160,8 @@
 ### 4.3 对局中
 
 - **战斗**：60Hz 快照；反射层每帧（或隔帧）计算 `move` 向量并发送；每次发送带 `ref`，TTL 250ms 由 mod 兜底。P1 先用占位走位（票据 07），正式策略见票据 09/10。
-- **升级选卡**：`menu` 消息 `phase=level_up` 出现时暂停战斗决策，由经济层评分并发送 `menu_pick_upgrade {index}`。P1 固定选第一张可选卡（票据 07）。
-- **商店**：`shop` 消息（变化推送 + 1s 心跳）驱动经济层决策：购买 / 出售 / 刷新 / 锁定 / 离开；动作串行、幂等（protocol.md §5）。P1 固定直接离开（票据 07）。
+- **升级选卡**：`menu` 消息 `phase=level_up` 出现时暂停战斗决策，由经济层评分并发送 `menu_pick_upgrade {index}`。P1 固定选第一张可选卡（票据 07）；票据 12 起由 `decision/economy.py` 评分选卡（最缺属性短板）。
+- **商店**：`shop` 消息（变化推送 + 1s 心跳）驱动经济层决策：购买 / 出售 / 刷新 / 锁定 / 离开；动作串行、幂等（protocol.md §5）。P1 固定直接离开（票据 07）；票据 12 起由 `decision/economy*.py` 执行（评分 + `economy.json` 参数；无知识库时降级回固定行为），一次一个在途动作，成功动作后冻结同指纹旧视图直到新推送，失败按错误码重试（超时一次、`insufficient_gold` 不重试、`shop_leave` 持续冷却重试避免卡死）。
 - 商店关闭判定：超过 2.5s 未收到 `shop` 消息（`SHOP_FRESH_S`，心跳 1s）且快照显示进入下一波。
 
 ### 4.4 断线与中断
@@ -232,7 +232,7 @@
 | --- | --- | --- |
 | 反射层 | 30–60Hz | 危险场构建（敌/弹幕/地雷外推）、走位方向评估、边界与风筝、平滑 |
 | 战术层 | 3–5Hz | 目标选择（材料/Boss/危险区）、采集与血量管理、波次节奏 |
-| 经济层 | 事件驱动 | 商店评分（Tier 表 + 经济规则）、购买/刷新/锁定/出售、升级选卡 |
+| 经济层 | 事件驱动 | 商店评分（Tier 表 + 经济规则）、购买/刷新/锁定/出售、升级选卡（票据 12：`decision/economy*.py`，串行执行 + 旧视图冻结 + 按错误码重试） |
 
 - 知识库：由 mod 导出脚本从游戏资源提取物品/武器/升级/英雄静态数据生成 JSON（与锁定版本一致），叠加人工 Tier 标注；agent 侧由 `knowledge.py` 加载并在启动时校验版本（不匹配告警）；见票据 11。
 - 参数外置（JSON/YAML），支持回放离线调参。
@@ -268,7 +268,7 @@
      死亡即停止视为流程通过（须验证死亡检测）；本局未触发升级页时该项记为跳过（累计经验不足时不会出现）。
      模式开关开启为已知阻碍（无尽模式原生警告弹窗会挡住自动开局，见 §13 与票据 07 限制④）：
      冒烟直接拒绝，需人工关闭后重跑。
-2. **回放**：agent 录制 NDJSON（header + 观测流 + 动作 + ack + 决策理由）；`tools/replay` 离线重放供回归与调参（票据 03）；`tools/replay/movement` 用录制回放对比走位策略（危险暴露/贴边/方向直方图，票据 09）；`tools/replay/tactical` 输出战术层报告并按对局汇总双录制实机对照（材料/存活，票据 10）。
+2. **回放**：agent 录制 NDJSON（header + 观测流 + 动作 + ack + 决策理由）；`tools/replay` 离线重放供回归与调参（票据 03）；`tools/replay/movement` 用录制回放对比走位策略（危险暴露/贴边/方向直方图，票据 09）；`tools/replay/tactical` 输出战术层报告并按对局汇总双录制实机对照（材料/存活，票据 10）；`tools/replay/economy` 在同一录制上对比不同参数集的购买序列评分/金币曲线/最终构建强度（票据 12；同一录制同参数输出确定性）。
 3. **单元测试**：协议编解码、输入解析（D 值校验）、决策评分函数、危险场几何。
 4. **真实验收**：§1.2 的 10 局 ≥9 胜；每局回放 + 复盘记录。
 
@@ -292,8 +292,9 @@ auto-brotato/
 │   │   ├── move_control.py  # 走位控制器接口（对局编排与回放评估共用）
 │   │   ├── knowledge.py     # 知识库加载/版本校验（票据 11；docs/knowledge/*.json）
 │   │   ├── hero_names.py    # 英雄 ID→中文名临时表（终端展示用；知识库 characters.json 已生成，切换待后续票据）
-│   │   ├── decision/        # reflex/danger/geometry（票据 09）/ tactical（票据 10）/ economy；
-│   │   │                   #   config/reflex.json、config/tactical.json（参数外置）
+│   │   ├── decision/        # reflex/danger/geometry（票据 09）/ tactical（票据 10）/ economy（票据 12：
+│   │   │                   #   economy.py 计划、economy_scoring.py 评分、economy_runner.py 串行执行、economy_config.py）；
+│   │   │                   #   config/reflex.json、config/tactical.json、config/economy.json（参数外置）
 │   │   ├── cli.py
 │   │   └── recorder.py
 │   ├── tests/
@@ -308,7 +309,8 @@ auto-brotato/
 │   ├── export_knowledge.py  # 知识库导出收集（触发 mod 调试动作 → docs/knowledge，票据 11）
 │   ├── verify_knowledge.py  # 知识库 PCK 抽样对照校验（票据 11）
 │   └── replay/              # 离线回放与回归；movement.py 走位指标对比报告（票据 09）；
-│                            #   tactical.py/tactical_report.py 战术层报告与双录制实机对照、recording_facts.py 对局事实切分（票据 10）
+│                            #   tactical.py/tactical_report.py 战术层报告与双录制实机对照、recording_facts.py 对局事实切分（票据 10）；
+│                            #   economy.py 经济层参数集对比报告（购买序列/金币曲线/构建强度，票据 12）
 ├── recordings/              # 回放文件（不入库）
 ├── docs/
 │   ├── architecture.md      # 本文件
